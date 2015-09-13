@@ -86,8 +86,8 @@ class LocalizationServiceProvider extends PackageServiceProvider
      */
     private function registerLocalization()
     {
-        $this->app->bind('arcanedev.localization', function($app) {
-            return new Localization($app);
+        $this->app->singleton('arcanedev.localization', function() {
+            return new Localization;
         });
 
         $this->addFacade(
