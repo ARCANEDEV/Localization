@@ -132,31 +132,34 @@ class Url
     /**
      * Build URL using array data from parse_url.
      *
-     * @param  array|false  $parsedUrl  -  Array of data from parse_url function
+     * @param  array|false  $parsed  -  Array of data from parse_url function
      *
      * @return string
      */
-    public static function unparse($parsedUrl)
+    public static function unparse($parsed)
     {
-        if (empty($parsedUrl)) {
+        if (empty($parsed)) {
             return '';
         }
 
-        $url  = '';
-        $url .= isset($parsedUrl['scheme']) ? $parsedUrl['scheme'] . '://' : '';
-        $url .= isset($parsedUrl['host'])   ? $parsedUrl['host']           : '';
-        $url .= isset($parsedUrl['port'])   ? ':' . $parsedUrl['port']     : '';
-        $user = isset($parsedUrl['user'])   ? $parsedUrl['user']           : '';
-        $pass = isset($parsedUrl['pass'])   ? ':' . $parsedUrl['pass']     : '';
+        $scheme    =& $parsed['scheme'];
+        $host      =& $parsed['host'];
+        $port      =& $parsed['port'];
+        $user      =& $parsed['user'];
+        $pass      =& $parsed['pass'];
+        $path      =& $parsed['path'];
+        $query     =& $parsed['query'];
+        $fragment  =& $parsed['fragment'];
 
-        $url .= $user . (($user || $pass) ? "$pass@" : '');
+        $path      = '/' . ltrim($path, '/');
 
-        $url = ! empty($url)
-            ? $url . (isset($parsedUrl['path']) ? '/' . ltrim($parsedUrl['path'], '/') : '')
-            : $url . (isset($parsedUrl['path']) ? $parsedUrl['path']                   : '');
-
-        $url .= isset($parsedUrl['query'])    ? '?' . $parsedUrl['query']    : '';
-        $url .= isset($parsedUrl['fragment']) ? '#' . $parsedUrl['fragment'] : '';
+        $userInfo  = ! strlen($pass)      ? $user     : "$user:$pass";
+        $host      = ! "$port"            ? $host     : "$host:$port";
+        $authority = ! strlen($userInfo)  ? $host     : "$userInfo@$host";
+        $hierPart  = ! strlen($authority) ? $path     : "//$authority$path";
+        $url       = ! strlen($scheme)    ? $hierPart : "$scheme:$hierPart";
+        $url       = ! strlen($query)     ? $url      : "$url?$query";
+        $url       = ! strlen($fragment)  ? $url      : "$url#$fragment";
 
         return $url;
     }
