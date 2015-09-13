@@ -5,7 +5,7 @@ return [
      |  Settings
      | ------------------------------------------------------------------------------------------------
      */
-    'supported-locales'      => ['en'],
+    'supported-locales'      => ['en', 'es', 'fr'],
 
     'accept-language-header' => true,
 
