@@ -111,6 +111,25 @@ class Url
     }
 
     /**
+     * Change uri attributes (wildcards) for the ones in the $attributes array.
+     *
+     * @param  array   $attributes
+     * @param  string  $uri
+     *
+     * @return string
+     */
+    public static function substituteAttributes(array $attributes, $uri)
+    {
+        foreach ($attributes as $key => $value) {
+            $uri = str_replace('{' . $key . '}',  $value, $uri);
+            $uri = str_replace('{' . $key . '?}', $value, $uri);
+        }
+
+        // delete empty optional arguments that are not in the $attributes array
+        return preg_replace('/\/{[^)]+\?}/', '', $uri);
+    }
+
+    /**
      * Build URL using array data from parse_url.
      *
      * @param  array|false  $parsedUrl  -  Array of data from parse_url function
