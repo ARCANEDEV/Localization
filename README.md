@@ -19,3 +19,5 @@ Localization [![For Laravel 5.1][badge_laravel]](https://github.com/ARCANEDEV/Lo
 *By [ARCANEDEV&copy;](http://www.arcanedev.net/)*
 
 The Localization package is inspired from [mcamara/laravel-localization](https://github.com/mcamara/laravel-localization).
+
+Easy i18n localization for Laravel, an useful tool to combine with Laravel localization classes.
