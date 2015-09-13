@@ -27,13 +27,12 @@ class LocaleCookieRedirect extends Middleware
      *
      * @return mixed
      */
-    public function handle(Request $request, Closure $next )
+    public function handle(Request $request, Closure $next)
     {
         $params = explode('/', $request->path());
 
         if (
-            count($params) > 0 &&
-            $locale = localization()->isLocaleSupported($params[0])
+            count($params) > 0 && $locale = localization()->isLocaleSupported($params[0])
         ) {
             cookie('locale', $params[0]);
 
@@ -42,13 +41,7 @@ class LocaleCookieRedirect extends Middleware
 
         $locale = $request->cookie('locale', false);
 
-        if (
-            $locale &&
-            ! (
-                localization()->getDefaultLocale() === $locale &&
-                localization()->hideDefaultLocaleInURL()
-            )
-        ) {
+        if ($locale && ! $this->isDefaultLocaleHidden($locale)) {
             app('session')->reflash();
 
             if (is_string($redirection = localization()->getLocalizedURL($locale))) {
@@ -60,4 +53,6 @@ class LocaleCookieRedirect extends Middleware
 
         return $next($request);
     }
+
+
 }

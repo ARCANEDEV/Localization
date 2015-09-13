@@ -58,7 +58,7 @@ class LocalizationRedirectFilter extends Middleware
      *
      * @return string|false
      */
-    private function getRedirection($localeCode)
+    protected function getRedirection($localeCode)
     {
         $currentLocale     = localization()->getCurrentLocale();
         $defaultLocale     = localization()->getDefaultLocale();

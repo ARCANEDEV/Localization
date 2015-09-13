@@ -32,23 +32,18 @@ class LocaleSessionRedirect extends Middleware
         $params = explode('/', $request->path());
 
         if (
-            count($params) > 0 &&
-            $locale = localization()->isLocaleSupported($params[0])
+            count($params) > 0 && $locale = localization()->isLocaleSupported($params[0])
         ) {
-            session([ 'locale' => $params[ 0 ] ]);
+            session([
+                'locale' => $params[0]
+            ]);
 
             return $next($request);
         }
 
         $locale = session('locale', false);
 
-        if (
-            $locale &&
-            ! (
-                localization()->getDefaultLocale() === $locale &&
-                localization()->hideDefaultLocaleInURL()
-            )
-        ) {
+        if ($locale && ! $this->isDefaultLocaleHidden($locale)) {
             app('session')->reflash();
 
             if (is_string($redirection = localization()->getLocalizedURL($locale))) {
