@@ -132,35 +132,53 @@ class Url
     /**
      * Build URL using array data from parse_url.
      *
-     * @param  array|false  $parsed  -  Array of data from parse_url function
+     * @param  array|false  $parsed
      *
      * @return string
      */
     public static function unparse($parsed)
     {
+        $url = '';
+
         if (empty($parsed)) {
-            return '';
+            return $url;
         }
 
+        $parsed         = self::checkParsedUrl($parsed);
+
+        $userInfo  = ! strlen($parsed['pass'])     ? $parsed['pass'] : $parsed['user'] . ':' . $parsed['pass'];
+        $host      = ! (string) $parsed['port']    ? $parsed['host'] : $parsed['host'] . ':' . $parsed['port'];
+        $authority = ! strlen($userInfo)           ? $host           : $userInfo . '@' . $host;
+        $hierPart  = ! strlen($authority)          ? $parsed['path'] : '//' . $authority . $parsed['path'];
+        $url       = ! strlen($parsed['scheme'])   ? $hierPart       : $parsed['scheme'] . ':' . $hierPart;
+        $url       = ! strlen($parsed['query'])    ? $url            : $url    . '?' . $parsed['query'];
+        $url       = ! strlen($parsed['fragment']) ? $url            : $url    . '#' . $parsed['fragment'];
+
+        return $url;
+    }
+
+    /* ------------------------------------------------------------------------------------------------
+     |  Other Functions
+     | ------------------------------------------------------------------------------------------------
+     */
+    /**
+     *
+     * @param  array  $parsed
+     *
+     * @return array
+     */
+    private static function checkParsedUrl($parsed)
+    {
         $scheme    =& $parsed['scheme'];
         $host      =& $parsed['host'];
         $port      =& $parsed['port'];
         $user      =& $parsed['user'];
         $pass      =& $parsed['pass'];
         $path      =& $parsed['path'];
+        $path      = '/' . ltrim($path, '/');
         $query     =& $parsed['query'];
         $fragment  =& $parsed['fragment'];
 
-        $path      = '/' . ltrim($path, '/');
-
-        $userInfo  = ! strlen($pass)      ? $user     : "$user:$pass";
-        $host      = ! "$port"            ? $host     : "$host:$port";
-        $authority = ! strlen($userInfo)  ? $host     : "$userInfo@$host";
-        $hierPart  = ! strlen($authority) ? $path     : "//$authority$path";
-        $url       = ! strlen($scheme)    ? $hierPart : "$scheme:$hierPart";
-        $url       = ! strlen($query)     ? $url      : "$url?$query";
-        $url       = ! strlen($fragment)  ? $url      : "$url#$fragment";
-
-        return $url;
+        return compact('scheme', 'host', 'port', 'user', 'pass', 'path', 'query', 'fragment');
     }
 }
