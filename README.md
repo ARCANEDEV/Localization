@@ -16,3 +16,5 @@ Localization (For Laravel 5.1) [![Packagist License][badge_license]](https://git
 [badge_downloads]: https://img.shields.io/packagist/dt/arcanedev/localization.svg?style=flat-square
 
 *By [ARCANEDEV&copy;](http://www.arcanedev.net/)*
+
+The Localization package is inspired from [mcamara/laravel-localization](https://github.com/mcamara/laravel-localization).
