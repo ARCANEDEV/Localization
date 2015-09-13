@@ -35,12 +35,17 @@ class UrlTest extends TestCase
         $urls = [
             '',
             'http://www.example.com/',
-            'http://username:password@example.com/',
             'http://example.com:80/',
+            'http://demo.example.com:80/',
+            'http://username:password@example.com/',
             'http://name:pass@example.com/',
+            'http://name:passd@admin.example.com/',
+            'http://name:passd@admin.example.com:80/',
             'http://example.com/products',
+            'http://shop.example.com/products',
             'http://example.com/products?sku=1234',
-            'http://name:pass@example.com:80/products?sku=1234#price',
+            'http://shop.example.com/products?sku=1234',
+            'http://name:pass@shop.example.com:80/products?sku=1234#price',
         ];
 
         foreach ($urls as $url) {

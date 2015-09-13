@@ -138,11 +138,7 @@ class Url
      */
     public static function unparse($parsed)
     {
-        $url = '';
-
-        if (empty($parsed)) {
-            return $url;
-        }
+        if (empty($parsed)) return '';
 
         self::checkParsedUrl($parsed);
 
@@ -158,6 +154,8 @@ class Url
      | ------------------------------------------------------------------------------------------------
      */
     /**
+     * Check parsed URL.
+     *
      * @param  array  $parsed
      *
      * @return array
@@ -180,7 +178,7 @@ class Url
     }
 
     /**
-     * Get Url.
+     * Get URL.
      *
      * @param  array  $parsed
      *
@@ -188,13 +186,13 @@ class Url
      */
     private static function getUrl(array $parsed)
     {
-        $hierPart  = self::getHierPart($parsed);
+        $url       = '';
 
         if (strlen($parsed['scheme'])) {
-            return $parsed['scheme'] . ':' . $hierPart;
+            $url = $parsed['scheme'] . ':' . self::getHierPart($parsed);
         }
 
-        return $hierPart;
+        return $url;
     }
 
     /**
@@ -206,13 +204,14 @@ class Url
      */
     private static function getHierPart(array $parsed)
     {
+        $path      = $parsed['path'];
         $authority = self::getAuthority($parsed);
 
         if (strlen($authority)) {
-            return '//' . $authority . $parsed['path'];
+            $path = '//' . $authority . $path;
         }
 
-        return $parsed['path'];
+        return $path;
     }
 
     /**
@@ -243,11 +242,13 @@ class Url
      */
     private static function getUserInfo(array $parsed)
     {
+        $userInfo = '';
+
         if (strlen($parsed['pass'])) {
-            return $parsed['user'] . ':' . $parsed['pass'];
+            $userInfo = $parsed['user'] . ':' . $parsed['pass'];
         }
 
-        return '';
+        return $userInfo;
     }
 
     /**
@@ -259,27 +260,13 @@ class Url
      */
     private static function getHost(array $parsed)
     {
+        $host = $parsed['host'];
+
         if ( ! empty((string) $parsed['port'])) {
-            return $parsed['host'] . ':' . $parsed['port'];
+            $host = $host . ':' . $parsed['port'];
         }
 
-        return $parsed['host'];
-    }
-
-    /**
-     * Get fragment.
-     *
-     * @param  array  $parsed
-     *
-     * @return string
-     */
-    private static function getFragment(array $parsed)
-    {
-        if (strlen($parsed['fragment'])) {
-            return '#' . $parsed['fragment'];
-        }
-
-        return '';
+        return $host;
     }
 
     /**
@@ -291,10 +278,30 @@ class Url
      */
     private static function getQuery(array $parsed)
     {
+        $query = '';
+
         if (strlen($parsed['query'])) {
-            return '?' . $parsed['query'];
+            $query = '?' . $parsed['query'];
         }
 
-        return '';
+        return $query;
+    }
+
+    /**
+     * Get fragment.
+     *
+     * @param  array  $parsed
+     *
+     * @return string
+     */
+    private static function getFragment(array $parsed)
+    {
+        $fragment = '';
+
+        if (strlen($parsed['fragment'])) {
+            $fragment = '#' . $parsed['fragment'];
+        }
+
+        return $fragment;
     }
 }
