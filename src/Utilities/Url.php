@@ -1,4 +1,7 @@
 <?php namespace Arcanedev\Localization\Utilities;
+use Arcanedev\Localization\Contracts\UrlInterface;
+use Illuminate\Routing\Route;
+use Illuminate\Routing\Router;
 
 /**
  * Class     Url
@@ -8,7 +11,7 @@
  *
  * @todo:    Refactoring
  */
-class Url
+class Url implements UrlInterface
 {
     /* ------------------------------------------------------------------------------------------------
      |  Main Functions
@@ -23,37 +26,23 @@ class Url
      */
     public static function extractAttributes($url = false)
     {
-        $attributes = [];
+        $router     = app('router');
 
         if (empty($url)) {
-            if ( ! app('router')->current()) {
-                return [];
-            }
-
-            $attributes = app('router')->current()->parameters();
-            $response   = event('routes.translation', [$attributes]);
-
-            if ( ! empty($response)) {
-                $response = array_shift($response);
-            }
-
-            if (is_array($response)) {
-                $attributes = array_merge($attributes, $response);
-            }
-
-            return $attributes;
+            return self::extractAttributesFromCurrentRoute($router);
         }
 
-        $parse = parse_url($url);
-        $parse = isset($parse['path']) ? explode('/', $parse['path']) : [];
-        $url   = [];
+        $attributes = [];
+        $parse      = parse_url($url);
+        $parse      = isset($parse['path']) ? explode('/', $parse['path']) : [];
+        $url        = [];
 
         foreach ($parse as $segment) {
             if ( ! empty($segment)) $url[] = $segment;
         }
 
-        foreach (app('router')->getRoutes() as $route) {
-            /** @var \Illuminate\Routing\Route $route */
+        foreach ($router->getRoutes() as $route) {
+            /** @var Route $route */
             $path = $route->getUri();
 
             if ( ! preg_match('/{[\w]+}/', $path)) {
@@ -150,7 +139,41 @@ class Url
     }
 
     /* ------------------------------------------------------------------------------------------------
-     |  Other Functions
+     |  Extract Functions
+     | ------------------------------------------------------------------------------------------------
+     */
+    /**
+     * Extract Attributes From Router.
+     *
+     * @return array
+     */
+    private static function extractAttributesFromCurrentRoute(Router $router)
+    {
+        /** @var Route $route */
+        $route = $router->current();
+
+        if (is_null($route)) {
+            return [];
+        }
+
+        $attributes = $route->parameters();
+        $response   = event('routes.translation', [
+            $attributes
+        ]);
+
+        if ( ! empty($response)) {
+            $response = array_shift($response);
+        }
+
+        if (is_array($response)) {
+            $attributes = array_merge($attributes, $response);
+        }
+
+        return $attributes;
+    }
+
+    /* ------------------------------------------------------------------------------------------------
+     |  Unparse Functions
      | ------------------------------------------------------------------------------------------------
      */
     /**
