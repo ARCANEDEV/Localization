@@ -1,5 +1,4 @@
 <?php namespace Arcanedev\Localization\Entities;
-use Arcanedev\Localization\Exceptions\InvalidLocaleDirectionException;
 
 /**
  * Class     Locale
@@ -18,35 +17,35 @@ class Locale
      *
      * @var string
      */
-    public $key;
+    private $key;
 
     /**
      * Locale name.
      *
      * @var string
      */
-    public $name;
+    private $name;
 
     /**
      * Locale script.
      *
      * @var string
      */
-    public $script;
+    private $script;
 
     /**
      * Locale direction.
      *
      * @var string
      */
-    public $direction;
+    private $direction;
 
     /**
      * Locale native.
      *
      * @var string
      */
-    public $native;
+    private $native;
 
     /* ------------------------------------------------------------------------------------------------
      |  Constructor
@@ -72,6 +71,26 @@ class Locale
      | ------------------------------------------------------------------------------------------------
      */
     /**
+     * Get local key.
+     *
+     * @return string
+     */
+    public function key()
+    {
+        return $this->key;
+    }
+
+    /**
+     * Get locale name.
+     *
+     * @return string
+     */
+    public function name()
+    {
+        return $this->name;
+    }
+
+    /**
      * Set name.
      *
      * @param  string  $name
@@ -83,6 +102,16 @@ class Locale
         $this->name = $name;
 
         return $this;
+    }
+
+    /**
+     * Get locale Script.
+     *
+     * @return string
+     */
+    public function script()
+    {
+        return $this->script;
     }
 
     /**
@@ -100,6 +129,22 @@ class Locale
     }
 
     /**
+     * Get locale direction.
+     *
+     * @return string
+     */
+    public function direction()
+    {
+        if (empty($this->direction)) {
+            $this->direction = in_array($this->script, [
+                'Arab', 'Hebr', 'Mong', 'Tfng', 'Thaa'
+            ]) ? 'rtl' : 'ltr';
+        }
+
+        return $this->direction;
+    }
+
+    /**
      * Set Direction.
      *
      * @param  string $direction
@@ -108,11 +153,21 @@ class Locale
      */
     private function setDirection($direction)
     {
-        $this->checkDirection($direction);
-
-        $this->direction = $direction;
+        if ( ! empty($direction)) {
+            $this->direction = strtolower($direction);
+        }
 
         return $this;
+    }
+
+    /**
+     * Get locale native.
+     *
+     * @return string
+     */
+    public function native()
+    {
+        return $this->native;
     }
 
     /**
@@ -133,22 +188,4 @@ class Locale
      |  Check Functions
      | ------------------------------------------------------------------------------------------------
      */
-    /**
-     * Check locale direction.
-     *
-     * @param  string  $direction
-     *
-     * @throws InvalidLocaleDirectionException
-     */
-    private function checkDirection(&$direction)
-    {
-        $direction = strtolower($direction);
-
-        if ( ! in_array($direction, ['ltr', 'rtl'])) {
-            throw new InvalidLocaleDirectionException(
-                'The direction [' . $direction . '] is invalid, '.
-                'must be ltr (Left to Right) or rtl (Right to Left).'
-            );
-        }
-    }
 }
