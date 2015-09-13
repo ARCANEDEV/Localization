@@ -50,11 +50,12 @@ class LocaleCookieRedirect extends Middleware
             )
         ) {
             app('session')->reflash();
-            $redirection = localization()->getLocalizedURL($locale);
 
-            return new RedirectResponse($redirection, 302, [
-                'Vary' => 'Accept-Language'
-            ]);
+            if (is_string($redirection = localization()->getLocalizedURL($locale))) {
+                return new RedirectResponse($redirection, 302, [
+                    'Vary' => 'Accept-Language'
+                ]);
+            }
         }
 
         return $next($request);

@@ -101,7 +101,7 @@ interface LocalizationInterface
     /**
      * Set current route name.
      *
-     * @param  string  $routeName
+     * @param  false|string  $routeName
      */
     public function setRouteName($routeName);
 

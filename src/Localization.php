@@ -318,11 +318,13 @@ class Localization implements LocalizationInterface
     /**
      * Set current route name.
      *
-     * @param  string  $routeName
+     * @param  false|string  $routeName
      */
     public function setRouteName($routeName)
     {
-        $this->routeName = $routeName;
+        if (is_string($routeName)) {
+            $this->routeName = $routeName;
+        }
     }
 
     /* ------------------------------------------------------------------------------------------------
