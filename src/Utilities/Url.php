@@ -144,15 +144,11 @@ class Url
             return $url;
         }
 
-        $parsed         = self::checkParsedUrl($parsed);
+        self::checkParsedUrl($parsed);
 
-        $userInfo  = ! strlen($parsed['pass'])     ? $parsed['pass'] : $parsed['user'] . ':' . $parsed['pass'];
-        $host      = ! (string) $parsed['port']    ? $parsed['host'] : $parsed['host'] . ':' . $parsed['port'];
-        $authority = ! strlen($userInfo)           ? $host           : $userInfo . '@' . $host;
-        $hierPart  = ! strlen($authority)          ? $parsed['path'] : '//' . $authority . $parsed['path'];
-        $url       = ! strlen($parsed['scheme'])   ? $hierPart       : $parsed['scheme'] . ':' . $hierPart;
-        $url       = ! strlen($parsed['query'])    ? $url            : $url    . '?' . $parsed['query'];
-        $url       = ! strlen($parsed['fragment']) ? $url            : $url    . '#' . $parsed['fragment'];
+        $url  = self::getUrl($parsed);
+        $url .= self::getQuery($parsed);
+        $url .= self::getFragment($parsed);
 
         return $url;
     }
@@ -162,23 +158,143 @@ class Url
      | ------------------------------------------------------------------------------------------------
      */
     /**
-     *
      * @param  array  $parsed
      *
      * @return array
      */
-    private static function checkParsedUrl($parsed)
+    private static function checkParsedUrl(array &$parsed)
     {
         $scheme    =& $parsed['scheme'];
-        $host      =& $parsed['host'];
-        $port      =& $parsed['port'];
         $user      =& $parsed['user'];
         $pass      =& $parsed['pass'];
+        $host      =& $parsed['host'];
+        $port      =& $parsed['port'];
         $path      =& $parsed['path'];
-        $path      = '/' . ltrim($path, '/');
+        $path      = '/' . ltrim($path, '/'); // If / is missing for path.
         $query     =& $parsed['query'];
         $fragment  =& $parsed['fragment'];
 
-        return compact('scheme', 'host', 'port', 'user', 'pass', 'path', 'query', 'fragment');
+        $parsed    = compact(
+            'scheme', 'user', 'pass', 'host', 'port', 'path', 'query', 'fragment'
+        );
+    }
+
+    /**
+     * Get Url.
+     *
+     * @param  array  $parsed
+     *
+     * @return string
+     */
+    private static function getUrl(array $parsed)
+    {
+        $hierPart  = self::getHierPart($parsed);
+
+        if (strlen($parsed['scheme'])) {
+            return $parsed['scheme'] . ':' . $hierPart;
+        }
+
+        return $hierPart;
+    }
+
+    /**
+     * Get hier part.
+     *
+     * @param  array  $parsed
+     *
+     * @return string
+     */
+    private static function getHierPart(array $parsed)
+    {
+        $authority = self::getAuthority($parsed);
+
+        if (strlen($authority)) {
+            return '//' . $authority . $parsed['path'];
+        }
+
+        return $parsed['path'];
+    }
+
+    /**
+     * Get authority.
+     *
+     * @param  array  $parsed
+     *
+     * @return string
+     */
+    private static function getAuthority(array $parsed)
+    {
+        $userInfo  = self::getUserInfo($parsed);
+        $host      = self::getHost($parsed);
+
+        if (strlen($userInfo)) {
+            return $userInfo . '@' . $host;
+        }
+
+        return $host;
+    }
+
+    /**
+     * Get user info.
+     *
+     * @param  array  $parsed
+     *
+     * @return string
+     */
+    private static function getUserInfo(array $parsed)
+    {
+        if (strlen($parsed['pass'])) {
+            return $parsed['user'] . ':' . $parsed['pass'];
+        }
+
+        return '';
+    }
+
+    /**
+     * Get host.
+     *
+     * @param  array  $parsed
+     *
+     * @return string
+     */
+    private static function getHost(array $parsed)
+    {
+        if ( ! empty((string) $parsed['port'])) {
+            return $parsed['host'] . ':' . $parsed['port'];
+        }
+
+        return $parsed['host'];
+    }
+
+    /**
+     * Get fragment.
+     *
+     * @param  array  $parsed
+     *
+     * @return string
+     */
+    private static function getFragment(array $parsed)
+    {
+        if (strlen($parsed['fragment'])) {
+            return '#' . $parsed['fragment'];
+        }
+
+        return '';
+    }
+
+    /**
+     * Get Query.
+     *
+     * @param  array  $parsed
+     *
+     * @return string
+     */
+    private static function getQuery(array $parsed)
+    {
+        if (strlen($parsed['query'])) {
+            return '?' . $parsed['query'];
+        }
+
+        return '';
     }
 }
