@@ -417,28 +417,28 @@ class Localization implements LocalizationInterface
             return $this->getURLFromRouteNameTranslated($locale, $translatedRoute, $attributes);
         }
 
-        $base_path  = $this->request()->getBaseUrl();
-        $parsedUrl = parse_url($url);
-        $url_locale = $this->getDefaultLocale();
+        $baseUrl       = $this->request()->getBaseUrl();
+        $parsedUrl     = parse_url($url);
+        $defaultLocale = $this->getDefaultLocale();
 
         if ( ! $parsedUrl || empty($parsedUrl['path'])) {
-            $path = $parsedUrl['path'] = '';
+            $parsedUrl['path'] = '';
         }
         else {
-            $path = $parsedUrl['path'] = str_replace($base_path, '', '/' . ltrim($parsedUrl['path'], '/'));
+            $path = $parsedUrl['path'] = str_replace($baseUrl, '', '/' . ltrim($parsedUrl['path'], '/'));
 
             foreach ($this->getSupportedLocales() as $localeCode => $lang) {
                 $parsedUrl['path'] = preg_replace('%^/?' . $localeCode . '/%', '$1', $parsedUrl[ 'path' ]);
 
                 if ($parsedUrl['path'] !== $path) {
-                    $url_locale = $localeCode;
+                    $defaultLocale = $localeCode;
                     break;
                 }
 
                 $parsedUrl['path'] = preg_replace('%^/?' . $localeCode . '$%', '$1', $parsedUrl['path']);
 
                 if ($parsedUrl['path'] !== $path) {
-                    $url_locale = $localeCode;
+                    $defaultLocale = $localeCode;
                     break;
                 }
             }
@@ -446,7 +446,7 @@ class Localization implements LocalizationInterface
 
         $parsedUrl['path'] = ltrim($parsedUrl['path'], '/');
 
-        if ($translatedRoute = $this->findTranslatedRouteByPath($parsedUrl['path'], $url_locale)) {
+        if ($translatedRoute = $this->findTranslatedRouteByPath($parsedUrl['path'], $defaultLocale)) {
             return $this->getURLFromRouteNameTranslated($locale, $translatedRoute, $attributes);
         }
 
@@ -457,13 +457,7 @@ class Localization implements LocalizationInterface
             $parsedUrl['path'] = $locale . '/' . ltrim($parsedUrl['path'], '/');
         }
 
-        $parsedUrl['path'] = ltrim(ltrim($base_path, '/') . '/' . $parsedUrl['path'], '/');
-
-        //Make sure that the pass path is returned with a leading slash only if it come in with one.
-        if (starts_with($path, '/') === true) {
-            $parsedUrl['path'] = '/' . $parsedUrl['path'];
-        }
-
+        $parsedUrl['path'] = ltrim(ltrim($baseUrl, '/') . '/' . $parsedUrl['path'], '/');
         $parsedUrl['path'] = rtrim($parsedUrl['path'], '/');
 
         $url = Url::unparse($parsedUrl);
@@ -485,7 +479,6 @@ class Localization implements LocalizationInterface
     public function createUrlFromUri($uri)
     {
         $uri = ltrim($uri, '/');
-
         if (empty($this->baseUrl)) {
             return app('url')->to($uri);
         }
