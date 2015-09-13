@@ -74,9 +74,7 @@ class LocalizationServiceProvider extends PackageServiceProvider
      */
     public function provides()
     {
-        return [
-            'arcanedev.localization'
-        ];
+        return ['arcanedev.localization'];
     }
 
     /* ------------------------------------------------------------------------------------------------
@@ -88,8 +86,8 @@ class LocalizationServiceProvider extends PackageServiceProvider
      */
     private function registerLocalization()
     {
-        $this->app->singleton('arcanedev.localization', function() {
-            return new Localization();
+        $this->app->bind('arcanedev.localization', function($app) {
+            return new Localization($app);
         });
 
         $this->addFacade(
