@@ -15,6 +15,8 @@ abstract class TestCase extends BaseTestCase
      |  Properties
      | ------------------------------------------------------------------------------------------------
      */
+    /** @var array */
+    protected static $supportedLocales = ['ar', 'en', 'es', 'fr'];
 
     /* ------------------------------------------------------------------------------------------------
      |  Main Functions
@@ -69,6 +71,6 @@ abstract class TestCase extends BaseTestCase
      */
     protected function getEnvironmentSetUp($app)
     {
-
+        $app['config']->set('localization.supported-locales', self::$supportedLocales);
     }
 }
