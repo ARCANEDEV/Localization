@@ -51,9 +51,9 @@ class Localization implements LocalizationInterface
     /**
      * Current locale.
      *
-     * @var string|false
+     * @var string|null
      */
-    protected $currentLocale = false;
+    protected $currentLocale = null;
 
     /**
      * Base url.
@@ -283,7 +283,7 @@ class Localization implements LocalizationInterface
      */
     public function getCurrentLocale()
     {
-        if ($this->currentLocale) {
+        if ( ! is_null($this->currentLocale)) {
             return $this->currentLocale;
         }
 
@@ -498,9 +498,9 @@ class Localization implements LocalizationInterface
     /**
      * Returns the translated route for an url and the attributes given and a locale
      *
-     * @param  string|false|null  $url
-     * @param  array              $attributes
-     * @param  string             $locale
+     * @param  string  $url
+     * @param  array   $attributes
+     * @param  string  $locale
      *
      * @throws UndefinedSupportedLocalesException
      * @throws UnsupportedLocaleException

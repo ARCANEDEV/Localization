@@ -1,7 +1,7 @@
 <?php namespace Arcanedev\Localization\Middleware;
 
-use Closure;
 use Arcanedev\Localization\Bases\Middleware;
+use Closure;
 use Illuminate\Http\Request;
 
 /**

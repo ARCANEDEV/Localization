@@ -56,7 +56,7 @@ class LocalizationRedirectFilter extends Middleware
      *
      * @param  string  $localeCode
      *
-     * @return bool
+     * @return string|false
      */
     private function getRedirection($localeCode)
     {
