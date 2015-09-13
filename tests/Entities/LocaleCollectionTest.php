@@ -64,7 +64,7 @@ class LocaleCollectionTest extends TestCase
     {
         $this->locales->loadSupported();
 
-        $count = count(self::$supportedLocales);
+        $count = count($this->supportedLocales);
         $this->assertFalse($this->locales->isEmpty());
         $this->assertCount($count, $this->locales);
         $this->assertEquals($count, $this->locales->count());
