@@ -11,19 +11,5 @@ use Arcanedev\Support\Bases\Middleware as BaseMiddleware;
  */
 abstract class Middleware extends BaseMiddleware
 {
-    /* ------------------------------------------------------------------------------------------------
-     |  Properties
-     | ------------------------------------------------------------------------------------------------
-     */
-    /** @var Localization */
-    protected $localization;
-
-    /* ------------------------------------------------------------------------------------------------
-     |  Constructor
-     | ------------------------------------------------------------------------------------------------
-     */
-    public function __construct()
-    {
-        $this->localization = app('arcanedev.localization');
-    }
+    //
 }
