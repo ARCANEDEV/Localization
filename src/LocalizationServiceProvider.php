@@ -52,6 +52,10 @@ class LocalizationServiceProvider extends PackageServiceProvider
     public function boot()
     {
         parent::boot();
+
+        $this->publishes([
+            $this->getConfigFile() => config_path("{$this->package}.php"),
+        ], 'config');
     }
 
     /**
@@ -60,6 +64,7 @@ class LocalizationServiceProvider extends PackageServiceProvider
     public function register()
     {
         $this->registerConfig();
+        $this->registerLocalization();
     }
 
     /**
@@ -78,4 +83,18 @@ class LocalizationServiceProvider extends PackageServiceProvider
      |  Services Functions
      | ------------------------------------------------------------------------------------------------
      */
+    /**
+     * Register Localization.
+     */
+    private function registerLocalization()
+    {
+        $this->app->singleton('arcanedev.localization', function() {
+            return new Localization();
+        });
+
+        $this->addFacade(
+            $this->app['config']->get('localization.facade', 'Localization'),
+            Facades\Localization::class
+        );
+    }
 }
