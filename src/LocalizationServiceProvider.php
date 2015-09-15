@@ -98,14 +98,12 @@ class LocalizationServiceProvider extends PackageServiceProvider
     }
 
     /**
-     * Register the router
+     * Register the router macros
      */
     private function registerRouter()
     {
-        $this->app->singleton('arcanedev.localization.router', function ($app) {
-            return new Routing\TransRouter($app['events'], $app);
-        });
-
-        $this->addFacade('TransRoute', Facades\TransRoute::class);
+        /** @var \Illuminate\Routing\Router $router */
+        $router = $this->app['router'];
+        Routing\TransRouter::translate($router);
     }
 }

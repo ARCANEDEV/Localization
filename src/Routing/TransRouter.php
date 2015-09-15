@@ -1,5 +1,9 @@
 <?php namespace Arcanedev\Localization\Routing;
 
+use Arcanedev\Localization\Middleware\LocaleSessionRedirect;
+use Arcanedev\Localization\Middleware\LocalizationRedirectFilter;
+use Arcanedev\Localization\Middleware\LocalizationRoutes;
+use Closure;
 use Illuminate\Routing\Router;
 
 /**
@@ -8,100 +12,46 @@ use Illuminate\Routing\Router;
  * @package  Arcanedev\Localization\Routing
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
-class TransRouter extends Router
+class TransRouter
 {
+    /* ------------------------------------------------------------------------------------------------
+     |  Constructor
+     | ------------------------------------------------------------------------------------------------
+     */
+    public function __construct(Router $router)
+    {
+        $this->registerMiddleware($router);
+        $this->registerLocalizedGroup($router);
+    }
+
+    public static function translate(Router $router)
+    {
+        return new self($router);
+    }
+
     /* ------------------------------------------------------------------------------------------------
      |  Main Functions
      | ------------------------------------------------------------------------------------------------
      */
-    /**
-     * Create a localized route group with shared attributes.
-     *
-     * @param  \Closure  $callback
-     */
-    public function trans(\Closure $callback)
+    private function registerMiddleware(Router $router)
     {
-        $attributes = [
-            'prefix'     => localization()->setLocale(),
-            'middleware' => [
-                'localeSessionRedirect',
-                'localizationRedirect'
-            ],
-        ];
-
-        $this->group($attributes, $callback);
+        $router->middleware('localize',              LocalizationRoutes::class);
+        $router->middleware('localizationRedirect',  LocalizationRedirectFilter::class);
+        $router->middleware('localeSessionRedirect', LocaleSessionRedirect::class);
     }
 
-    /**
-     * Register a new GET route with the router.
-     *
-     * @param  string  $uri
-     * @param  \Closure|array|string  $action
-     * @return \Illuminate\Routing\Route
-     */
-//    public function get($uri, $action);
+    private function registerLocalizedGroup(Router $router)
+    {
+        $router->macro('localizedGroup', function (Closure $callback) use ($router) {
+            $attributes = [
+                'prefix'     => localization()->setLocale(),
+                'middleware' => [
+                    'localeSessionRedirect',
+                    'localizationRedirect'
+                ],
+            ];
 
-    /**
-     * Register a new POST route with the router.
-     *
-     * @param  string  $uri
-     * @param  \Closure|array|string  $action
-     * @return \Illuminate\Routing\Route
-     */
-//    public function post($uri, $action);
-
-    /**
-     * Register a new PUT route with the router.
-     *
-     * @param  string  $uri
-     * @param  \Closure|array|string  $action
-     * @return \Illuminate\Routing\Route
-     */
-//    public function put($uri, $action);
-
-    /**
-     * Register a new PATCH route with the router.
-     *
-     * @param  string  $uri
-     * @param  \Closure|array|string  $action
-     * @return \Illuminate\Routing\Route
-     */
-//    public function patch($uri, $action);
-
-    /**
-     * Register a new DELETE route with the router.
-     *
-     * @param  string  $uri
-     * @param  \Closure|array|string  $action
-     * @return \Illuminate\Routing\Route
-     */
-//    public function delete($uri, $action);
-
-    /**
-     * Register a new OPTIONS route with the router.
-     *
-     * @param  string  $uri
-     * @param  \Closure|array|string  $action
-     * @return \Illuminate\Routing\Route
-     */
-//    public function options($uri, $action);
-
-    /**
-     * Register a new route responding to all verbs.
-     *
-     * @param  string  $uri
-     * @param  \Closure|array|string  $action
-     * @return \Illuminate\Routing\Route
-     */
-//    public function any($uri, $action);
-
-    /**
-     * Register a new route with the given verbs.
-     *
-     * @param  array|string  $methods
-     * @param  string  $uri
-     * @param  \Closure|array|string  $action
-     * @return \Illuminate\Routing\Route
-     */
-//    public function match($methods, $uri, $action);
+            $router->group($attributes, $callback);
+        });
+    }
 }
