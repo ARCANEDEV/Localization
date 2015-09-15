@@ -52,6 +52,7 @@ class LocaleTest extends TestCase
         $this->assertEquals('Latin',   $this->locale->script());
         $this->assertEquals('ltr',     $this->locale->direction());
         $this->assertEquals('English', $this->locale->native());
+        $this->assertTrue($this->locale->isDefault());
     }
 
     /** @test */

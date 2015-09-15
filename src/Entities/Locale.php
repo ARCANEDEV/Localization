@@ -47,6 +47,13 @@ class Locale
      */
     private $native;
 
+    /**
+     * Default locale.
+     *
+     * @var bool
+     */
+    private $default = false;
+
     /* ------------------------------------------------------------------------------------------------
      |  Constructor
      | ------------------------------------------------------------------------------------------------
@@ -59,7 +66,7 @@ class Locale
      */
     public function __construct($key, array $data)
     {
-        $this->key = $key;
+        $this->setKey($key);
         $this->setName($data['name']);
         $this->setScript($data['script']);
         $this->setDirection($data['dir']);
@@ -78,6 +85,21 @@ class Locale
     public function key()
     {
         return $this->key;
+    }
+
+    /**
+     * Set locale key.
+     *
+     * @param  string  $key
+     *
+     * @return self
+     */
+    private function setKey($key)
+    {
+        $this->key = $key;
+        $this->setDefault();
+
+        return $this;
     }
 
     /**
@@ -180,6 +202,28 @@ class Locale
     private function setNative($native)
     {
         $this->native = $native;
+
+        return $this;
+    }
+
+    /**
+     * Check if it is a default locale.
+     *
+     * @return bool
+     */
+    public function isDefault()
+    {
+        return $this->default;
+    }
+
+    /**
+     * Set locale default.
+     *
+     * @return self
+     */
+    private function setDefault()
+    {
+        $this->default = $this->key === config('app.locale');
 
         return $this;
     }
