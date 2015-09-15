@@ -15,5 +15,7 @@ class Localization extends Facade
      *
      * @return string
      */
-    protected static function getFacadeAccessor() { return 'arcanedev.localization'; }
+    protected static function getFacadeAccessor() {
+        return 'arcanedev.localization';
+    }
 }
