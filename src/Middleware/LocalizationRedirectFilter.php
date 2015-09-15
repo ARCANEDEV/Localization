@@ -32,9 +32,9 @@ class LocalizationRedirectFilter extends Middleware
         $params = explode('/', $request->path());
 
         if (count($params) > 0) {
-            $localeCode  = $params[0];
+            $currentLocale  = $params[0];
 
-            if ($redirection = $this->getRedirection($localeCode)) {
+            if ($redirection = $this->getRedirection($currentLocale)) {
                 // Save any flashed data for redirect
                 app('session')->reflash();
 
@@ -54,30 +54,27 @@ class LocalizationRedirectFilter extends Middleware
     /**
      * Get redirection.
      *
-     * @param  string  $localeCode
+     * @param  string  $locale
      *
      * @return string|false
      */
-    protected function getRedirection($localeCode)
+    protected function getRedirection($locale)
     {
-        $currentLocale     = localization()->getCurrentLocale();
-        $defaultLocale     = localization()->getDefaultLocale();
-        $supportedLocales  = localization()->getSupportedLocales();
-        $hideDefaultLocale = localization()->hideDefaultLocaleInURL();
-        $redirection       = false;
-
-        if ($supportedLocales->has($localeCode)) {
-            if ($localeCode === $defaultLocale && $hideDefaultLocale) {
-                $redirection = localization()->getNonLocalizedURL();
-            }
-        }
-        elseif ($currentLocale !== $defaultLocale || ! $hideDefaultLocale) {
-            // If the current url does not contain any locale
-            // The system redirect the user to the very same url "localized"
-            // we use the current locale to redirect him
-            $redirection = localization()->getLocalizedURL();
+        if ($this->getSupportedLocales()->has($locale)) {
+            return $this->isDefaultLocaleHidden($locale)
+                ? localization()->getNonLocalizedURL()
+                : false;
         }
 
-        return $redirection;
+        // If the current url does not contain any locale
+        // The system redirect the user to the very same url "localized" we use the current locale to redirect him
+        if (
+            $this->getCurrentLocale() !== $this->getDefaultLocale() ||
+            ! $this->hideDefaultLocaleInURL()
+        ) {
+            return localization()->getLocalizedURL();
+        }
+
+        return false;
     }
 }
