@@ -32,13 +32,13 @@ class LocalizationRedirectFilter extends Middleware
         $params = explode('/', $request->path());
 
         if (count($params) > 0) {
-            $currentLocale  = $params[0];
+            $locale  = $params[0];
 
-            if ($redirection = $this->getRedirection($currentLocale)) {
+            if ($redirectionUrl = $this->getRedirectionUrl($locale)) {
                 // Save any flashed data for redirect
                 app('session')->reflash();
 
-                return new RedirectResponse($redirection, 301, [
+                return new RedirectResponse($redirectionUrl, 301, [
                     'Vary' => 'Accept-Language'
                 ]);
             }
@@ -58,7 +58,7 @@ class LocalizationRedirectFilter extends Middleware
      *
      * @return string|false
      */
-    protected function getRedirection($locale)
+    protected function getRedirectionUrl($locale)
     {
         if ($this->getSupportedLocales()->has($locale)) {
             return $this->isDefaultLocaleHidden($locale)

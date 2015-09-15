@@ -105,7 +105,7 @@ abstract class Middleware extends BaseMiddleware
      *
      * @param  false|string  $locale
      *
-     * @return RedirectResponse
+     * @return RedirectResponse|null
      */
     protected function getRedirection($locale)
     {
