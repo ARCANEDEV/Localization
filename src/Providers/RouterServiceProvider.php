@@ -9,12 +9,12 @@ use Closure;
 use Illuminate\Routing\Router;
 
 /**
- * Class     MacrosServiceProvider
+ * Class     RouterServiceProvider
  *
  * @package  Arcanedev\Localization\Providers
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
-class MacrosServiceProvider extends ServiceProvider
+class RouterServiceProvider extends ServiceProvider
 {
     /* ------------------------------------------------------------------------------------------------
      |  Properties
