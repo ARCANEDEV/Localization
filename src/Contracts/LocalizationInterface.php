@@ -178,7 +178,7 @@ interface LocalizationInterface
      *
      * @return string|false
      */
-    public function getURLFromRouteNameTranslated($locale, $transKey, $attributes = []);
+    public function getUrlFromRouteName($locale, $transKey, $attributes = []);
 
     /**
      * Returns the translation key for a given path.
@@ -187,7 +187,7 @@ interface LocalizationInterface
      *
      * @return string|false
      */
-    public function getRouteNameFromAPath($path);
+    public function getRouteNameFromPath($path);
 
     /* ------------------------------------------------------------------------------------------------
      |  Check Functions

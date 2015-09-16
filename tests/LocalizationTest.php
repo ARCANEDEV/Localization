@@ -30,7 +30,11 @@ class LocalizationTest extends TestCase
     public function it_must_throw_unsupported_locale_exception_on_default_locale()
     {
         app('config')->set('app.locale', 'jp');
-        new Localization($this->app);
+
+        new Localization(
+            $this->app,
+            $this->app['arcanedev.localization.translator']
+        );
     }
 
     /**
@@ -41,7 +45,10 @@ class LocalizationTest extends TestCase
     public function it_must_throw_undefined_supported_locales_exception()
     {
         app('config')->set('localization.supported-locales', []);
-        new Localization($this->app);
+        new Localization(
+            $this->app,
+            $this->app['arcanedev.localization.translator']
+        );
     }
 
     /** @test */
@@ -280,50 +287,61 @@ class LocalizationTest extends TestCase
     {
         $this->assertEquals(
             $this->testUrlOne . 'es/acerca',
-            localization()->getURLFromRouteNameTranslated('es', 'localization::routes.about')
+            localization()->getUrlFromRouteName('es', 'localization::routes.about')
         );
         $this->assertEquals(
             $this->testUrlOne . 'en/about',
-            localization()->getURLFromRouteNameTranslated('en', 'localization::routes.about')
+            localization()->getUrlFromRouteName('en', 'localization::routes.about')
         );
         $this->assertEquals(
             $this->testUrlOne . 'en/view/1',
-            localization()->getURLFromRouteNameTranslated('en', 'localization::routes.view', [ 'id' => 1 ])
+            localization()->getUrlFromRouteName('en', 'localization::routes.view', [ 'id' => 1 ])
         );
 
         app('config')->set('localization.hide-default-in-url', true);
 
         $this->assertEquals(
             $this->testUrlOne . 'about',
-            localization()->getURLFromRouteNameTranslated('en', 'localization::routes.about')
+            localization()->getUrlFromRouteName('en', 'localization::routes.about')
         );
         $this->assertEquals(
             $this->testUrlOne . 'es/acerca',
-            localization()->getURLFromRouteNameTranslated('es', 'localization::routes.about')
+            localization()->getUrlFromRouteName('es', 'localization::routes.about')
         );
         $this->assertEquals(
             $this->testUrlOne . 'es/ver/1',
-            localization()->getURLFromRouteNameTranslated('es', 'localization::routes.view', ['id' => 1])
+            localization()->getUrlFromRouteName('es', 'localization::routes.view', ['id' => 1])
         );
         $this->assertEquals(
             $this->testUrlOne . 'view/1',
-            localization()->getURLFromRouteNameTranslated('en', 'localization::routes.view', ['id' => 1])
+            localization()->getUrlFromRouteName('en', 'localization::routes.view', ['id' => 1])
         );
         $this->assertNotEquals(
             $this->testUrlOne . 'en/view/1',
-            localization()->getURLFromRouteNameTranslated('en', 'localization::routes.view', ['id' => 1])
+            localization()->getUrlFromRouteName('en', 'localization::routes.view', ['id' => 1])
         );
 
         app('config')->set('localization.hide-default-in-url', false);
 
         $this->assertNotEquals(
             $this->testUrlOne . 'view/1',
-            localization()->getURLFromRouteNameTranslated('en', 'localization::routes.view', ['id' => 1])
+            localization()->getUrlFromRouteName('en', 'localization::routes.view', ['id' => 1])
         );
         $this->assertEquals(
             $this->testUrlOne . 'en/view/1',
-            localization()->getURLFromRouteNameTranslated('en', 'localization::routes.view', ['id' => 1])
+            localization()->getUrlFromRouteName('en', 'localization::routes.view', ['id' => 1])
         );
+    }
+
+    /**
+     * @test
+     *
+     * @expectedException         \Arcanedev\Localization\Exceptions\UnsupportedLocaleException
+     * @expectedExceptionMessage  Locale 'jp' is not in the list of supported locales.
+     */
+    public function it_must_throw_an_exception()
+    {
+        localization()->getUrlFromRouteName('jp', 'localization::routes.about');
     }
 
     /** @test */

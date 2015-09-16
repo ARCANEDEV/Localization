@@ -64,6 +64,8 @@ class LocalizationServiceProvider extends PackageServiceProvider
     public function register()
     {
         $this->registerConfig();
+
+        $this->app->register(Providers\UtilitiesServiceProvider::class);
         $this->registerLocalization();
         $this->app->register(Providers\RouterServiceProvider::class);
     }
@@ -88,7 +90,9 @@ class LocalizationServiceProvider extends PackageServiceProvider
     private function registerLocalization()
     {
         $this->app->singleton('arcanedev.localization', function($app) {
-            return new Localization($app);
+            $routeTranslator = $app['arcanedev.localization.translator'];
+
+            return new Localization($app, $routeTranslator);
         });
 
         $this->addFacade(
