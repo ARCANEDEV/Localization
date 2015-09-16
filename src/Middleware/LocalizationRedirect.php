@@ -6,14 +6,14 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 /**
- * Class     LocalizationRedirectFilter
+ * Class     LocalizationRedirect
  *
  * @package  Arcanedev\Localization\Middleware
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  *
  * @todo:    Refactoring
  */
-class LocalizationRedirectFilter extends Middleware
+class LocalizationRedirect extends Middleware
 {
     /* ------------------------------------------------------------------------------------------------
      |  Main Functions
