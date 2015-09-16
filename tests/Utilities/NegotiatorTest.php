@@ -3,12 +3,12 @@
 use Arcanedev\Localization\Tests\TestCase;
 
 /**
- * Class     LocaleNegotiatorTest
+ * Class     NegotiatorTest
  *
  * @package  Arcanedev\Localization\Tests\Utilities
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
-class LocaleNegotiatorTest extends TestCase
+class NegotiatorTest extends TestCase
 {
     /* ------------------------------------------------------------------------------------------------
      |  Main Functions

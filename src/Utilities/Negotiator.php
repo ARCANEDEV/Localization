@@ -1,16 +1,28 @@
 <?php namespace Arcanedev\Localization\Utilities;
 
+use Arcanedev\Localization\Contracts\NegotiatorInterface;
 use Arcanedev\Localization\Entities\LocaleCollection;
 use Illuminate\Http\Request;
 use Locale;
 
 /**
- * Class     LocaleNegotiator
+ * Class     Negotiator
  *
  * @package  Arcanedev\Localization\Utilities
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
+ *
+ * Negotiates language with the user's browser through the Accept-Language HTTP header or the user's host address.
+ * Language codes are generally in the form "ll" for a language spoken in only one country, or "ll-CC" for a
+ * language spoken in a particular country.  For example, U.S. English is "en-US", while British English is "en-UK".
+ * Portuguese as spoken in Portugal is "pt-PT", while Brazilian Portuguese is "pt-BR".
+ *
+ * This function is based on negotiateLanguage from Pear HTTP2
+ * http://pear.php.net/package/HTTP2/
+ *
+ * Quality factors in the Accept-Language: header are supported, e.g.:
+ * Accept-Language: en-UK;q=0.7, en-US;q=0.6, no, dk;q=0.8
  */
-class LocaleNegotiator
+class Negotiator implements NegotiatorInterface
 {
     /* ------------------------------------------------------------------------------------------------
      |  Properties
@@ -28,7 +40,9 @@ class LocaleNegotiator
      */
     private $supportedLocales;
 
-    /** @var Request */
+    /**
+     * @var Request
+     */
     private $request;
 
     /* ------------------------------------------------------------------------------------------------
@@ -36,17 +50,15 @@ class LocaleNegotiator
      | ------------------------------------------------------------------------------------------------
      */
     /**
-     * Make LocaleNegotiator instance.
+     * Make Negotiator instance.
      *
      * @param  string            $defaultLocale
      * @param  LocaleCollection  $supportedLanguages
-     * @param  Request           $request
      */
-    public function __construct($defaultLocale, $supportedLanguages, Request $request)
+    public function __construct($defaultLocale, $supportedLanguages)
     {
         $this->defaultLocale      = $defaultLocale;
         $this->supportedLocales   = $supportedLanguages;
-        $this->request            = $request;
     }
 
     /* ------------------------------------------------------------------------------------------------
@@ -54,24 +66,16 @@ class LocaleNegotiator
      | ------------------------------------------------------------------------------------------------
      */
     /**
-     * Negotiates language with the user's browser through the Accept-Language
-     * HTTP header or the user's host address.  Language codes are generally in
-     * the form "ll" for a language spoken in only one country, or "ll-CC" for a
-     * language spoken in a particular country.  For example, U.S. English is
-     * "en-US", while British English is "en-UK".  Portuguese as spoken in
-     * Portugal is "pt-PT", while Brazilian Portuguese is "pt-BR".
+     * Negotiate the request.
      *
-     * This function is based on negotiateLanguage from Pear HTTP2
-     * http://pear.php.net/package/HTTP2/
+     * @param  Request  $request
      *
-     * Quality factors in the Accept-Language: header are supported, e.g.:
-     *      Accept-Language: en-UK;q=0.7, en-US;q=0.6, no, dk;q=0.8
-     *
-     * @return string  The negotiated language result or app.locale.
+     * @return string
      */
-    public function negotiate()
+    public function negotiate(Request $request)
     {
-        $matches = $this->getMatchesFromAcceptedLanguages();
+        $this->request  = $request;
+        $matches        = $this->getMatchesFromAcceptedLanguages();
 
         foreach ($matches as $key => $q) {
             if ($this->supportedLocales->has($key)) {
@@ -87,8 +91,8 @@ class LocaleNegotiator
             return $locale->key();
         }
 
-        if (class_exists('Locale') && ! empty($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
-            $httpAcceptLanguage = Locale::acceptFromHttp($_SERVER['HTTP_ACCEPT_LANGUAGE']);
+        if (class_exists('Locale') && ! empty($this->request->server('HTTP_ACCEPT_LANGUAGE'))) {
+            $httpAcceptLanguage = Locale::acceptFromHttp($this->request->server('HTTP_ACCEPT_LANGUAGE'));
 
             if ($this->supportedLocales->has($httpAcceptLanguage)) {
                 return $httpAcceptLanguage;
