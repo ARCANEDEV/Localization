@@ -23,3 +23,38 @@ Easy i18n localization for Laravel, an useful tool to combine with Laravel local
 The Localization package was inspired from [mcamara/laravel-localization](https://github.com/mcamara/laravel-localization).
 
  > :warning: Beware, this package is still under some heavy development and interface is subject to change.
+
+Official documentation for Localization package can be found at the [Localization Wiki](https://github.com/ARCANEDEV/Localization/wiki).
+
+Feel free to check out the [releases](https://github.com/ARCANEDEV/Localization/releases), [license](https://github.com/ARCANEDEV/Localization/blob/master/LICENSE.md), and [contribution guidelines](https://github.com/ARCANEDEV/Localization/blob/master/CONTRIBUTING.md).
+
+## Features
+
+  - Coming soon...
+  
+  
+## Table of contents
+
+1. [Requirements](https://github.com/ARCANEDEV/Localization/wiki/1.-Requirements)
+2. [Installation and Setup](https://github.com/ARCANEDEV/Localization/wiki/2.-Installation-and-Setup)
+3. [Configuration](https://github.com/ARCANEDEV/Localization/wiki/3.-Configuration)
+4. [Usage](https://github.com/ARCANEDEV/Localization/wiki/4.-Usage)
+5. [Extras](https://github.com/ARCANEDEV/Localization/wiki/5.-Extras)
+6. [FAQ](https://github.com/ARCANEDEV/Localization/wiki/6.-FAQ)
+
+### ONGOING
+
+  - [ ] 100% Code coverage + Maximum code quality.
+  - [ ] Laravel 5.0 supported.
+
+### TODOS
+
+  - [ ] Refactoring.
+
+### DONE
+
+  - [x] Laravel 5.1 supported.
+  
+## Contribution
+
+Any ideas are welcome. Feel free to submit any issues or pull requests, please check the [contribution guidelines](https://github.com/ARCANEDEV/Localization/blob/master/CONTRIBUTING.md).
