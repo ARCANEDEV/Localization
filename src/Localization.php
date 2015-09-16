@@ -119,16 +119,6 @@ class Localization implements LocalizationInterface
     }
 
     /**
-     * Get the translator instance.
-     *
-     * @return \Illuminate\Translation\Translator
-     */
-    private function translator()
-    {
-        return $this->app['translator'];
-    }
-
-    /**
      * Returns default locale.
      *
      * @return string
@@ -392,7 +382,7 @@ class Localization implements LocalizationInterface
 
         if (empty($url)) {
             if ($this->routeTranslator->hasCurrentRoute()) {
-                return $this->getURLFromRouteNameTranslated(
+                return $this->getUrlFromRouteName(
                     $locale,
                     $this->routeTranslator->getCurrentRoute(),
                     $attributes
@@ -406,7 +396,7 @@ class Localization implements LocalizationInterface
             $locale &&
             $translatedRoute = $this->findTranslatedRouteByUrl($url, $attributes, $this->currentLocale)
         ) {
-            return $this->getURLFromRouteNameTranslated($locale, $translatedRoute, $attributes);
+            return $this->getUrlFromRouteName($locale, $translatedRoute, $attributes);
         }
 
         $baseUrl       = $this->request()->getBaseUrl();
@@ -441,7 +431,7 @@ class Localization implements LocalizationInterface
         $translatedRoute = $this->routeTranslator->findTranslatedRouteByPath($parsedUrl['path'], $defaultLocale);
 
         if ($translatedRoute) {
-            return $this->getURLFromRouteNameTranslated($locale, $translatedRoute, $attributes);
+            return $this->getUrlFromRouteName($locale, $translatedRoute, $attributes);
         }
 
         if (
@@ -504,7 +494,7 @@ class Localization implements LocalizationInterface
 
         // check if this url is a translated url
         foreach ($this->routeTranslator->getTranslatedRoutes() as $translatedRoute) {
-            $routeName = $this->getURLFromRouteNameTranslated($locale, $translatedRoute, $attributes);
+            $routeName = $this->getUrlFromRouteName($locale, $translatedRoute, $attributes);
 
             if ($this->getNonLocalizedURL($routeName) == $this->getNonLocalizedURL($url))  {
                 return $translatedRoute;
@@ -521,12 +511,12 @@ class Localization implements LocalizationInterface
      * @param  string       $transKey
      * @param  array        $attributes
      *
+     * @return string|false
+     *
      * @throws UndefinedSupportedLocalesException
      * @throws UnsupportedLocaleException
-     *
-     * @return string|false
      */
-    public function getURLFromRouteNameTranslated($locale, $transKey, $attributes = [])
+    public function getUrlFromRouteName($locale, $transKey, $attributes = [])
     {
         if ( ! $this->isLocaleSupported($locale)) {
             throw new UnsupportedLocaleException(
@@ -540,15 +530,17 @@ class Localization implements LocalizationInterface
 
         $route = '';
 
-        if ( ! ($locale === $this->defaultLocale && $this->hideDefaultLocaleInURL())) {
+        if (
+        ! ($locale === $this->defaultLocale && $this->hideDefaultLocaleInURL())
+        ) {
             $route = '/' . $locale;
         }
 
         if (
             is_string($locale) &&
-            $this->translator()->has($transKey, $locale)
+            $this->routeTranslator->hasTranslation($transKey, $locale)
         ) {
-            $translation = $this->translator()->trans($transKey, [ ], '', $locale);
+            $translation = $this->routeTranslator->trans($transKey, $locale);
             $route       = Url::substituteAttributes($attributes, $route . '/' . $translation);
         }
 

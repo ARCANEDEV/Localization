@@ -98,17 +98,20 @@ class RouteTranslator implements RouteTranslatorInterface
     /**
      * Translate routes and save them to the translated routes array (used in the localize route filter).
      *
-     * @param  string  $route
+     * @param  string       $route
+     * @param  string|null  $locale
      *
      * @return string
+     *
+     * @throws InvalidTranslationException
      */
-    public function trans($route)
+    public function trans($route, $locale = null)
     {
         if ( ! in_array($route, $this->translatedRoutes)) {
             $this->translatedRoutes[] = $route;
         }
 
-        return $this->translate($route);
+        return $this->translate($route, $locale);
     }
 
     /**
@@ -197,5 +200,18 @@ class RouteTranslator implements RouteTranslatorInterface
     public function hasCurrentRoute()
     {
         return ! empty($this->currentRoute);
+    }
+
+    /**
+     * Determine if a translation exists.
+     *
+     * @param  string  $key
+     * @param  string  $locale
+     *
+     * @return bool
+     */
+    public function hasTranslation($key, $locale = null)
+    {
+        return $this->translator->has($key, $locale);
     }
 }
