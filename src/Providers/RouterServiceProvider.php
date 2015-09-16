@@ -20,6 +20,11 @@ class RouterServiceProvider extends ServiceProvider
      |  Properties
      | ------------------------------------------------------------------------------------------------
      */
+    /**
+     * The application's route middleware.
+     *
+     * @var array
+     */
     protected $middleware = [];
 
     /* ------------------------------------------------------------------------------------------------
@@ -89,14 +94,12 @@ class RouterServiceProvider extends ServiceProvider
      */
     private function registerLocalizedGroupMacro(Router $router)
     {
-        $middleware = $this->middleware;
+        $attributes = [
+            'prefix'     => localization()->setLocale(),
+            'middleware' => $this->middleware,
+        ];
 
-        $router->macro('localizedGroup', function (Closure $callback) use ($router, $middleware) {
-            $attributes = [
-                'prefix'     => localization()->setLocale(),
-                'middleware' => $middleware,
-            ];
-
+        $router->macro('localizedGroup', function (Closure $callback) use ($router, $attributes) {
             $router->group($attributes, $callback);
         });
     }
