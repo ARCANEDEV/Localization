@@ -53,6 +53,4 @@ class LocaleCookieRedirect extends Middleware
 
         return $next($request);
     }
-
-
 }

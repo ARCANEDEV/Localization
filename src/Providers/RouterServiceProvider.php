@@ -5,7 +5,6 @@ use Arcanedev\Localization\Middleware\LocaleSessionRedirect;
 use Arcanedev\Localization\Middleware\LocalizationRedirect;
 use Arcanedev\Localization\Middleware\LocalizationRoutes;
 use Arcanedev\Support\ServiceProvider;
-use Closure;
 use Illuminate\Routing\Router;
 
 /**
@@ -96,7 +95,7 @@ class RouterServiceProvider extends ServiceProvider
     {
         $middleware = $this->middleware;
 
-        $router->macro('localizedGroup', function (Closure $callback) use ($router, $middleware) {
+        $router->macro('localizedGroup', function (callable $callback) use ($router, $middleware) {
             $attributes = [
                 'prefix'     => localization()->setLocale(),
                 'middleware' => $middleware,
