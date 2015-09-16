@@ -1,6 +1,7 @@
 <?php namespace Arcanedev\Localization\Utilities;
 
 use Arcanedev\Localization\Contracts\RouteTranslatorInterface;
+use Arcanedev\Localization\Exceptions\InvalidTranslationException;
 use Illuminate\Translation\Translator;
 
 /**
@@ -107,7 +108,7 @@ class RouteTranslator implements RouteTranslatorInterface
             $this->translatedRoutes[] = $route;
         }
 
-        return $this->translator->trans($route);
+        return $this->translate($route);
     }
 
     /**
@@ -125,7 +126,7 @@ class RouteTranslator implements RouteTranslatorInterface
         $uri        = trim($uri, '/');
 
         foreach ($this->translatedRoutes as $route) {
-            $url = Url::substituteAttributes($attributes, $this->translator->trans($route));
+            $url = Url::substituteAttributes($attributes, $this->translate($route));
 
             if ($url === $uri) return $route;
         }
@@ -137,20 +138,53 @@ class RouteTranslator implements RouteTranslatorInterface
      * Returns the translated route for the path and the url given.
      *
      * @param  string  $path       -  Path to check if it is a translated route
-     * @param  string  $urlLocale  -  Language to check if the path exists
+     * @param  string  $locale  -  Language to check if the path exists
      *
      * @return string|false
      */
-    public function findTranslatedRouteByPath($path, $urlLocale)
+    public function findTranslatedRouteByPath($path, $locale)
     {
         // check if this url is a translated url
-        foreach ($this->translatedRoutes as $translatedRoute) {
-            if ($this->translator->trans($translatedRoute, [], '', $urlLocale) == rawurldecode($path)) {
-                return $translatedRoute;
+        foreach ($this->translatedRoutes as $route) {
+            if ($this->translate($route, $locale) == rawurldecode($path)) {
+                return $route;
             }
         }
 
         return false;
+    }
+
+    /* ------------------------------------------------------------------------------------------------
+     |  Other Functions
+     | ------------------------------------------------------------------------------------------------
+     */
+    /**
+     * Get the translation for a given key.
+     *
+     * @param  string  $key
+     * @param  string  $locale
+     *
+     * @return string
+     *
+     * @throws InvalidTranslationException
+     */
+    public function translate($key, $locale = null)
+    {
+        if (is_null($locale)) {
+            $locale = $this->translator->getLocale();
+        }
+
+        $translated = $this->translator->trans($key, [], '', $locale);
+
+        // @codeCoverageIgnoreStart
+        if ( ! is_string($translated)) {
+            throw new InvalidTranslationException(
+                "The translation key [$key] for locale [$locale] has returned an array instead of string."
+            );
+        }
+        // @codeCoverageIgnoreEnd
+
+        return $translated;
     }
 
     /* ------------------------------------------------------------------------------------------------

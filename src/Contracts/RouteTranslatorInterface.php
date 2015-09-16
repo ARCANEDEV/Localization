@@ -62,11 +62,11 @@ interface RouteTranslatorInterface
      * Returns the translated route for the path and the url given.
      *
      * @param  string  $path       -  Path to check if it is a translated route
-     * @param  string  $urlLocale  -  Language to check if the path exists
+     * @param  string  $locale  -  Language to check if the path exists
      *
      * @return string|false
      */
-    public function findTranslatedRouteByPath($path, $urlLocale);
+    public function findTranslatedRouteByPath($path, $locale);
 
     /* ------------------------------------------------------------------------------------------------
      |  Check Functions
