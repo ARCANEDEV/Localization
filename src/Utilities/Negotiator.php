@@ -40,11 +40,6 @@ class Negotiator implements NegotiatorInterface
      */
     private $supportedLocales;
 
-    /**
-     * @var Request
-     */
-    private $request;
-
     /* ------------------------------------------------------------------------------------------------
      |  Main Functions
      | ------------------------------------------------------------------------------------------------
@@ -74,13 +69,10 @@ class Negotiator implements NegotiatorInterface
      */
     public function negotiate(Request $request)
     {
-        $this->request  = $request;
-        $matches        = $this->getMatchesFromAcceptedLanguages();
+        $matches = $this->getMatchesFromAcceptedLanguages($request);
 
         foreach ($matches as $key => $q) {
-            if ($this->supportedLocales->has($key)) {
-                return $key;
-            }
+            if ($this->isSupported($key)) return $key;
         }
 
         // If any (i.e. "*") is acceptable, return the first supported format
@@ -91,24 +83,36 @@ class Negotiator implements NegotiatorInterface
             return $locale->key();
         }
 
-        if (class_exists('Locale') && ! empty($this->request->server('HTTP_ACCEPT_LANGUAGE'))) {
-            $httpAcceptLanguage = Locale::acceptFromHttp($this->request->server('HTTP_ACCEPT_LANGUAGE'));
+        if (class_exists('Locale') && ! empty($request->server('HTTP_ACCEPT_LANGUAGE'))) {
+            $httpAcceptLanguage = Locale::acceptFromHttp($request->server('HTTP_ACCEPT_LANGUAGE'));
 
-            if ($this->supportedLocales->has($httpAcceptLanguage)) {
-                return $httpAcceptLanguage;
-            }
+            if ($this->isSupported($httpAcceptLanguage)) return $httpAcceptLanguage;
         }
 
-        if ($this->request->server('REMOTE_HOST')) {
-            $remote_host = explode('.', $this->request->server('REMOTE_HOST'));
-            $lang        = strtolower(end($remote_host));
+        if ($request->server('REMOTE_HOST')) {
+            $remote_host = explode('.', $request->server('REMOTE_HOST'));
+            $locale      = strtolower(end($remote_host));
 
-            if ($this->supportedLocales->has($lang)) {
-                return $lang;
-            }
+            if ($this->isSupported($locale)) return $locale;
         }
 
         return $this->defaultLocale;
+    }
+
+    /* ------------------------------------------------------------------------------------------------
+     |  Check Functions
+     | ------------------------------------------------------------------------------------------------
+     */
+    /**
+     * Check if the locale is supported.
+     *
+     * @param  string  $locale
+     *
+     * @return bool
+     */
+    private function isSupported($locale)
+    {
+        return $this->supportedLocales->has($locale);
     }
 
     /* ------------------------------------------------------------------------------------------------
@@ -117,13 +121,16 @@ class Negotiator implements NegotiatorInterface
      */
     /**
      * Return all the accepted languages from the browser
-     * @return array Matches from the header field Accept-Languages
+     *
+     * @param  Request  $request
+     *
+     * @return array  -  Matches from the header field Accept-Languages
      */
-    private function getMatchesFromAcceptedLanguages()
+    private function getMatchesFromAcceptedLanguages(Request $request)
     {
         $matches = [];
 
-        if ($acceptLanguages = $this->request->header('Accept-Language')) {
+        if ($acceptLanguages = $request->header('Accept-Language')) {
             $acceptLanguages = explode(',', $acceptLanguages);
             $generic_matches = [];
 

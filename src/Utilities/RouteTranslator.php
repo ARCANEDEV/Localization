@@ -176,13 +176,11 @@ class RouteTranslator implements RouteTranslatorInterface
 
         $translated = $this->translator->trans($key, [], '', $locale);
 
-        // @codeCoverageIgnoreStart
         if ( ! is_string($translated)) {
             throw new InvalidTranslationException(
                 "The translation key [$key] for locale [$locale] has returned an array instead of string."
             );
         }
-        // @codeCoverageIgnoreEnd
 
         return $translated;
     }
