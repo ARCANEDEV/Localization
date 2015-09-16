@@ -71,8 +71,9 @@ class Negotiator implements NegotiatorInterface
     {
         $matches = $this->getMatchesFromAcceptedLanguages($request);
 
-        foreach ($matches as $key => $q) {
-            if ($this->isSupported($key)) return $key;
+        foreach (array_keys($matches) as $locale) {
+            if ($this->isSupported($locale))
+                return $locale;
         }
 
         // If any (i.e. "*") is acceptable, return the first supported format
@@ -86,14 +87,16 @@ class Negotiator implements NegotiatorInterface
         if (class_exists('Locale') && ! empty($request->server('HTTP_ACCEPT_LANGUAGE'))) {
             $httpAcceptLanguage = Locale::acceptFromHttp($request->server('HTTP_ACCEPT_LANGUAGE'));
 
-            if ($this->isSupported($httpAcceptLanguage)) return $httpAcceptLanguage;
+            if ($this->isSupported($httpAcceptLanguage))
+                return $httpAcceptLanguage;
         }
 
         if ($request->server('REMOTE_HOST')) {
             $remote_host = explode('.', $request->server('REMOTE_HOST'));
             $locale      = strtolower(end($remote_host));
 
-            if ($this->isSupported($locale)) return $locale;
+            if ($this->isSupported($locale))
+                return $locale;
         }
 
         return $this->defaultLocale;
@@ -132,53 +135,81 @@ class Negotiator implements NegotiatorInterface
 
         if ($acceptLanguages = $request->header('Accept-Language')) {
             $acceptLanguages = explode(',', $acceptLanguages);
-            $generic_matches = [];
 
-            foreach ($acceptLanguages as $option) {
-                $option = array_map('trim', explode(';', $option));
-                $l      = $option[0];
+            $genericMatches = $this->retrieveGenericMatches($acceptLanguages, $matches);
 
-                if (isset($option[1])) {
-                    $q = (float) str_replace('q=', '', $option[1]);
-                }
-                else {
-                    $q = null;
-
-                    // Assign default low weight for generic values
-                    if ($l == '*/*') {
-                        $q = 0.01;
-                    }
-                    elseif (substr($l, -1) == '*') {
-                        $q = 0.02;
-                    }
-                }
-
-                // Unweighted values, get high weight by their position in the list
-                $matches[$l] = $q = isset($q) ? $q : 1000 - count($matches);
-
-                //If for some reason the Accept-Language header only sends language with country
-                //we should make the language without country an accepted option, with a value
-                //less than it's parent.
-                $l_ops = explode('-', $l);
-                array_pop($l_ops);
-
-                while ( ! empty($l_ops)) {
-                    //The new generic option needs to be slightly less important than it's base
-                    $q -= 0.001;
-                    $op = implode('-', $l_ops);
-
-                    if (empty($generic_matches[ $op ]) || $generic_matches[$op] > $q) {
-                        $generic_matches[ $op ] = $q;
-                    }
-
-                    array_pop($l_ops);
-                }
-            }
-
-            $matches = array_merge($generic_matches, $matches);
+            $matches = array_merge($genericMatches, $matches);
             arsort($matches, SORT_NUMERIC);
         }
 
         return $matches;
+    }
+
+    /**
+     * Get the generic matches.
+     *
+     * @param  array  $acceptLanguages
+     * @param  array  $matches
+     *
+     * @return array
+     */
+    private function retrieveGenericMatches($acceptLanguages, &$matches)
+    {
+        $genericMatches = [];
+
+        foreach ($acceptLanguages as $option) {
+            $option  = array_map('trim', explode(';', $option));
+            $locale  = $option[0];
+            $quality = $this->getQualityFactor($locale, $option);
+
+            // Unweighted values, get high weight by their position in the list
+            $quality          = isset($quality) ? $quality : 1000 - count($matches);
+            $matches[$locale] = $quality;
+
+            // If for some reason the Accept-Language header only sends language with country we should make
+            // the language without country an accepted option, with a value less than it's parent.
+            $localeOptions = explode('-', $locale);
+            array_pop($localeOptions);
+
+            while ( ! empty($localeOptions)) {
+                //The new generic option needs to be slightly less important than it's base
+                $quality -= 0.001;
+                $opt      = implode('-', $localeOptions);
+
+                if (empty($genericMatches[$opt]) || $genericMatches[$opt] > $quality) {
+                    $genericMatches[$opt] = $quality;
+                }
+
+                array_pop($localeOptions);
+            }
+        }
+
+        return $genericMatches;
+    }
+
+    /**
+     * Get the quality factor.
+     *
+     * @param  string  $locale
+     * @param  array   $option
+     *
+     * @return float|null
+     */
+    private function getQualityFactor($locale, $option)
+    {
+        if (isset($option[1])) {
+            return (float) str_replace('q=', '', $option[1]);
+        }
+
+        // Assign default low weight for generic values
+        if ($locale === '*/*') {
+            return 0.01;
+        }
+
+        if (substr($locale, -1) === '*') {
+            return 0.02;
+        }
+
+        return null;
     }
 }
