@@ -94,12 +94,14 @@ class RouterServiceProvider extends ServiceProvider
      */
     private function registerLocalizedGroupMacro(Router $router)
     {
-        $attributes = [
-            'prefix'     => localization()->setLocale(),
-            'middleware' => $this->middleware,
-        ];
+        $middleware = $this->middleware;
 
-        $router->macro('localizedGroup', function (Closure $callback) use ($router, $attributes) {
+        $router->macro('localizedGroup', function (Closure $callback) use ($router, $middleware) {
+            $attributes = [
+                'prefix'     => localization()->setLocale(),
+                'middleware' => $middleware,
+            ];
+
             $router->group($attributes, $callback);
         });
     }
