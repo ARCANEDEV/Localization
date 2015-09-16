@@ -131,9 +131,9 @@ class Localization implements LocalizationInterface
     /**
      * Return an array of all supported Locales.
      *
-     * @throws UndefinedSupportedLocalesException
-     *
      * @return LocaleCollection
+     *
+     * @throws UndefinedSupportedLocalesException
      */
     public function getSupportedLocales()
     {
@@ -355,14 +355,16 @@ class Localization implements LocalizationInterface
     /**
      * Returns an URL adapted to $locale.
      *
+     * @todo: Refactor this beast
+     *
      * @param  string|bool   $locale
      * @param  string|false  $url
      * @param  array         $attributes
      *
+     * @return string|false
+     *
      * @throws UndefinedSupportedLocalesException
      * @throws UnsupportedLocaleException
-     *
-     * @return string|false
      */
     public function getLocalizedURL($locale = null, $url = null, $attributes = [])
     {
@@ -463,6 +465,7 @@ class Localization implements LocalizationInterface
     public function createUrlFromUri($uri)
     {
         $uri = ltrim($uri, '/');
+
         if (empty($this->baseUrl)) {
             return app('url')->to($uri);
         }
@@ -481,10 +484,10 @@ class Localization implements LocalizationInterface
      * @param  array   $attributes
      * @param  string  $locale
      *
+     * @return string|false
+     *
      * @throws UndefinedSupportedLocalesException
      * @throws UnsupportedLocaleException
-     *
-     * @return string|false
      */
     protected function findTranslatedRouteByUrl($url, $attributes, $locale)
     {
