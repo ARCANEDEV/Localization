@@ -45,11 +45,11 @@ Feel free to check out the [releases](https://github.com/ARCANEDEV/Localization/
 ### ONGOING
 
   - [ ] 100% Code coverage + Maximum code quality.
-  - [ ] Laravel 5.0 supported.
+  - [ ] Refactoring.
 
 ### TODOS
 
-  - [ ] Refactoring.
+  - [ ] Laravel 5.0 supported.
 
 ### DONE
 
