@@ -31,6 +31,9 @@
             "Arcanedev\\Localization\\Tests\\": "tests/"
         }
     },
+    "suggest": {
+        "ext-intl": "Use Intl extension for 'Locale' class (an identifier used to get language)."
+    },
     "extra": {
         "branch-alias": {
             "dev-master": "1.0.x-dev"
