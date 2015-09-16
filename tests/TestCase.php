@@ -90,8 +90,14 @@ abstract class TestCase extends BaseTestCase
         $translator   = $app['translator'];
         $localization = $app['arcanedev.localization'];
 
-        $config->set('app.url',                        $this->testUrlOne);
-        $config->set('app.locale',                     $this->defaultLocale);
+        $config->set('app.url',    $this->testUrlOne);
+        $config->set('app.locale', $this->defaultLocale);
+        $config->set('localization.route.middleware', [
+            'localized-routes'              => true,
+            'localization-redirect'         => true,
+            'localization-session-redirect' => false,
+            'localization-cookie-redirect'  => false,
+        ]);
 
         $translator->getLoader()->addNamespace(
             'localization',
@@ -134,13 +140,7 @@ abstract class TestCase extends BaseTestCase
             localization()->setLocale($locale);
         }
 
-        app('router')->group([
-            'prefix'     => localization()->setLocale(),
-            'middleware' => [
-                \Arcanedev\Localization\Middleware\LocalizationRoutes::class,
-                \Arcanedev\Localization\Middleware\LocalizationRedirect::class
-            ]
-        ], function () {
+        app('router')->localizedGroup(function () {
             app('router')->get('/', [
                 'as'    =>  'index',
                 function () {
