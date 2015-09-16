@@ -65,7 +65,7 @@ class LocalizationServiceProvider extends PackageServiceProvider
     {
         $this->registerConfig();
         $this->registerLocalization();
-        $this->registerRouter();
+        $this->app->register(Providers\MacrosServiceProvider::class);
     }
 
     /**
@@ -95,15 +95,5 @@ class LocalizationServiceProvider extends PackageServiceProvider
             $this->app['config']->get('localization.facade', 'Localization'),
             Facades\Localization::class
         );
-    }
-
-    /**
-     * Register the router macros
-     */
-    private function registerRouter()
-    {
-        /** @var \Illuminate\Routing\Router $router */
-        $router = $this->app['router'];
-        Routing\TransRouter::translate($router);
     }
 }
