@@ -138,7 +138,7 @@ abstract class TestCase extends BaseTestCase
             'prefix'     => localization()->setLocale(),
             'middleware' => [
                 \Arcanedev\Localization\Middleware\LocalizationRoutes::class,
-                \Arcanedev\Localization\Middleware\LocalizationRedirectFilter::class
+                \Arcanedev\Localization\Middleware\LocalizationRedirect::class
             ]
         ], function () {
             app('router')->get('/', [
