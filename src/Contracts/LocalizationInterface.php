@@ -187,7 +187,7 @@ interface LocalizationInterface
      *
      * @return string|false
      */
-    public function getRouteNameFromAPath($path);
+    public function getRouteNameFromPath($path);
 
     /* ------------------------------------------------------------------------------------------------
      |  Check Functions

@@ -30,7 +30,11 @@ class LocalizationTest extends TestCase
     public function it_must_throw_unsupported_locale_exception_on_default_locale()
     {
         app('config')->set('app.locale', 'jp');
-        new Localization($this->app);
+
+        new Localization(
+            $this->app,
+            $this->app['arcanedev.localization.translator']
+        );
     }
 
     /**
@@ -41,7 +45,10 @@ class LocalizationTest extends TestCase
     public function it_must_throw_undefined_supported_locales_exception()
     {
         app('config')->set('localization.supported-locales', []);
-        new Localization($this->app);
+        new Localization(
+            $this->app,
+            $this->app['arcanedev.localization.translator']
+        );
     }
 
     /** @test */
