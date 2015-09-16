@@ -1,7 +1,8 @@
 <?php namespace Arcanedev\Localization\Providers;
 
+use Arcanedev\Localization\Middleware\LocaleCookieRedirect;
 use Arcanedev\Localization\Middleware\LocaleSessionRedirect;
-use Arcanedev\Localization\Middleware\LocalizationRedirectFilter;
+use Arcanedev\Localization\Middleware\LocalizationRedirect;
 use Arcanedev\Localization\Middleware\LocalizationRoutes;
 use Arcanedev\Support\ServiceProvider;
 use Closure;
@@ -15,6 +16,12 @@ use Illuminate\Routing\Router;
  */
 class MacrosServiceProvider extends ServiceProvider
 {
+    /* ------------------------------------------------------------------------------------------------
+     |  Properties
+     | ------------------------------------------------------------------------------------------------
+     */
+    protected $middleware = [];
+
     /* ------------------------------------------------------------------------------------------------
      |  Main Functions
      | ------------------------------------------------------------------------------------------------
@@ -32,31 +39,62 @@ class MacrosServiceProvider extends ServiceProvider
         $this->registerMacros($router);
     }
 
+    /**
+     * Register the middlewares.
+     *
+     * @param  Router  $router
+     */
     private function registerMiddlewares(Router $router)
     {
-        $router->middleware('localize',              LocalizationRoutes::class);
-        $router->middleware('localizationRedirect',  LocalizationRedirectFilter::class);
-        $router->middleware('localeSessionRedirect', LocaleSessionRedirect::class);
+        $this->registerMiddleware($router, 'localized-routes',              LocalizationRoutes::class);
+        $this->registerMiddleware($router, 'localization-session-redirect', LocaleSessionRedirect::class);
+        $this->registerMiddleware($router, 'localization-cookie-redirect',  LocaleCookieRedirect::class);
+        $this->registerMiddleware($router, 'localization-redirect',         LocalizationRedirect::class);
     }
 
-    private function registerMacros($router)
+    /**
+     * Register a middleware.
+     *
+     * @param  Router  $router
+     * @param  string  $name
+     * @param  string  $class
+     */
+    private function registerMiddleware(Router $router, $name, $class)
     {
-        $this->registerLocalizedGroupMacro($router);
+        $router->middleware($name,  $class);
+
+        if ($this->app['config']->get('localization.route.middleware.' . $name, false)) {
+            $this->middleware[] = $name;
+        }
     }
 
     /* ------------------------------------------------------------------------------------------------
      |  Route Macros
      | ------------------------------------------------------------------------------------------------
      */
+    /**
+     * Register the router macros.
+     *
+     * @param  Router  $router
+     */
+    private function registerMacros(Router $router)
+    {
+        $this->registerLocalizedGroupMacro($router);
+    }
+
+    /**
+     * Register the 'localizedGroup' macro.
+     *
+     * @param  Router  $router
+     */
     private function registerLocalizedGroupMacro(Router $router)
     {
-        $router->macro('localizedGroup', function (Closure $callback) use ($router) {
+        $middleware = $this->middleware;
+
+        $router->macro('localizedGroup', function (Closure $callback) use ($router, $middleware) {
             $attributes = [
                 'prefix'     => localization()->setLocale(),
-                'middleware' => [
-                    'localeSessionRedirect',
-                    'localizationRedirect'
-                ],
+                'middleware' => $middleware,
             ];
 
             $router->group($attributes, $callback);
