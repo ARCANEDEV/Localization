@@ -125,6 +125,20 @@ abstract class TestCase extends BaseTestCase
         $this->setRoutes($locale);
     }
 
+    /**
+     * Resolve application HTTP Kernel implementation.
+     *
+     * @param  \Illuminate\Foundation\Application  $app
+     * @return void
+     */
+    protected function resolveApplicationHttpKernel($app)
+    {
+        $app->singleton(
+            'Illuminate\Contracts\Http\Kernel',
+            Stubs\Http\Kernel::class
+        );
+    }
+
     /* ------------------------------------------------------------------------------------------------
      |  Other Functions
      | ------------------------------------------------------------------------------------------------
