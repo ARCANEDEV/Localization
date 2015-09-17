@@ -9,20 +9,6 @@
 trait LocalizationKernelTrait
 {
     /**
-     * The application implementation.
-     *
-     * @var \Illuminate\Contracts\Foundation\Application
-     */
-    protected $app;
-
-    /**
-     * The router instance.
-     *
-     * @var \Illuminate\Routing\Router
-     */
-    protected $router;
-
-    /**
      * Get the route dispatcher callback.
      *
      * @return \Closure

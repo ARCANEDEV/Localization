@@ -20,12 +20,12 @@ class Router extends \Illuminate\Routing\Router
      * @param  array     $attributes
      * @param  \Closure  $callback
      */
-    public function group(array $attributes, Closure $callback)
+    public function localizedGroup(Closure $callback, $attributes = [])
     {
-//        $attributes = [
-//            'prefix'     => localization()->setLocale(),
-//            'middleware' => $middleware,
-//        ];
+        $attributes = [
+            'prefix'     => localization()->setLocale(),
+            'middleware' => $this->getMiddleware(),
+        ];
         $this->group($attributes, $callback);
     }
 }

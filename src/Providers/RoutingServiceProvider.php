@@ -37,10 +37,23 @@ class RoutingServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $router = $this->app['router'];
-
-        $this->registerMiddlewares($router);
         $this->registerRouter();
+    }
+
+    /* ------------------------------------------------------------------------------------------------
+     |  Router Functions
+     | ------------------------------------------------------------------------------------------------
+     */
+    /**
+     * Register the router instance.
+     */
+    protected function registerRouter()
+    {
+        $this->app['router'] = $this->app->share(function ($app) {
+            return new Router($app['events'], $app);
+        });
+
+        $this->registerMiddlewares($this->app['router']);
     }
 
     /**
@@ -85,19 +98,5 @@ class RoutingServiceProvider extends ServiceProvider
         $config = $this->app['config'];
 
         return (bool) $config->get('localization.route.middleware.' . $name, false);
-    }
-
-    /* ------------------------------------------------------------------------------------------------
-     |  Route Macros
-     | ------------------------------------------------------------------------------------------------
-     */
-    /**
-     * Register the router instance.
-     */
-    protected function registerRouter()
-    {
-        $this->app['router'] = $this->app->share(function ($app) {
-            return new Router($app['events'], $app);
-        });
     }
 }
