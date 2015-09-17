@@ -39,6 +39,9 @@ class Router extends IlluminateRouter
      */
     public function transGet($trans, $action)
     {
+        $uri = $trans; // TODO: Add translation
+
+        return $this->get($uri, $action);
     }
 
     /**
@@ -49,6 +52,9 @@ class Router extends IlluminateRouter
      */
     public function transPost($trans, $action)
     {
+        $uri = $trans; // TODO: Add translation
+
+        return $this->post($uri, $action);
     }
 
     /**
@@ -59,6 +65,9 @@ class Router extends IlluminateRouter
      */
     public function transPut($trans, $action)
     {
+        $uri = $trans; // TODO: Add translation
+
+        return $this->put($uri, $action);
     }
 
     /**
@@ -71,10 +80,14 @@ class Router extends IlluminateRouter
      */
     public function transPatch($trans, $action)
     {
+        $uri = $trans; // TODO: Add translation
 
+        return $this->patch($uri, $action);
     }
 
     /**
+     * Register a new DELETE route with the router.
+     *
      * @param  string                 $trans
      * @param  \Closure|array|string  $action
      *
@@ -82,6 +95,9 @@ class Router extends IlluminateRouter
      */
     public function transDelete($trans, $action)
     {
+        $uri = $trans; // TODO: Add translation
+
+        return $this->delete($uri, $action);
     }
 
     /**
@@ -94,5 +110,8 @@ class Router extends IlluminateRouter
      */
     public function transOptions($trans, $action)
     {
+        $uri = $trans; // TODO: Add translation
+
+        return $this->options($uri, $action);
     }
 }
