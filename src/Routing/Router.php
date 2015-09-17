@@ -39,7 +39,7 @@ class Router extends IlluminateRouter
      */
     public function transGet($trans, $action)
     {
-        $uri = $trans; // TODO: Add translation
+        $uri = localization()->transRoute($trans);
 
         return $this->get($uri, $action);
     }
@@ -52,7 +52,7 @@ class Router extends IlluminateRouter
      */
     public function transPost($trans, $action)
     {
-        $uri = $trans; // TODO: Add translation
+        $uri = localization()->transRoute($trans);
 
         return $this->post($uri, $action);
     }
@@ -65,7 +65,7 @@ class Router extends IlluminateRouter
      */
     public function transPut($trans, $action)
     {
-        $uri = $trans; // TODO: Add translation
+        $uri = localization()->transRoute($trans);
 
         return $this->put($uri, $action);
     }
@@ -80,7 +80,7 @@ class Router extends IlluminateRouter
      */
     public function transPatch($trans, $action)
     {
-        $uri = $trans; // TODO: Add translation
+        $uri = localization()->transRoute($trans);
 
         return $this->patch($uri, $action);
     }
@@ -95,7 +95,7 @@ class Router extends IlluminateRouter
      */
     public function transDelete($trans, $action)
     {
-        $uri = $trans; // TODO: Add translation
+        $uri = localization()->transRoute($trans);
 
         return $this->delete($uri, $action);
     }
@@ -110,7 +110,7 @@ class Router extends IlluminateRouter
      */
     public function transOptions($trans, $action)
     {
-        $uri = $trans; // TODO: Add translation
+        $uri = localization()->transRoute($trans);
 
         return $this->options($uri, $action);
     }
