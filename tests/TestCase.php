@@ -125,6 +125,20 @@ abstract class TestCase extends BaseTestCase
         $this->setRoutes($locale);
     }
 
+    /**
+     * Resolve application HTTP Kernel implementation.
+     *
+     * @param  \Illuminate\Foundation\Application  $app
+     * @return void
+     */
+    protected function resolveApplicationHttpKernel($app)
+    {
+        $app->singleton(
+            'Illuminate\Contracts\Http\Kernel',
+            Stubs\Http\Kernel::class
+        );
+    }
+
     /* ------------------------------------------------------------------------------------------------
      |  Other Functions
      | ------------------------------------------------------------------------------------------------
@@ -151,26 +165,26 @@ abstract class TestCase extends BaseTestCase
             app('router')->get('test', [
                 'as'    => 'test',
                 function () {
-                    return app('translator')->get('localization::routes.test_text');
+                    return app('translator')->get('localization::routes.test-text');
                 }
             ]);
 
-            app('router')->get(localization()->transRoute('localization::routes.about'), [
+            app('router')->transGet('localization::routes.about', [
                 'as'    => 'about',
                 function () {
                     return localization()->getLocalizedURL('es') ? : "Not url available";
                 }
             ]);
 
-            app('router')->get(localization()->transRoute('localization::routes.view'), [
+            app('router')->transGet('localization::routes.view', [
                 'as'    => 'view',
                 function () {
                     return localization()->getLocalizedURL('es') ? : "Not url available";
                 }
             ]);
 
-            app('router')->get(localization()->transRoute('localization::routes.view_project'), [
-                'as'    => 'view_project',
+            app('router')->transGet('localization::routes.view-project', [
+                'as'    => 'view-project',
                 function () {
                     return localization()->getLocalizedURL('es') ? : "Not url available";
                 }

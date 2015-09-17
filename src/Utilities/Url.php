@@ -1,4 +1,5 @@
 <?php namespace Arcanedev\Localization\Utilities;
+
 use Arcanedev\Localization\Contracts\UrlInterface;
 use Illuminate\Routing\Route;
 use Illuminate\Routing\Router;
@@ -144,6 +145,8 @@ class Url implements UrlInterface
      */
     /**
      * Extract Attributes From Router.
+     *
+     * @param  Router  $router
      *
      * @return array
      */

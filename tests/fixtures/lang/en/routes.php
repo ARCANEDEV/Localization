@@ -3,7 +3,7 @@
 return [
     'about'         => 'about',
     'view'          => 'view/{id}',
-    'view_project'  => 'view/{id}/project/{project_id?}',
+    'view-project'  => 'view/{id}/project/{project_id?}',
     'hello'         => 'Hello world',
-    'test_text'     => 'Test text'
+    'test-text'     => 'Test text'
 ];
