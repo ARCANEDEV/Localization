@@ -22,7 +22,7 @@ interface RouteTranslatorInterface
     /**
      * Set the current route.
      *
-     * @param  string  $currentRoute
+     * @param  false|string  $currentRoute
      *
      * @return self
      */
