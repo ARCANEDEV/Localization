@@ -5,6 +5,9 @@
  *
  * @package  Arcanedev\Localization\Traits
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
+ *
+ * @property  \Illuminate\Foundation\Application      app
+ * @property  \Arcanedev\Localization\Routing\Router  router
  */
 trait LocalizationKernelTrait
 {
