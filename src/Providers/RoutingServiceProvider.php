@@ -4,16 +4,16 @@ use Arcanedev\Localization\Middleware\LocaleCookieRedirect;
 use Arcanedev\Localization\Middleware\LocaleSessionRedirect;
 use Arcanedev\Localization\Middleware\LocalizationRedirect;
 use Arcanedev\Localization\Middleware\LocalizationRoutes;
-use Arcanedev\Support\ServiceProvider;
-use Illuminate\Routing\Router;
+use Illuminate\Routing\RoutingServiceProvider as ServiceProvider;
+use Arcanedev\Localization\Routing\Router;
 
 /**
- * Class     RouterServiceProvider
+ * Class     RoutingServiceProvider
  *
  * @package  Arcanedev\Localization\Providers
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
-class RouterServiceProvider extends ServiceProvider
+class RoutingServiceProvider extends ServiceProvider
 {
     /* ------------------------------------------------------------------------------------------------
      |  Properties
@@ -40,7 +40,7 @@ class RouterServiceProvider extends ServiceProvider
         $router = $this->app['router'];
 
         $this->registerMiddlewares($router);
-        $this->registerMacros($router);
+        $this->registerRouter();
     }
 
     /**
@@ -67,9 +67,24 @@ class RouterServiceProvider extends ServiceProvider
     {
         $router->middleware($name,  $class);
 
-        if ($this->app['config']->get('localization.route.middleware.' . $name, false)) {
+        if ($this->getMiddleware($name)) {
             $this->middleware[] = $name;
         }
+    }
+
+    /**
+     * Get the middleware status.
+     *
+     * @param  string  $name
+     *
+     * @return bool
+     */
+    private function getMiddleware($name)
+    {
+        /** @var \Illuminate\Config\Repository $config */
+        $config = $this->app['config'];
+
+        return (bool) $config->get('localization.route.middleware.' . $name, false);
     }
 
     /* ------------------------------------------------------------------------------------------------
@@ -77,31 +92,12 @@ class RouterServiceProvider extends ServiceProvider
      | ------------------------------------------------------------------------------------------------
      */
     /**
-     * Register the router macros.
-     *
-     * @param  Router  $router
+     * Register the router instance.
      */
-    private function registerMacros(Router $router)
+    protected function registerRouter()
     {
-        $this->registerLocalizedGroupMacro($router);
-    }
-
-    /**
-     * Register the 'localizedGroup' macro.
-     *
-     * @param  Router  $router
-     */
-    private function registerLocalizedGroupMacro(Router $router)
-    {
-        $middleware = $this->middleware;
-
-        $router->macro('localizedGroup', function (callable $callback) use ($router, $middleware) {
-            $attributes = [
-                'prefix'     => localization()->setLocale(),
-                'middleware' => $middleware,
-            ];
-
-            $router->group($attributes, $callback);
+        $this->app['router'] = $this->app->share(function ($app) {
+            return new Router($app['events'], $app);
         });
     }
 }
