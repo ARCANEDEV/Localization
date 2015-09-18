@@ -29,19 +29,18 @@ class LocalizationRedirect extends Middleware
      */
     public function handle(Request $request, Closure $next)
     {
-        $params = explode('/', $request->path());
+        $locale = $request->segment(1, null);
 
-        if (count($params) > 0) {
-            $locale  = $params[0];
+        if (
+            ! is_null($locale) &&
+            $redirectUrl = $this->getRedirectionUrl($locale)
+        ) {
+            // Save any flashed data for redirect
+            $request->session()->reflash();
 
-            if ($redirectionUrl = $this->getRedirectionUrl($locale)) {
-                // Save any flashed data for redirect
-                app('session')->reflash();
-
-                return new RedirectResponse($redirectionUrl, 301, [
-                    'Vary' => 'Accept-Language'
-                ]);
-            }
+            return new RedirectResponse($redirectUrl, 301, [
+                'Vary' => 'Accept-Language'
+            ]);
         }
 
         return $next($request);

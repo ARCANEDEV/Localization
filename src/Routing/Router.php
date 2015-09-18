@@ -12,6 +12,22 @@ use Illuminate\Routing\Router as IlluminateRouter;
 class Router extends IlluminateRouter
 {
     /* ------------------------------------------------------------------------------------------------
+     |  Getters & Setters
+     | ------------------------------------------------------------------------------------------------
+     */
+    /**
+     * Get active middlewares.
+     *
+     * @return array
+     */
+    protected function getActiveMiddlewares()
+    {
+        $middleware = config('localization.route.middleware', []);
+
+        return array_keys(array_filter($middleware));
+    }
+
+    /* ------------------------------------------------------------------------------------------------
      |  Route Functions
      | ------------------------------------------------------------------------------------------------
      */
@@ -23,10 +39,9 @@ class Router extends IlluminateRouter
      */
     public function localizedGroup(Closure $callback, $attributes = [])
     {
-        $attributes = array_merge($attributes, [
-            'prefix'     => localization()->setLocale(),
-            'middleware' => $this->getMiddleware(),
-        ]);
+        $prefix     = localization()->setLocale();
+        $middleware = $this->getActiveMiddlewares();
+        $attributes = array_merge($attributes, compact('prefix', 'middleware'));
 
         $this->group($attributes, $callback);
     }

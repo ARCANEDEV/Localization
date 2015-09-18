@@ -29,12 +29,10 @@ class LocaleCookieRedirect extends Middleware
      */
     public function handle(Request $request, Closure $next)
     {
-        $params = explode('/', $request->path());
+        $locale = $request->segment(1, null);
 
-        if (
-            count($params) > 0 && $locale = localization()->isLocaleSupported($params[0])
-        ) {
-            cookie('locale', $params[0]);
+        if (localization()->isLocaleSupported($locale)) {
+            cookie('locale', $locale);
 
             return $next($request);
         }
@@ -42,7 +40,7 @@ class LocaleCookieRedirect extends Middleware
         $locale = $request->cookie('locale', false);
 
         if ($locale && ! $this->isDefaultLocaleHidden($locale)) {
-            app('session')->reflash();
+            $request->session()->reflash();
 
             if (is_string($redirection = localization()->getLocalizedURL($locale))) {
                 return new RedirectResponse($redirection, 302, [

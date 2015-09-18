@@ -29,12 +29,12 @@ class LocaleSessionRedirect extends Middleware
      */
     public function handle(Request $request, Closure $next)
     {
-        $params = explode('/', $request->path());
+        $locale = $request->segment(1, null);
 
         if (
-            count($params) > 0 && $locale = $this->localization->isLocaleSupported($params[0])
+        $this->localization->isLocaleSupported($locale)
         ) {
-            session(['locale' => $params[0]]);
+            $request->session()->put(compact('locale'));
 
             return $next($request);
         }
@@ -42,12 +42,12 @@ class LocaleSessionRedirect extends Middleware
         $locale = session('locale', false);
 
         if ($locale && ! $this->isDefaultLocaleHidden($locale)) {
-            app('session')->reflash();
+            $request->session()->reflash();
 
-            $redirection = $this->localization->getLocalizedURL($locale);
+            $redirectUrl = $this->localization->getLocalizedURL($locale);
 
-            if (is_string($redirection)) {
-                return new RedirectResponse($redirection, 302, [
+            if (is_string($redirectUrl)) {
+                return new RedirectResponse($redirectUrl, 302, [
                     'Vary' => 'Accept-Language'
                 ]);
             }
