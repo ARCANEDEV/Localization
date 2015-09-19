@@ -27,11 +27,6 @@ The Localization package was inspired from [mcamara/laravel-localization](https:
 Official documentation for Localization package can be found at the [Localization Wiki](https://github.com/ARCANEDEV/Localization/wiki).
 
 Feel free to check out the [releases](https://github.com/ARCANEDEV/Localization/releases), [license](https://github.com/ARCANEDEV/Localization/blob/master/LICENSE.md), and [contribution guidelines](https://github.com/ARCANEDEV/Localization/blob/master/CONTRIBUTING.md).
-
-## Features
-
-  - Coming soon...
-  
   
 ## Table of contents
 
@@ -49,6 +44,7 @@ Feel free to check out the [releases](https://github.com/ARCANEDEV/Localization/
 
 ### TODOS
 
+  - [ ] Adding language selector view.
   - [ ] Laravel 5.0 supported.
 
 ### DONE
