@@ -163,63 +163,77 @@ class Localization implements LocalizationInterface
     }
 
     /**
-     * Returns current locale name.
+     * Returns current language.
      *
-     * @todo: Refactor to Locale Entity
+     * @return string
+     */
+    public function getCurrentLocale()
+    {
+        if ( ! is_null($this->currentLocale)) {
+            return $this->currentLocale;
+        }
+
+        // Get application default language
+        if ( ! $this->useAcceptLanguageHeader()) {
+            return $this->config()->get('app.locale');
+        }
+
+        $negotiator = new Negotiator(
+            $this->defaultLocale,
+            $this->getSupportedLocales()
+        );
+
+        return $negotiator->negotiate($this->request());
+    }
+
+    /**
+     * Returns current language.
+     *
+     * @return Entities\Locale
+     */
+    public function getCurrentLocaleEntity()
+    {
+        return $this->supportedLocales->get($this->getCurrentLocale());
+    }
+
+    /**
+     * Returns current locale name.
      *
      * @return string
      */
     public function getCurrentLocaleName()
     {
-        /** @var Entities\Locale $locale */
-        $locale = $this->supportedLocales->get($this->getCurrentLocale());
-
-        return $locale->name();
+        return $this->getCurrentLocaleEntity()->name();
     }
 
     /**
      * Returns current locale script.
      *
-     * @todo: Refactor to Locale Entity
-     *
      * @return string
      */
     public function getCurrentLocaleScript()
     {
-        /** @var Entities\Locale $locale */
-        $locale = $this->supportedLocales->get($this->getCurrentLocale());
-
-        return $locale->script();
+        return $this->getCurrentLocaleEntity()->script();
     }
 
     /**
      * Returns current locale direction.
      *
-     * @todo: Refactor to Locale Entity
-     *
      * @return string
      */
     public function getCurrentLocaleDirection()
     {
-        /** @var Entities\Locale $locale */
-        $locale = $this->supportedLocales->get($this->getCurrentLocale());
-
-        return $locale->direction();
+        return $this->getCurrentLocaleEntity()->direction();
     }
 
     /**
      * Returns current locale native name.
      *
-     * @todo: Refactor to Locale Entity
-     *
      * @return string
      */
     public function getCurrentLocaleNative()
     {
-        /** @var Entities\Locale $locale */
-        $locale = $this->supportedLocales->get($this->getCurrentLocale());
-
-        return $locale->native();
+        return $this->getCurrentLocaleEntity()->native();
     }
 
     /**
@@ -257,32 +271,6 @@ class Localization implements LocalizationInterface
         $this->app->setLocale($this->currentLocale);
 
         return $locale;
-    }
-
-    /**
-     * Returns current language.
-     *
-     * @todo:  Refactor to Locale entity
-     *
-     * @return string
-     */
-    public function getCurrentLocale()
-    {
-        if ( ! is_null($this->currentLocale)) {
-            return $this->currentLocale;
-        }
-
-        // Get application default language
-        if ( ! $this->useAcceptLanguageHeader()) {
-            return $this->config()->get('app.locale');
-        }
-
-        $negotiator = new Negotiator(
-            $this->defaultLocale,
-            $this->getSupportedLocales()
-        );
-
-        return $negotiator->negotiate($this->request());
     }
 
     /**
@@ -534,7 +522,7 @@ class Localization implements LocalizationInterface
         $route = '';
 
         if (
-        ! ($locale === $this->defaultLocale && $this->hideDefaultLocaleInURL())
+            ! ($locale === $this->defaultLocale && $this->hideDefaultLocaleInURL())
         ) {
             $route = '/' . $locale;
         }
