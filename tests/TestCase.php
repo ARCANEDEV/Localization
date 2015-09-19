@@ -93,10 +93,10 @@ abstract class TestCase extends BaseTestCase
         $config->set('app.url',    $this->testUrlOne);
         $config->set('app.locale', $this->defaultLocale);
         $config->set('localization.route.middleware', [
-            'localized-routes'              => true,
-            'localization-redirect'         => true,
             'localization-session-redirect' => false,
             'localization-cookie-redirect'  => false,
+            'localization-redirect'         => true,
+            'localized-routes'              => true,
         ]);
 
         $translator->getLoader()->addNamespace(
@@ -118,9 +118,16 @@ abstract class TestCase extends BaseTestCase
      *
      * @param  bool|string  $locale
      */
-    protected function refreshApplication($locale = false)
+    protected function refreshApplication($locale = false, $session = false)
     {
         parent::refreshApplication();
+
+        app('config')->set('localization.route.middleware', [
+            'localization-session-redirect' => $session,
+            'localization-cookie-redirect'  => false,
+            'localization-redirect'         => true,
+            'localized-routes'              => true,
+        ]);
 
         $this->setRoutes($locale);
     }
@@ -129,7 +136,6 @@ abstract class TestCase extends BaseTestCase
      * Resolve application HTTP Kernel implementation.
      *
      * @param  \Illuminate\Foundation\Application  $app
-     * @return void
      */
     protected function resolveApplicationHttpKernel($app)
     {
