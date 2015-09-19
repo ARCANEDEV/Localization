@@ -43,7 +43,7 @@ class Router extends IlluminateRouter
         $middleware = $this->getActiveMiddlewares();
         $attributes = array_merge($attributes, compact('prefix', 'middleware'));
 
-        $this->group($attributes, $callback);
+        $this->group(array_filter($attributes), $callback);
     }
 
     /**
