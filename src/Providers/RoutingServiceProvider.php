@@ -49,24 +49,30 @@ class RoutingServiceProvider extends ServiceProvider
      */
     protected function registerRouter()
     {
-        $this->app['router'] = $this->app->share(function ($app) {
+        $this->app->singleton('router', function ($app) {
             return new Router($app['events'], $app);
         });
 
-        $this->registerMiddlewares($this->app['router']);
+        $this->registerMiddlewares();
     }
 
     /**
      * Register the middlewares.
-     *
-     * @param  Router  $router
      */
-    private function registerMiddlewares(Router $router)
+    private function registerMiddlewares()
     {
-        $this->registerMiddleware($router, 'localized-routes',              LocalizationRoutes::class);
-        $this->registerMiddleware($router, 'localization-session-redirect', LocaleSessionRedirect::class);
-        $this->registerMiddleware($router, 'localization-cookie-redirect',  LocaleCookieRedirect::class);
-        $this->registerMiddleware($router, 'localization-redirect',         LocalizationRedirect::class);
+        /** @var Router $router */
+        $router      = $this->app['router'];
+        $middlewares = [
+            'localized-routes'              => LocalizationRoutes::class,
+            'localization-session-redirect' => LocaleSessionRedirect::class,
+            'localization-cookie-redirect'  => LocaleCookieRedirect::class,
+            'localization-redirect'         => LocalizationRedirect::class,
+        ];
+
+        foreach ($middlewares as $name => $class) {
+            $this->registerMiddleware($router, $name, $class);
+        }
     }
 
     /**
@@ -78,7 +84,7 @@ class RoutingServiceProvider extends ServiceProvider
      */
     private function registerMiddleware(Router $router, $name, $class)
     {
-        $router->middleware($name,  $class);
+        $router->middleware($name, $class);
 
         if ($this->getMiddleware($name)) {
             $this->middleware[] = $name;
