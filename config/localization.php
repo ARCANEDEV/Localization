@@ -19,10 +19,10 @@ return [
      */
     'route'                  => [
         'middleware' => [
-            'localized-routes'              => true,
-            'localization-redirect'         => true,
             'localization-session-redirect' => true,
             'localization-cookie-redirect'  => false,
+            'localization-redirect'         => true,
+            'localized-routes'              => true,
         ]
     ],
 
