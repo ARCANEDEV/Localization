@@ -26,9 +26,10 @@ class LocalizationRoutes extends Middleware
      */
     public function handle(Request $request, Closure $next)
     {
-        $routeName = localization()->getRouteNameFromPath($request->getUri());
+        $localization = localization();
+        $routeName    = $localization->getRouteNameFromPath($request->getUri());
 
-        localization()->setRouteName($routeName);
+        $localization->setRouteName($routeName);
 
         return $next($request);
     }

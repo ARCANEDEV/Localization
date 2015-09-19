@@ -32,11 +32,10 @@ class LocalizationRedirect extends Middleware
         $locale = $request->segment(1, null);
 
         if (
-            ! is_null($locale) &&
             $redirectUrl = $this->getRedirectionUrl($locale)
         ) {
             // Save any flashed data for redirect
-            $request->session()->reflash();
+            session()->reflash();
 
             return new RedirectResponse($redirectUrl, 301, [
                 'Vary' => 'Accept-Language'
