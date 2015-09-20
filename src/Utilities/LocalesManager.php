@@ -3,6 +3,7 @@
 use Arcanedev\Localization\Entities\Locale;
 use Arcanedev\Localization\Entities\LocaleCollection;
 use Arcanedev\Localization\Exceptions\UndefinedSupportedLocalesException;
+use Arcanedev\Localization\Exceptions\UnsupportedLocaleException;
 use Illuminate\Config\Repository as Config;
 
 /**
@@ -73,15 +74,25 @@ class LocalesManager
      */
     private function load()
     {
-        $this->setDefaultLocale($this->config->get('app.locale'));
         $this->locales->loadFromArray($this->getConfig('locales'));
         $this->setSupportedLocales($this->getConfig('supported-locales'));
+        $this->setDefaultLocale($this->config->get('app.locale'));
     }
 
     /* ------------------------------------------------------------------------------------------------
      |  Getters & Setters
      | ------------------------------------------------------------------------------------------------
      */
+    /**
+     * Get the default locale.
+     *
+     * @return string
+     */
+    public function getDefaultLocale()
+    {
+        return $this->defaultLocale;
+    }
+
     /**
      * Set the default locale.
      *
@@ -92,6 +103,8 @@ class LocalesManager
     public function setDefaultLocale($defaultLocale)
     {
         $this->defaultLocale = $defaultLocale;
+
+        $this->isDefaultLocaleSupported();
 
         return $this;
     }
@@ -194,6 +207,33 @@ class LocalesManager
      |  Check Functions
      | ------------------------------------------------------------------------------------------------
      */
+    /**
+     * Check if default is supported.
+     *
+     * @throws UnsupportedLocaleException
+     */
+    public function isDefaultLocaleSupported()
+    {
+        if ($this->isSupportedLocale($this->defaultLocale)) {
+            return;
+        }
+
+        throw new UnsupportedLocaleException(
+            "Laravel default locale [{$this->defaultLocale}] is not in the `supported-locales` array."
+        );
+    }
+
+    /**
+     * Check if locale is supported.
+     *
+     * @param  string  $locale
+     *
+     * @return bool
+     */
+    public function isSupportedLocale($locale)
+    {
+        return $this->getSupportedLocales()->has($locale);
+    }
 
     /* ------------------------------------------------------------------------------------------------
      |  Other Functions

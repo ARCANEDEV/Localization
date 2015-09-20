@@ -30,25 +30,11 @@ class Localization implements LocalizationInterface
     private $app;
 
     /**
-     * Default locale.
-     *
-     * @var string
-     */
-    protected $defaultLocale;
-
-    /**
-     * Supported Locales.
-     *
-     * @var Entities\LocaleCollection
-     */
-    protected $locales;
-
-    /**
      * Current locale.
      *
      * @var string|null
      */
-    protected $currentLocale = null;
+    private $currentLocale = null;
 
     /**
      * Base url.
@@ -91,11 +77,7 @@ class Localization implements LocalizationInterface
         $this->routeTranslator  = $routeTranslator;
         $this->localesManager   = $localesManager;
 
-        $this->locales          = new LocaleCollection;
-        $this->defaultLocale    = $this->config()->get('app.locale');
-
-        $this->getSupportedLocales();
-        $this->isDefaultLocaleSupported();
+        $this->localesManager->setDefaultLocale($this->config()->get('app.locale'));
     }
 
     /* ------------------------------------------------------------------------------------------------
@@ -129,7 +111,7 @@ class Localization implements LocalizationInterface
      */
     public function getDefaultLocale()
     {
-        return $this->defaultLocale;
+        return $this->localesManager->getDefaultLocale();
     }
 
     /**
@@ -173,7 +155,7 @@ class Localization implements LocalizationInterface
         }
 
         $negotiator = new Negotiator(
-            $this->defaultLocale,
+            $this->getDefaultLocale(),
             $this->getSupportedLocales()
         );
 
@@ -257,7 +239,7 @@ class Localization implements LocalizationInterface
             $this->currentLocale = $this->hideDefaultLocaleInURL()
                 // if we reached this point and hideDefaultLocaleInURL is true we have to assume we are routing
                 // to a defaultLocale route.
-                ? $this->defaultLocale
+                ? $this->getDefaultLocale()
                 // but if hideDefaultLocaleInURL is false, we have to retrieve it from the browser...
                 : $this->getCurrentLocale();
         }
@@ -416,7 +398,7 @@ class Localization implements LocalizationInterface
 
         if (
             ! empty($locale) &&
-            ($locale !== $this->defaultLocale || ! $this->hideDefaultLocaleInURL())
+            ($locale !== $this->getDefaultLocale() || ! $this->hideDefaultLocaleInURL())
         ) {
             $parsedUrl['path'] = $locale . '/' . ltrim($parsedUrl['path'], '/');
         }
@@ -506,7 +488,7 @@ class Localization implements LocalizationInterface
         $route = '';
 
         if (
-            ! ($locale === $this->defaultLocale && $this->hideDefaultLocaleInURL())
+            ! ($locale === $this->getDefaultLocale() && $this->hideDefaultLocaleInURL())
         ) {
             $route = '/' . $locale;
         }
@@ -541,22 +523,6 @@ class Localization implements LocalizationInterface
      |  Check Functions
      | ------------------------------------------------------------------------------------------------
      */
-    /**
-     * Check if default is supported.
-     *
-     * @throws UnsupportedLocaleException
-     */
-    private function isDefaultLocaleSupported()
-    {
-        if ($this->getSupportedLocales()->has($this->defaultLocale)) {
-            return;
-        }
-
-        throw new UnsupportedLocaleException(
-            "Laravel default locale [{$this->defaultLocale}] is not in the `supported-locales` array."
-        );
-    }
-
     /**
      * Check if Locale exists on the supported locales collection.
      *
