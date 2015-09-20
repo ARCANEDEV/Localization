@@ -33,26 +33,13 @@ class LocalizationTest extends TestCase
 
         new Localization(
             $this->app,
-            $this->app['arcanedev.localization.translator']
-        );
-    }
-
-    /**
-     * @test
-     * @expectedException         \Arcanedev\Localization\Exceptions\UndefinedSupportedLocalesException
-     * @expectedExceptionMessage  Supported locales must be defined.
-     */
-    public function it_must_throw_undefined_supported_locales_exception()
-    {
-        app('config')->set('localization.supported-locales', []);
-        new Localization(
-            $this->app,
-            $this->app['arcanedev.localization.translator']
+            $this->app['arcanedev.localization.translator'],
+            $this->app['arcanedev.localization.locales-manager']
         );
     }
 
     /** @test */
-    public function it_can_get_supported_locales()
+    public function it_can_set_and_get_supported_locales()
     {
         $supportedLocales = localization()->getSupportedLocales();
 
@@ -63,6 +50,29 @@ class LocalizationTest extends TestCase
         foreach($this->supportedLocales as $locale) {
             $this->assertTrue($supportedLocales->has($locale));
         }
+
+        $locales = ['en', 'fr'];
+
+        localization()->setSupportedLocales($locales);
+        $supportedLocales = localization()->getSupportedLocales();
+
+        $this->assertInstanceOf(LocaleCollection::class, $supportedLocales);
+        $this->assertFalse($supportedLocales->isEmpty());
+        $this->assertCount(count($locales), $supportedLocales);
+
+        foreach($locales as $locale) {
+            $this->assertTrue($supportedLocales->has($locale));
+        }
+    }
+
+    /**
+     * @test
+     *
+     * @expectedException  \Arcanedev\Localization\Exceptions\UndefinedSupportedLocalesException
+     */
+    public function it_must_throw_undefined_supported_locales_exception_on_set_supported_locales_with_empty_array()
+    {
+        localization()->setSupportedLocales([]);
     }
 
     /** @test */
@@ -339,7 +349,7 @@ class LocalizationTest extends TestCase
      * @expectedException         \Arcanedev\Localization\Exceptions\UnsupportedLocaleException
      * @expectedExceptionMessage  Locale 'jp' is not in the list of supported locales.
      */
-    public function it_must_throw_an_exception()
+    public function it_must_throw_an_exception_on_unsupported_locale()
     {
         localization()->getUrlFromRouteName('jp', 'localization::routes.about');
     }
@@ -419,15 +429,6 @@ class LocalizationTest extends TestCase
     }
 
     /** @test */
-    public function it_can_get_config_repository()
-    {
-        $config = localization()->config();
-
-        $this->assertInstanceOf(\Illuminate\Config\Repository::class, $config);
-        $this->assertEquals(app('config'), $config);
-    }
-
-    /** @test */
     public function it_can_create_url_from_uri()
     {
         $this->assertEquals(
@@ -454,6 +455,17 @@ class LocalizationTest extends TestCase
         $this->assertContains(e('English'),  $navbar);
         $this->assertContains(e('Español'),  $navbar);
         $this->assertContains(e('Français'), $navbar);
+    }
+
+    /** @test */
+    public function it_can_get_all_locales()
+    {
+        $locales = localization()->getAllLocales();
+
+        $this->assertInstanceOf(LocaleCollection::class, $locales);
+        $this->assertFalse($locales->isEmpty());
+        $this->assertCount(289, $locales);
+        $this->assertEquals(289, $locales->count());
     }
 
     /* ------------------------------------------------------------------------------------------------

@@ -1,11 +1,10 @@
 <?php namespace Arcanedev\Localization;
 
+use Arcanedev\Localization\Contracts\LocalesManagerInterface;
 use Arcanedev\Localization\Contracts\LocalizationInterface;
-use Arcanedev\Localization\Entities\LocaleCollection;
+use Arcanedev\Localization\Contracts\RouteTranslatorInterface;
 use Arcanedev\Localization\Exceptions\UndefinedSupportedLocalesException;
 use Arcanedev\Localization\Exceptions\UnsupportedLocaleException;
-use Arcanedev\Localization\Utilities\Negotiator;
-use Arcanedev\Localization\Utilities\RouteTranslator;
 use Arcanedev\Localization\Utilities\Url;
 use Illuminate\Foundation\Application;
 
@@ -29,34 +28,6 @@ class Localization implements LocalizationInterface
     private $app;
 
     /**
-     * Default locale.
-     *
-     * @var string
-     */
-    protected $defaultLocale;
-
-    /**
-     * Supported Locales.
-     *
-     * @var Entities\LocaleCollection
-     */
-    protected $supportedLocales;
-
-    /**
-     * Supported Locales.
-     *
-     * @var Entities\LocaleCollection
-     */
-    protected $locales;
-
-    /**
-     * Current locale.
-     *
-     * @var string|null
-     */
-    protected $currentLocale = null;
-
-    /**
      * Base url.
      *
      * @var string
@@ -66,9 +37,16 @@ class Localization implements LocalizationInterface
     /**
      * The RouteTranslator instance.
      *
-     * @var RouteTranslator
+     * @var RouteTranslatorInterface
      */
     protected $routeTranslator;
+
+    /**
+     * The LocalesManager instance.
+     *
+     * @var LocalesManagerInterface
+     */
+    private $localesManager;
 
     /* ------------------------------------------------------------------------------------------------
      |  Constructor
@@ -77,37 +55,31 @@ class Localization implements LocalizationInterface
     /**
      * Creates new instance.
      *
-     * @param  Application  $app
+     * @param  Application               $app
+     * @param  RouteTranslatorInterface  $routeTranslator
+     * @param  LocalesManagerInterface   $localesManager
      *
      * @throws UndefinedSupportedLocalesException
      * @throws UnsupportedLocaleException
      */
-    public function __construct(Application $app, $routeTranslator)
-    {
+    public function __construct(
+        Application              $app,
+        RouteTranslatorInterface $routeTranslator,
+        LocalesManagerInterface  $localesManager
+    ) {
         $this->app              = $app;
-        $this->supportedLocales = new LocaleCollection;
-        $this->locales          = new LocaleCollection;
         $this->routeTranslator  = $routeTranslator;
-        $this->defaultLocale    = $this->config()->get('app.locale');
+        $this->localesManager   = $localesManager;
 
-        $this->getSupportedLocales();
-        $this->isDefaultLocaleSupported();
+        $this->localesManager->setDefaultLocale(
+            $this->app['config']->get('app.locale')
+        );
     }
 
     /* ------------------------------------------------------------------------------------------------
      |  Getters & Setters
      | ------------------------------------------------------------------------------------------------
      */
-    /**
-     * Get Config repository.
-     *
-     * @return \Illuminate\Config\Repository
-     */
-    public function config()
-    {
-        return $this->app['config'];
-    }
-
     /**
      * Get Request instance.
      *
@@ -125,29 +97,33 @@ class Localization implements LocalizationInterface
      */
     public function getDefaultLocale()
     {
-        return $this->defaultLocale;
+        return $this->localesManager->getDefaultLocale();
     }
 
     /**
      * Return an array of all supported Locales.
      *
-     * @return LocaleCollection
+     * @return \Arcanedev\Localization\Entities\LocaleCollection
      *
      * @throws UndefinedSupportedLocalesException
      */
     public function getSupportedLocales()
     {
-        if ( ! $this->supportedLocales->isEmpty()) {
-            return $this->supportedLocales;
-        }
+        return $this->localesManager->getSupportedLocales();
+    }
 
-        $locales = $this->config()->get('localization.supported-locales');
+    /**
+     * Set the supported locales.
+     *
+     * @param  array  $supportedLocales
+     *
+     * @return self
+     */
+    public function setSupportedLocales(array $supportedLocales)
+    {
+        $this->localesManager->setSupportedLocales($supportedLocales);
 
-        if ( ! is_array($locales) || empty($locales)) {
-            throw new UndefinedSupportedLocalesException;
-        }
-
-        return $this->supportedLocales->loadSupported();
+        return $this;
     }
 
     /**
@@ -159,7 +135,7 @@ class Localization implements LocalizationInterface
      */
     public function getSupportedLocalesKeys()
     {
-        return $this->supportedLocales->keys()->toArray();
+        return $this->localesManager->getSupportedLocalesKeys();
     }
 
     /**
@@ -169,31 +145,17 @@ class Localization implements LocalizationInterface
      */
     public function getCurrentLocale()
     {
-        if ( ! is_null($this->currentLocale)) {
-            return $this->currentLocale;
-        }
-
-        // Get application default language
-        if ( ! $this->useAcceptLanguageHeader()) {
-            return $this->config()->get('app.locale');
-        }
-
-        $negotiator = new Negotiator(
-            $this->defaultLocale,
-            $this->getSupportedLocales()
-        );
-
-        return $negotiator->negotiate($this->request());
+        return $this->localesManager->getCurrentLocale();
     }
 
     /**
      * Returns current language.
      *
-     * @return Entities\Locale
+     * @return \Arcanedev\Localization\Entities\Locale
      */
     public function getCurrentLocaleEntity()
     {
-        return $this->supportedLocales->get($this->getCurrentLocale());
+        return $this->localesManager->getCurrentLocaleEntity();
     }
 
     /**
@@ -237,40 +199,25 @@ class Localization implements LocalizationInterface
     }
 
     /**
+     * Get all locales.
+     *
+     * @return \Arcanedev\Localization\Entities\LocaleCollection
+     */
+    public function getAllLocales()
+    {
+        return $this->localesManager->getAllLocales();
+    }
+
+    /**
      * Set and return current locale.
      *
-     * @param  string  $locale
+     * @param  string|null  $locale
      *
      * @return string
      */
     public function setLocale($locale = null)
     {
-        if (empty($locale) || ! is_string($locale)) {
-            // If the locale has not been passed through the function
-            // it tries to get it from the first segment of the url
-            $locale = $this->request()->segment(1);
-        }
-
-        if ($this->supportedLocales->has($locale)) {
-            $this->currentLocale = $locale;
-        }
-        else {
-            // if the first segment/locale passed is not valid the system would ask which locale have to take
-            // it could be taken by the browser depending on your configuration
-            $locale = null;
-
-
-            $this->currentLocale = $this->hideDefaultLocaleInURL()
-                // if we reached this point and hideDefaultLocaleInURL is true we have to assume we are routing
-                // to a defaultLocale route.
-                ? $this->defaultLocale
-                // but if hideDefaultLocaleInURL is false, we have to retrieve it from the browser...
-                : $this->getCurrentLocale();
-        }
-
-        $this->app->setLocale($this->currentLocale);
-
-        return $locale;
+        return $this->localesManager->setLocale($locale);
     }
 
     /**
@@ -341,7 +288,7 @@ class Localization implements LocalizationInterface
     }
 
     /**
-     * Returns an URL adapted to $locale.
+     * Returns an URL adapted to $locale or current locale.
      *
      * @todo: Refactor this beast
      *
@@ -360,11 +307,7 @@ class Localization implements LocalizationInterface
             $locale = $this->getCurrentLocale();
         }
 
-        if ( ! $this->isLocaleSupported($locale)) {
-            throw new UnsupportedLocaleException(
-                "Locale '$locale' is not in the list of supported locales."
-            );
-        }
+        $this->isLocaleSupportedOrFail($locale);
 
         if (empty($attributes)) {
             $attributes = Url::extractAttributes($url);
@@ -384,7 +327,7 @@ class Localization implements LocalizationInterface
 
         if (
             $locale &&
-            $translatedRoute = $this->findTranslatedRouteByUrl($url, $attributes, $this->currentLocale)
+            $translatedRoute = $this->findTranslatedRouteByUrl($url, $attributes, $this->getCurrentLocale())
         ) {
             return $this->getUrlFromRouteName($locale, $translatedRoute, $attributes);
         }
@@ -426,7 +369,7 @@ class Localization implements LocalizationInterface
 
         if (
             ! empty($locale) &&
-            ($locale != $this->defaultLocale || ! $this->hideDefaultLocaleInURL())
+            ($locale !== $this->getDefaultLocale() || ! $this->isDefaultLocaleHiddenInUrl())
         ) {
             $parsedUrl['path'] = $locale . '/' . ltrim($parsedUrl['path'], '/');
         }
@@ -461,6 +404,18 @@ class Localization implements LocalizationInterface
         return $this->baseUrl . $uri;
     }
 
+    /**
+     * Get locales navigation bar.
+     *
+     * @return string
+     */
+    public function localesNavbar()
+    {
+        $supportedLocales = $this->getSupportedLocales();
+
+        return view('localization::navbar', compact('supportedLocales'))->render();
+    }
+
     /* ------------------------------------------------------------------------------------------------
      |  Translation Functions
      | ------------------------------------------------------------------------------------------------
@@ -477,11 +432,9 @@ class Localization implements LocalizationInterface
      * @throws UndefinedSupportedLocalesException
      * @throws UnsupportedLocaleException
      */
-    protected function findTranslatedRouteByUrl($url, $attributes, $locale)
+    private function findTranslatedRouteByUrl($url, $attributes, $locale)
     {
-        if (empty($url)) {
-            return false;
-        }
+        if (empty($url)) return false;
 
         // check if this url is a translated url
         foreach ($this->routeTranslator->getTranslatedRoutes() as $translatedRoute) {
@@ -509,11 +462,7 @@ class Localization implements LocalizationInterface
      */
     public function getUrlFromRouteName($locale, $transKey, $attributes = [])
     {
-        if ( ! $this->isLocaleSupported($locale)) {
-            throw new UnsupportedLocaleException(
-                "Locale '$locale' is not in the list of supported locales."
-            );
-        }
+        $this->isLocaleSupportedOrFail($locale);
 
         if ( ! is_string($locale)) {
             $locale = $this->getDefaultLocale();
@@ -522,7 +471,7 @@ class Localization implements LocalizationInterface
         $route = '';
 
         if (
-            ! ($locale === $this->defaultLocale && $this->hideDefaultLocaleInURL())
+            ! ($locale === $this->getDefaultLocale() && $this->isDefaultLocaleHiddenInUrl())
         ) {
             $route = '/' . $locale;
         }
@@ -550,7 +499,7 @@ class Localization implements LocalizationInterface
      */
     public function getRouteNameFromPath($path)
     {
-        return $this->routeTranslator->getRouteNameFromPath($path, $this->currentLocale);
+        return $this->routeTranslator->getRouteNameFromPath($path, $this->getCurrentLocale());
     }
 
     /* ------------------------------------------------------------------------------------------------
@@ -558,19 +507,13 @@ class Localization implements LocalizationInterface
      | ------------------------------------------------------------------------------------------------
      */
     /**
-     * Check if default is supported.
+     * Hide the default locale in URL ??
      *
-     * @throws UnsupportedLocaleException
+     * @return bool
      */
-    private function isDefaultLocaleSupported()
+    public function isDefaultLocaleHiddenInUrl()
     {
-        if ($this->supportedLocales->has($this->defaultLocale)) {
-            return;
-        }
-
-        throw new UnsupportedLocaleException(
-            "Laravel default locale [{$this->defaultLocale}] is not in the `supported-locales` array."
-        );
+        return $this->localesManager->isDefaultLocaleHiddenInUrl();
     }
 
     /**
@@ -585,44 +528,23 @@ class Localization implements LocalizationInterface
     public function isLocaleSupported($locale)
     {
         return (
-            $locale !== false &&
-            ! $this->getSupportedLocales()->has($locale)
+            $locale !== false && ! $this->localesManager->isSupportedLocale($locale)
         ) ? false : true;
     }
 
-    /* ------------------------------------------------------------------------------------------------
-     |  Other Functions
-     | ------------------------------------------------------------------------------------------------
-     */
     /**
-     * Hide the default locale in URL ??
+     * Check if the locale is supported or fail if not.
      *
-     * @return bool
-     */
-    public function hideDefaultLocaleInURL()
-    {
-        return (bool) $this->config()->get('localization.hide-default-in-url', false);
-    }
-
-    /**
-     * Returns the translation key for a given path.
+     * @param  string  $locale
      *
-     * @return bool
+     * @throws UnsupportedLocaleException
      */
-    private function useAcceptLanguageHeader()
+    private function isLocaleSupportedOrFail($locale)
     {
-        return (bool) $this->config()->get('localization.accept-language-header', true);
-    }
-
-    /**
-     * Get locales navigation bar.
-     *
-     * @return string
-     */
-    public function localesNavbar()
-    {
-        $supportedLocales = $this->supportedLocales->all();
-
-        return view('localization::navbar', compact('supportedLocales'))->render();
+        if ( ! $this->isLocaleSupported($locale)) {
+            throw new UnsupportedLocaleException(
+                "Locale '$locale' is not in the list of supported locales."
+            );
+        }
     }
 }

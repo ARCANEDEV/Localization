@@ -77,7 +77,7 @@ abstract class Middleware extends BaseMiddleware
      */
     protected function hideDefaultLocaleInURL()
     {
-        return $this->localization->hideDefaultLocaleInURL();
+        return $this->localization->isDefaultLocaleHiddenInUrl();
     }
 
     /* ------------------------------------------------------------------------------------------------

@@ -17,13 +17,6 @@ interface LocalizationInterface
      | ------------------------------------------------------------------------------------------------
      */
     /**
-     * Get Config repository.
-     *
-     * @return \Illuminate\Config\Repository
-     */
-    public function config();
-
-    /**
      * Returns default locale.
      *
      * @return string
@@ -40,6 +33,15 @@ interface LocalizationInterface
     public function getSupportedLocales();
 
     /**
+     * Set the supported locales.
+     *
+     * @param  array  $supportedLocales
+     *
+     * @return self
+     */
+    public function setSupportedLocales(array $supportedLocales);
+
+    /**
      * Get supported locales keys.
      *
      * @return array
@@ -47,6 +49,20 @@ interface LocalizationInterface
      * @throws UndefinedSupportedLocalesException
      */
     public function getSupportedLocalesKeys();
+
+    /**
+     * Returns current language.
+     *
+     * @return string
+     */
+    public function getCurrentLocale();
+
+    /**
+     * Returns current language.
+     *
+     * @return \Arcanedev\Localization\Entities\Locale
+     */
+    public function getCurrentLocaleEntity();
 
     /**
      * Returns current locale name.
@@ -84,13 +100,6 @@ interface LocalizationInterface
      * @return string
      */
     public function setLocale($locale = null);
-
-    /**
-     * Returns current language.
-     *
-     * @return string
-     */
-    public function getCurrentLocale();
 
     /**
      * Sets the base url for the site.
@@ -214,5 +223,5 @@ interface LocalizationInterface
      *
      * @return bool
      */
-    public function hideDefaultLocaleInURL();
+    public function isDefaultLocaleHiddenInUrl();
 }

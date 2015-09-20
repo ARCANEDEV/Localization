@@ -171,7 +171,7 @@ class RouteTranslator implements RouteTranslatorInterface
      *
      * @throws InvalidTranslationException
      */
-    public function translate($key, $locale = null)
+    private function translate($key, $locale = null)
     {
         if (is_null($locale)) {
             $locale = $this->translator->getLocale();
