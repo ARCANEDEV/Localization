@@ -107,9 +107,8 @@ class LocalesManager
             $defaultLocale = $this->config()->get('app.locale');
         }
 
+        $this->isDefaultLocaleSupported($defaultLocale);
         $this->defaultLocale = $defaultLocale;
-
-        $this->isDefaultLocaleSupported();
 
         return $this;
     }
@@ -243,15 +242,13 @@ class LocalesManager
      *
      * @throws UnsupportedLocaleException
      */
-    public function isDefaultLocaleSupported()
+    public function isDefaultLocaleSupported($defaultLocale)
     {
-        if ($this->isSupportedLocale($this->defaultLocale)) {
-            return;
+        if ( ! $this->isSupportedLocale($defaultLocale)) {
+            throw new UnsupportedLocaleException(
+                "Laravel default locale [{$defaultLocale}] is not in the `supported-locales` array."
+            );
         }
-
-        throw new UnsupportedLocaleException(
-            "Laravel default locale [{$this->defaultLocale}] is not in the `supported-locales` array."
-        );
     }
 
     /**
@@ -294,7 +291,7 @@ class LocalesManager
     public function getCurrentOrDefaultLocale()
     {
         // If we reached this point and isDefaultLocaleHiddenInURL is true we have to assume we are routing
-        // to a defaultLocale route.
+        // to a default locale route.
         if ($this->isDefaultLocaleHiddenInURL()) {
             $this->setCurrentLocale($this->getDefaultLocale());
         }
