@@ -16,6 +16,15 @@ interface LocalesManagerInterface
      | ------------------------------------------------------------------------------------------------
      */
     /**
+     * Set and return current locale.
+     *
+     * @param  string|null  $locale
+     *
+     * @return string
+     */
+    public function setLocale($locale = null);
+
+    /**
      * Get the default locale.
      *
      * @return string
@@ -111,7 +120,7 @@ interface LocalesManagerInterface
      *
      * @return bool
      */
-    public function isDefaultLocaleHiddenInURL();
+    public function isDefaultLocaleHiddenInUrl();
 
     /**
      * Get current or default locale.

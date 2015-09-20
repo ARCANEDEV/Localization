@@ -7,6 +7,7 @@ use Arcanedev\Localization\Exceptions\UndefinedSupportedLocalesException;
 use Arcanedev\Localization\Exceptions\UnsupportedLocaleException;
 use Illuminate\Config\Repository as Config;
 use Illuminate\Foundation\Application;
+use Illuminate\Http\Request;
 
 /**
  * Class     LocalesManager
@@ -85,6 +86,37 @@ class LocalesManager implements LocalesManagerInterface
      |  Getters & Setters
      | ------------------------------------------------------------------------------------------------
      */
+    /**
+     * Set and return current locale.
+     *
+     * @param  string|null  $locale
+     *
+     * @return string
+     */
+    public function setLocale($locale = null)
+    {
+        if (empty($locale) || ! is_string($locale)) {
+            // If the locale has not been passed through the function
+            // it tries to get it from the first segment of the url
+            $locale = $this->request()->segment(1);
+        }
+
+        if ($this->isSupportedLocale($locale)) {
+            $this->setCurrentLocale($locale);
+        }
+        else {
+            // if the first segment/locale passed is not valid the system would ask which locale have to take
+            // it could be taken by the browser depending on your configuration
+            $locale        = null;
+
+            $this->getCurrentOrDefaultLocale();
+        }
+
+        $this->app->setLocale($this->getCurrentLocale());
+
+        return $locale;
+    }
+
     /**
      * Get the default locale.
      *
@@ -220,6 +252,16 @@ class LocalesManager implements LocalesManagerInterface
     }
 
     /**
+     * Get config repository.
+     *
+     * @return Request
+     */
+    private function request()
+    {
+        return $this->app['request'];
+    }
+
+    /**
      * Get localization config.
      *
      * @param  string  $name
@@ -241,7 +283,7 @@ class LocalesManager implements LocalesManagerInterface
     {
         $negotiator = new Negotiator($this->getDefaultLocale(), $this->getSupportedLocales());
 
-        return $negotiator->negotiate($this->app['request']);
+        return $negotiator->negotiate($this->request());
     }
 
     /* ------------------------------------------------------------------------------------------------
@@ -279,7 +321,7 @@ class LocalesManager implements LocalesManagerInterface
      *
      * @return bool
      */
-    public function isDefaultLocaleHiddenInURL()
+    public function isDefaultLocaleHiddenInUrl()
     {
         return (bool) $this->getConfig('hide-default-in-url', false);
     }
@@ -301,13 +343,13 @@ class LocalesManager implements LocalesManagerInterface
      */
     public function getCurrentOrDefaultLocale()
     {
-        // If we reached this point and isDefaultLocaleHiddenInURL is true we have to assume we are routing
+        // If we reached this point and isDefaultLocaleHiddenInUrl is true we have to assume we are routing
         // to a default locale route.
-        if ($this->isDefaultLocaleHiddenInURL()) {
+        if ($this->isDefaultLocaleHiddenInUrl()) {
             $this->setCurrentLocale($this->getDefaultLocale());
         }
 
-        // But if isDefaultLocaleHiddenInURL is false, we have to retrieve it from the browser...
+        // But if isDefaultLocaleHiddenInUrl is false, we have to retrieve it from the browser...
         return $this->getCurrentLocale();
     }
 
