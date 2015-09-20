@@ -1,11 +1,11 @@
 <?php namespace Arcanedev\Localization;
 
+use Arcanedev\Localization\Contracts\LocalesManagerInterface;
 use Arcanedev\Localization\Contracts\LocalizationInterface;
+use Arcanedev\Localization\Contracts\RouteTranslatorInterface;
 use Arcanedev\Localization\Entities\LocaleCollection;
 use Arcanedev\Localization\Exceptions\UndefinedSupportedLocalesException;
 use Arcanedev\Localization\Exceptions\UnsupportedLocaleException;
-use Arcanedev\Localization\Utilities\LocalesManager;
-use Arcanedev\Localization\Utilities\RouteTranslator;
 use Arcanedev\Localization\Utilities\Url;
 use Illuminate\Foundation\Application;
 
@@ -38,14 +38,14 @@ class Localization implements LocalizationInterface
     /**
      * The RouteTranslator instance.
      *
-     * @var RouteTranslator
+     * @var RouteTranslatorInterface
      */
     protected $routeTranslator;
 
     /**
      * The LocalesManager instance.
      *
-     * @var LocalesManager
+     * @var LocalesManagerInterface
      */
     private $localesManager;
 
@@ -56,15 +56,18 @@ class Localization implements LocalizationInterface
     /**
      * Creates new instance.
      *
-     * @param  Application      $app
-     * @param  RouteTranslator  $routeTranslator
-     * @param  LocalesManager   $localesManager
+     * @param  Application               $app
+     * @param  RouteTranslatorInterface  $routeTranslator
+     * @param  LocalesManagerInterface   $localesManager
      *
      * @throws UndefinedSupportedLocalesException
      * @throws UnsupportedLocaleException
      */
-    public function __construct(Application $app, $routeTranslator, $localesManager)
-    {
+    public function __construct(
+        Application              $app,
+        RouteTranslatorInterface $routeTranslator,
+        LocalesManagerInterface  $localesManager
+    ) {
         $this->app              = $app;
         $this->routeTranslator  = $routeTranslator;
         $this->localesManager   = $localesManager;
