@@ -147,6 +147,16 @@ class LocalesManager
     }
 
     /**
+     * Get the current locale entity.
+     *
+     * @return \Arcanedev\Localization\Entities\Locale
+     */
+    public function getCurrentLocaleEntity()
+    {
+        return $this->getSupportedLocales()->get($this->getCurrentLocale());
+    }
+
+    /**
      * Get all locales.
      *
      * @return \Arcanedev\Localization\Entities\LocaleCollection
