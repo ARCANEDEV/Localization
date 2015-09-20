@@ -47,18 +47,6 @@ class LocalizationServiceProvider extends PackageServiceProvider
      | ------------------------------------------------------------------------------------------------
      */
     /**
-     * Boot the package.
-     */
-    public function boot()
-    {
-        parent::boot();
-
-        $this->publishes([
-            $this->getConfigFile() => config_path("{$this->package}.php"),
-        ], 'config');
-    }
-
-    /**
      * Register the service provider.
      */
     public function register()
@@ -68,6 +56,17 @@ class LocalizationServiceProvider extends PackageServiceProvider
         $this->app->register(Providers\RoutingServiceProvider::class);
         $this->app->register(Providers\UtilitiesServiceProvider::class);
         $this->registerLocalization();
+    }
+
+    /**
+     * Boot the package.
+     */
+    public function boot()
+    {
+        parent::boot();
+
+        $this->publishConfig();
+        $this->registerViews();
     }
 
     /**
@@ -99,5 +98,32 @@ class LocalizationServiceProvider extends PackageServiceProvider
             $this->app['config']->get('localization.facade', 'Localization'),
             Facades\Localization::class
         );
+    }
+
+    /* ------------------------------------------------------------------------------------------------
+     |  Resources
+     | ------------------------------------------------------------------------------------------------
+     */
+    /**
+     * Publishes configs.
+     */
+    private function publishConfig()
+    {
+        $this->publishes([
+            $this->getConfigFile() => config_path("{$this->package}.php"),
+        ], 'config');
+    }
+
+    /**
+     * Register and published Views.
+     */
+    private function registerViews()
+    {
+        $viewsPath = $this->getBasePath() . '/resources/views';
+
+        $this->loadViewsFrom($viewsPath, $this->package);
+        $this->publishes([
+            $viewsPath => base_path('resources/views/vendor/' . $this->package),
+        ], 'views');
     }
 }

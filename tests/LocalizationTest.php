@@ -444,6 +444,18 @@ class LocalizationTest extends TestCase
         );
     }
 
+    /** @test */
+    public function it_can_render_locales_navigation_bar()
+    {
+        $navbar = localization()->localesNavbar();
+
+        $this->assertContains('<ul class="navbar-locales">', $navbar);
+        $this->assertContains('<li class="active">', $navbar);
+        $this->assertContains(e('English'),  $navbar);
+        $this->assertContains(e('Español'),  $navbar);
+        $this->assertContains(e('Français'), $navbar);
+    }
+
     /* ------------------------------------------------------------------------------------------------
      |  Other Functions
      | ------------------------------------------------------------------------------------------------

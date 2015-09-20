@@ -613,4 +613,16 @@ class Localization implements LocalizationInterface
     {
         return (bool) $this->config()->get('localization.accept-language-header', true);
     }
+
+    /**
+     * Get locales navigation bar.
+     *
+     * @return string
+     */
+    public function localesNavbar()
+    {
+        $supportedLocales = $this->supportedLocales->all();
+
+        return view('localization::navbar', compact('supportedLocales'))->render();
+    }
 }
