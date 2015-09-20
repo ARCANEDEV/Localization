@@ -141,9 +141,9 @@ class Localization implements LocalizationInterface
             return $this->supportedLocales;
         }
 
-        $locales = $this->config()->get('localization.supported-locales');
+        $supportedLocales = $this->config()->get('localization.supported-locales');
 
-        if ( ! is_array($locales) || empty($locales)) {
+        if ( ! is_array($supportedLocales) || empty($supportedLocales)) {
             throw new UndefinedSupportedLocalesException;
         }
 
@@ -360,11 +360,7 @@ class Localization implements LocalizationInterface
             $locale = $this->getCurrentLocale();
         }
 
-        if ( ! $this->isLocaleSupported($locale)) {
-            throw new UnsupportedLocaleException(
-                "Locale '$locale' is not in the list of supported locales."
-            );
-        }
+        $this->isLocaleSupportedOrFail($locale);
 
         if (empty($attributes)) {
             $attributes = Url::extractAttributes($url);
@@ -426,7 +422,7 @@ class Localization implements LocalizationInterface
 
         if (
             ! empty($locale) &&
-            ($locale != $this->defaultLocale || ! $this->hideDefaultLocaleInURL())
+            ($locale !== $this->defaultLocale || ! $this->hideDefaultLocaleInURL())
         ) {
             $parsedUrl['path'] = $locale . '/' . ltrim($parsedUrl['path'], '/');
         }
@@ -479,9 +475,7 @@ class Localization implements LocalizationInterface
      */
     protected function findTranslatedRouteByUrl($url, $attributes, $locale)
     {
-        if (empty($url)) {
-            return false;
-        }
+        if (empty($url)) return false;
 
         // check if this url is a translated url
         foreach ($this->routeTranslator->getTranslatedRoutes() as $translatedRoute) {
@@ -509,11 +503,7 @@ class Localization implements LocalizationInterface
      */
     public function getUrlFromRouteName($locale, $transKey, $attributes = [])
     {
-        if ( ! $this->isLocaleSupported($locale)) {
-            throw new UnsupportedLocaleException(
-                "Locale '$locale' is not in the list of supported locales."
-            );
-        }
+        $this->isLocaleSupportedOrFail($locale);
 
         if ( ! is_string($locale)) {
             $locale = $this->getDefaultLocale();
@@ -588,6 +578,24 @@ class Localization implements LocalizationInterface
             $locale !== false &&
             ! $this->getSupportedLocales()->has($locale)
         ) ? false : true;
+    }
+
+    /**
+     * Check if the locale is supported or fail if not.
+     *
+     * @param  string  $locale
+     *
+     * @throws UnsupportedLocaleException
+     */
+    public function isLocaleSupportedOrFail($locale)
+    {
+        if ($this->isLocaleSupported($locale)) {
+            return;
+        }
+
+        throw new UnsupportedLocaleException(
+            "Locale '$locale' is not in the list of supported locales."
+        );
     }
 
     /* ------------------------------------------------------------------------------------------------
