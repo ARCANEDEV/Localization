@@ -1,5 +1,6 @@
 <?php namespace Arcanedev\Localization\Tests\Utilities;
 
+use Arcanedev\Localization\Entities\Locale;
 use Arcanedev\Localization\Tests\TestCase;
 use Arcanedev\Localization\Utilities\LocalesManager;
 
@@ -59,6 +60,19 @@ class LocalesManagerTest extends TestCase
     }
 
     /** @test */
+    public function it_can_get_current_locale_entity()
+    {
+        foreach ($this->supportedLocales as $locale) {
+            $this->localesManager->setCurrentLocale($locale);
+
+            $localeEntity = $this->localesManager->getCurrentLocaleEntity();
+
+            $this->assertInstanceOf(Locale::class, $localeEntity);
+            $this->assertEquals($locale, $localeEntity->key());
+        }
+    }
+
+    /** @test */
     public function it_can_get_all_locales()
     {
         $locales = $this->localesManager->getAllLocales();
@@ -109,16 +123,6 @@ class LocalesManagerTest extends TestCase
 
         $this->assertCount(count($this->supportedLocales), $supportedKeys);
         $this->assertEquals($this->supportedLocales, $supportedKeys);
-    }
-
-    /**
-     * @test
-     *
-     * @expectedException  \Arcanedev\Localization\Exceptions\UndefinedSupportedLocalesException
-     */
-    public function it_must_throw_undefined_supported_locales_exception_on_set_with_empty_array()
-    {
-        $this->localesManager->setSupportedLocales([]);
     }
 
     /** @test */
@@ -176,5 +180,15 @@ class LocalesManagerTest extends TestCase
     public function it_must_throw_unsupported_locale_exception_on_set_default_locale()
     {
         $this->localesManager->setDefaultLocale('jp');
+    }
+
+    /**
+     * @test
+     *
+     * @expectedException  \Arcanedev\Localization\Exceptions\UndefinedSupportedLocalesException
+     */
+    public function it_must_throw_undefined_supported_locales_exception_on_set_with_empty_array()
+    {
+        $this->localesManager->setSupportedLocales([]);
     }
 }

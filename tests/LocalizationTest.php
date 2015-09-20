@@ -443,6 +443,17 @@ class LocalizationTest extends TestCase
         $this->assertContains(e('Français'), $navbar);
     }
 
+    /** @test */
+    public function it_can_get_all_locales()
+    {
+        $locales = localization()->getAllLocales();
+
+        $this->assertInstanceOf(LocaleCollection::class, $locales);
+        $this->assertFalse($locales->isEmpty());
+        $this->assertCount(289, $locales);
+        $this->assertEquals(289, $locales->count());
+    }
+
     /* ------------------------------------------------------------------------------------------------
      |  Other Functions
      | ------------------------------------------------------------------------------------------------
