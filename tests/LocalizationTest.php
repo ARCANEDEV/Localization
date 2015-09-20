@@ -33,21 +33,8 @@ class LocalizationTest extends TestCase
 
         new Localization(
             $this->app,
-            $this->app['arcanedev.localization.translator']
-        );
-    }
-
-    /**
-     * @test
-     * @expectedException         \Arcanedev\Localization\Exceptions\UndefinedSupportedLocalesException
-     * @expectedExceptionMessage  Supported locales must be defined.
-     */
-    public function it_must_throw_undefined_supported_locales_exception()
-    {
-        app('config')->set('localization.supported-locales', []);
-        new Localization(
-            $this->app,
-            $this->app['arcanedev.localization.translator']
+            $this->app['arcanedev.localization.translator'],
+            $this->app['arcanedev.localization.locales-manager']
         );
     }
 

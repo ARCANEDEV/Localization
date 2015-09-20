@@ -4,6 +4,7 @@ use Arcanedev\Localization\Contracts\LocalizationInterface;
 use Arcanedev\Localization\Entities\LocaleCollection;
 use Arcanedev\Localization\Exceptions\UndefinedSupportedLocalesException;
 use Arcanedev\Localization\Exceptions\UnsupportedLocaleException;
+use Arcanedev\Localization\Utilities\LocalesManager;
 use Arcanedev\Localization\Utilities\Negotiator;
 use Arcanedev\Localization\Utilities\RouteTranslator;
 use Arcanedev\Localization\Utilities\Url;
@@ -40,13 +41,6 @@ class Localization implements LocalizationInterface
      *
      * @var Entities\LocaleCollection
      */
-    protected $supportedLocales;
-
-    /**
-     * Supported Locales.
-     *
-     * @var Entities\LocaleCollection
-     */
     protected $locales;
 
     /**
@@ -70,6 +64,13 @@ class Localization implements LocalizationInterface
      */
     protected $routeTranslator;
 
+    /**
+     * The LocalesManager instance.
+     *
+     * @var LocalesManager
+     */
+    private $localesManager;
+
     /* ------------------------------------------------------------------------------------------------
      |  Constructor
      | ------------------------------------------------------------------------------------------------
@@ -77,17 +78,20 @@ class Localization implements LocalizationInterface
     /**
      * Creates new instance.
      *
-     * @param  Application  $app
+     * @param  Application      $app
+     * @param  RouteTranslator  $routeTranslator
+     * @param  LocalesManager   $localesManager
      *
      * @throws UndefinedSupportedLocalesException
      * @throws UnsupportedLocaleException
      */
-    public function __construct(Application $app, $routeTranslator)
+    public function __construct(Application $app, $routeTranslator, $localesManager)
     {
         $this->app              = $app;
-        $this->supportedLocales = new LocaleCollection;
-        $this->locales          = new LocaleCollection;
         $this->routeTranslator  = $routeTranslator;
+        $this->localesManager   = $localesManager;
+
+        $this->locales          = new LocaleCollection;
         $this->defaultLocale    = $this->config()->get('app.locale');
 
         $this->getSupportedLocales();
@@ -137,17 +141,7 @@ class Localization implements LocalizationInterface
      */
     public function getSupportedLocales()
     {
-        if ( ! $this->supportedLocales->isEmpty()) {
-            return $this->supportedLocales;
-        }
-
-        $supportedLocales = $this->config()->get('localization.supported-locales');
-
-        if ( ! is_array($supportedLocales) || empty($supportedLocales)) {
-            throw new UndefinedSupportedLocalesException;
-        }
-
-        return $this->supportedLocales->loadSupported();
+        return $this->localesManager->getSupportedLocales();
     }
 
     /**
@@ -159,7 +153,7 @@ class Localization implements LocalizationInterface
      */
     public function getSupportedLocalesKeys()
     {
-        return $this->supportedLocales->keys()->toArray();
+        return $this->localesManager->getSupportedLocalesKeys();
     }
 
     /**
@@ -193,7 +187,7 @@ class Localization implements LocalizationInterface
      */
     public function getCurrentLocaleEntity()
     {
-        return $this->supportedLocales->get($this->getCurrentLocale());
+        return $this->getSupportedLocales()->get($this->getCurrentLocale());
     }
 
     /**
@@ -251,7 +245,7 @@ class Localization implements LocalizationInterface
             $locale = $this->request()->segment(1);
         }
 
-        if ($this->supportedLocales->has($locale)) {
+        if ($this->getSupportedLocales()->has($locale)) {
             $this->currentLocale = $locale;
         }
         else {
@@ -554,7 +548,7 @@ class Localization implements LocalizationInterface
      */
     private function isDefaultLocaleSupported()
     {
-        if ($this->supportedLocales->has($this->defaultLocale)) {
+        if ($this->getSupportedLocales()->has($this->defaultLocale)) {
             return;
         }
 
@@ -629,7 +623,7 @@ class Localization implements LocalizationInterface
      */
     public function localesNavbar()
     {
-        $supportedLocales = $this->supportedLocales->all();
+        $supportedLocales = $this->getSupportedLocales();
 
         return view('localization::navbar', compact('supportedLocales'))->render();
     }

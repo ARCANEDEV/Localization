@@ -90,8 +90,9 @@ class LocalizationServiceProvider extends PackageServiceProvider
     {
         $this->app->singleton('arcanedev.localization', function($app) {
             $routeTranslator = $app['arcanedev.localization.translator'];
+            $localesManager  = $app['arcanedev.localization.locales-manager'];
 
-            return new Localization($app, $routeTranslator);
+            return new Localization($app, $routeTranslator, $localesManager);
         });
 
         $this->addFacade(
