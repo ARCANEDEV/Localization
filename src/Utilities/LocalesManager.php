@@ -1,5 +1,6 @@
 <?php namespace Arcanedev\Localization\Utilities;
 
+use Arcanedev\Localization\Contracts\LocalesManagerInterface;
 use Arcanedev\Localization\Entities\Locale;
 use Arcanedev\Localization\Entities\LocaleCollection;
 use Arcanedev\Localization\Exceptions\UndefinedSupportedLocalesException;
@@ -13,7 +14,7 @@ use Illuminate\Foundation\Application;
  * @package  Arcanedev\Localization
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
-class LocalesManager
+class LocalesManager implements LocalesManagerInterface
 {
     /* ------------------------------------------------------------------------------------------------
      |  Properties
