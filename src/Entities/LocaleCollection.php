@@ -28,6 +28,8 @@ class LocaleCollection extends Collection
     /**
      * Load all locales.
      *
+     * @todo:   Clean this method
+     *
      * @return self
      */
     public function loadAll()
@@ -39,6 +41,8 @@ class LocaleCollection extends Collection
 
     /**
      * Get all supported locales.
+     *
+     * @todo:   Clean this method
      *
      * @return self
      */
