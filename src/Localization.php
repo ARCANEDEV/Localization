@@ -171,7 +171,7 @@ class Localization implements LocalizationInterface
      */
     public function getCurrentLocaleEntity()
     {
-        return $this->getSupportedLocales()->get($this->getCurrentLocale());
+        return $this->localesManager->getCurrentLocaleEntity();
     }
 
     /**
@@ -212,6 +212,16 @@ class Localization implements LocalizationInterface
     public function getCurrentLocaleNative()
     {
         return $this->getCurrentLocaleEntity()->native();
+    }
+
+    /**
+     * Get all locales.
+     *
+     * @return \Arcanedev\Localization\Entities\LocaleCollection
+     */
+    public function getAllLocales()
+    {
+        return $this->localesManager->getAllLocales();
     }
 
     /**
