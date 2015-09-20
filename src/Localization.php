@@ -5,7 +5,6 @@ use Arcanedev\Localization\Entities\LocaleCollection;
 use Arcanedev\Localization\Exceptions\UndefinedSupportedLocalesException;
 use Arcanedev\Localization\Exceptions\UnsupportedLocaleException;
 use Arcanedev\Localization\Utilities\LocalesManager;
-use Arcanedev\Localization\Utilities\Negotiator;
 use Arcanedev\Localization\Utilities\RouteTranslator;
 use Arcanedev\Localization\Utilities\Url;
 use Illuminate\Foundation\Application;
@@ -28,13 +27,6 @@ class Localization implements LocalizationInterface
      * @var Application
      */
     private $app;
-
-    /**
-     * Current locale.
-     *
-     * @var string|null
-     */
-    private $currentLocale = null;
 
     /**
      * Base url.
@@ -77,7 +69,17 @@ class Localization implements LocalizationInterface
         $this->routeTranslator  = $routeTranslator;
         $this->localesManager   = $localesManager;
 
-        $this->localesManager->setDefaultLocale($this->config()->get('app.locale'));
+        $this->init();
+    }
+
+    /**
+     * Start the engine.
+     */
+    private function init()
+    {
+        $defaultLocale = $this->config()->get('app.locale');
+
+        $this->localesManager->setDefaultLocale($defaultLocale);
     }
 
     /* ------------------------------------------------------------------------------------------------
@@ -145,21 +147,21 @@ class Localization implements LocalizationInterface
      */
     public function getCurrentLocale()
     {
-        if ( ! is_null($this->currentLocale)) {
-            return $this->currentLocale;
-        }
+        return $this->localesManager->getCurrentLocale();
+    }
 
-        // Get application default language
-        if ( ! $this->useAcceptLanguageHeader()) {
-            return $this->config()->get('app.locale');
-        }
+    /**
+     * Set the current locale.
+     *
+     * @param  string  $currentLocale
+     *
+     * @return self
+     */
+    private function setCurrentLocale($currentLocale)
+    {
+        $this->localesManager->setCurrentLocale($currentLocale);
 
-        $negotiator = new Negotiator(
-            $this->getDefaultLocale(),
-            $this->getSupportedLocales()
-        );
-
-        return $negotiator->negotiate($this->request());
+        return $this;
     }
 
     /**
@@ -228,23 +230,18 @@ class Localization implements LocalizationInterface
         }
 
         if ($this->getSupportedLocales()->has($locale)) {
-            $this->currentLocale = $locale;
+            $currentLocale = $locale;
+            $this->setCurrentLocale($currentLocale);
         }
         else {
             // if the first segment/locale passed is not valid the system would ask which locale have to take
             // it could be taken by the browser depending on your configuration
-            $locale = null;
+            $locale        = null;
 
-
-            $this->currentLocale = $this->hideDefaultLocaleInURL()
-                // if we reached this point and hideDefaultLocaleInURL is true we have to assume we are routing
-                // to a defaultLocale route.
-                ? $this->getDefaultLocale()
-                // but if hideDefaultLocaleInURL is false, we have to retrieve it from the browser...
-                : $this->getCurrentLocale();
+            $currentLocale = $this->localesManager->getCurrentOrDefaultLocale();
         }
 
-        $this->app->setLocale($this->currentLocale);
+        $this->app->setLocale($currentLocale);
 
         return $locale;
     }
@@ -356,7 +353,7 @@ class Localization implements LocalizationInterface
 
         if (
             $locale &&
-            $translatedRoute = $this->findTranslatedRouteByUrl($url, $attributes, $this->currentLocale)
+            $translatedRoute = $this->findTranslatedRouteByUrl($url, $attributes, $this->getCurrentLocale())
         ) {
             return $this->getUrlFromRouteName($locale, $translatedRoute, $attributes);
         }
@@ -516,7 +513,7 @@ class Localization implements LocalizationInterface
      */
     public function getRouteNameFromPath($path)
     {
-        return $this->routeTranslator->getRouteNameFromPath($path, $this->currentLocale);
+        return $this->routeTranslator->getRouteNameFromPath($path, $this->getCurrentLocale());
     }
 
     /* ------------------------------------------------------------------------------------------------
@@ -570,16 +567,6 @@ class Localization implements LocalizationInterface
     public function hideDefaultLocaleInURL()
     {
         return (bool) $this->config()->get('localization.hide-default-in-url', false);
-    }
-
-    /**
-     * Returns the translation key for a given path.
-     *
-     * @return bool
-     */
-    private function useAcceptLanguageHeader()
-    {
-        return (bool) $this->config()->get('localization.accept-language-header', true);
     }
 
     /**

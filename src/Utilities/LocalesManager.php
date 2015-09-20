@@ -5,6 +5,7 @@ use Arcanedev\Localization\Entities\LocaleCollection;
 use Arcanedev\Localization\Exceptions\UndefinedSupportedLocalesException;
 use Arcanedev\Localization\Exceptions\UnsupportedLocaleException;
 use Illuminate\Config\Repository as Config;
+use Illuminate\Foundation\Application;
 
 /**
  * Class     LocalesManager
@@ -43,11 +44,11 @@ class LocalesManager
     protected $supportedLocales;
 
     /**
-     * The config repository.
+     * The application instance.
      *
-     * @var Config
+     * @var Application
      */
-    private $config;
+    private $app;
 
     /* ------------------------------------------------------------------------------------------------
      |  Constructor
@@ -56,11 +57,11 @@ class LocalesManager
     /**
      * Create LocaleManager instance.
      *
-     * @param  Config  $config
+     * @param  Application  $app
      */
-    public function __construct(Config $config)
+    public function __construct(Application $app)
     {
-        $this->config           = $config;
+        $this->app              = $app;
         $this->locales          = new LocaleCollection;
         $this->supportedLocales = new LocaleCollection;
 
@@ -76,7 +77,7 @@ class LocalesManager
     {
         $this->locales->loadFromArray($this->getConfig('locales'));
         $this->setSupportedLocales($this->getConfig('supported-locales'));
-        $this->setDefaultLocale($this->config->get('app.locale'));
+        $this->setDefaultLocale();
     }
 
     /* ------------------------------------------------------------------------------------------------
@@ -100,8 +101,12 @@ class LocalesManager
      *
      * @return self
      */
-    public function setDefaultLocale($defaultLocale)
+    public function setDefaultLocale($defaultLocale = null)
     {
+        if (is_null($defaultLocale)) {
+            $defaultLocale = $this->config()->get('app.locale');
+        }
+
         $this->defaultLocale = $defaultLocale;
 
         $this->isDefaultLocaleSupported();
@@ -110,13 +115,22 @@ class LocalesManager
     }
 
     /**
-     * Get the current locale.
+     * Returns current language.
      *
      * @return string
      */
     public function getCurrentLocale()
     {
-        return $this->currentLocale;
+        if ( ! is_null($this->currentLocale)) {
+            return $this->currentLocale;
+        }
+
+        if ($this->useAcceptLanguageHeader()) {
+            return $this->negotiateLocale();
+        }
+
+        // Get application default language
+        return $this->getDefaultLocale();
     }
 
     /**
@@ -186,6 +200,16 @@ class LocalesManager
     }
 
     /**
+     * Get config repository.
+     *
+     * @return Config
+     */
+    private function config()
+    {
+        return $this->app['config'];
+    }
+
+    /**
      * Get localization config.
      *
      * @param  string  $name
@@ -195,13 +219,20 @@ class LocalesManager
      */
     private function getConfig($name, $default = null)
     {
-        return $this->config->get("localization.$name", $default);
+        return $this->config()->get("localization.$name", $default);
     }
 
-    /* ------------------------------------------------------------------------------------------------
-     |  Main Functions
-     | ------------------------------------------------------------------------------------------------
+    /**
+     * Get negotiated locale.
+     *
+     * @return string
      */
+    private function negotiateLocale()
+    {
+        $negotiator = new Negotiator($this->getDefaultLocale(), $this->getSupportedLocales());
+
+        return $negotiator->negotiate($this->app['request']);
+    }
 
     /* ------------------------------------------------------------------------------------------------
      |  Check Functions
@@ -233,6 +264,43 @@ class LocalesManager
     public function isSupportedLocale($locale)
     {
         return $this->getSupportedLocales()->has($locale);
+    }
+
+    /**
+     * Hide the default locale in URL ??
+     *
+     * @return bool
+     */
+    public function isDefaultLocaleHiddenInURL()
+    {
+        return (bool) $this->getConfig('hide-default-in-url', false);
+    }
+
+    /**
+     * Returns the translation key for a given path.
+     *
+     * @return bool
+     */
+    private function useAcceptLanguageHeader()
+    {
+        return (bool) $this->getConfig('accept-language-header', true);
+    }
+
+    /**
+     * Get current or default locale.
+     *
+     * @return string
+     */
+    public function getCurrentOrDefaultLocale()
+    {
+        // If we reached this point and isDefaultLocaleHiddenInURL is true we have to assume we are routing
+        // to a defaultLocale route.
+        if ($this->isDefaultLocaleHiddenInURL()) {
+            $this->setCurrentLocale($this->getDefaultLocale());
+        }
+
+        // But if isDefaultLocaleHiddenInURL is false, we have to retrieve it from the browser...
+        return $this->getCurrentLocale();
     }
 
     /* ------------------------------------------------------------------------------------------------

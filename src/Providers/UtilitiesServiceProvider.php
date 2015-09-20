@@ -47,7 +47,7 @@ class UtilitiesServiceProvider extends ServiceProvider
     private function registerLocalesManager()
     {
         $this->app->singleton('arcanedev.localization.locales-manager', function ($app) {
-            return new LocalesManager($app['config']);
+            return new LocalesManager($app);
         });
     }
 }
