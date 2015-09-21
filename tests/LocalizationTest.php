@@ -468,6 +468,15 @@ class LocalizationTest extends TestCase
         $this->assertEquals(289, $locales->count());
     }
 
+    /** @test */
+    public function it_can_use_facade()
+    {
+        $this->assertEquals(
+            $this->app->getLocale(),
+            \Arcanedev\Localization\Facades\Localization::getDefaultLocale()
+        );
+    }
+
     /* ------------------------------------------------------------------------------------------------
      |  Other Functions
      | ------------------------------------------------------------------------------------------------
