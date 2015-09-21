@@ -2,7 +2,6 @@
 
 use Arcanedev\Localization\Bases\Middleware;
 use Closure;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 /**
@@ -39,10 +38,7 @@ class LocaleCookieRedirect extends Middleware
 
         $locale = $request->cookie('locale', null);
 
-        if (
-            ! is_null($locale) &&
-            ! $this->isDefaultLocaleHidden($locale)
-        ) {
+        if (is_string($locale) && ! $this->isDefaultLocaleHidden($locale)) {
             session()->reflash();
 
             $redirect = $this->getLocalizedRedirect($locale);

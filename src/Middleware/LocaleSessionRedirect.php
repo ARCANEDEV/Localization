@@ -38,10 +38,7 @@ class LocaleSessionRedirect extends Middleware
 
         $locale = session('locale', null);
 
-        if (
-            ! is_null($locale) &&
-            ! $this->isDefaultLocaleHidden($locale)
-        ) {
+        if (is_string($locale) && ! $this->isDefaultLocaleHidden($locale)) {
             session()->reflash();
 
             $redirect = $this->getLocalizedRedirect($locale);
