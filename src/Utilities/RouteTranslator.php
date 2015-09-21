@@ -183,7 +183,7 @@ class RouteTranslator implements RouteTranslatorInterface
      * @param  string  $path       -  Path to check if it is a translated route
      * @param  string  $locale  -  Language to check if the path exists
      *
-     * @return string|false
+     * @return false|string
      */
     public function findTranslatedRouteByPath($path, $locale)
     {

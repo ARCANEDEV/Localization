@@ -343,7 +343,7 @@ class Localization implements LocalizationInterface
             $baseUrl, $parsedUrl, $this->getDefaultLocale(), $this->getSupportedLocales()
         );
 
-        if ($translatedRoute) {
+        if ($translatedRoute !== false) {
             return $this->getUrlFromRouteName($locale, $translatedRoute, $attributes);
         }
 
