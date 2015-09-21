@@ -1,12 +1,16 @@
 <?php namespace Arcanedev\Localization\Entities;
 
+use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Contracts\Support\Jsonable;
+use JsonSerializable;
+
 /**
  * Class     Locale
  *
  * @package  Arcanedev\Localization\Entities
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
-class Locale
+class Locale implements Arrayable, Jsonable, JsonSerializable
 {
     /* ------------------------------------------------------------------------------------------------
      |  Properties
@@ -223,13 +227,50 @@ class Locale
      */
     private function setDefault()
     {
-        $this->default = $this->key === config('app.locale');
+        $this->default = ($this->key === config('app.locale'));
 
         return $this;
     }
 
     /* ------------------------------------------------------------------------------------------------
-     |  Check Functions
+     |  Other Functions
      | ------------------------------------------------------------------------------------------------
      */
+    /**
+     * Get the locale entity as an array.
+     *
+     * @return array
+     */
+    public function toArray()
+    {
+        return [
+            'key'    => $this->key(),
+            'name'   => $this->name(),
+            'script' => $this->script(),
+            'dir'    => $this->direction(),
+            'native' => $this->native(),
+        ];
+    }
+
+    /**
+     * Convert the object to its JSON representation.
+     *
+     * @param  int  $options
+     *
+     * @return string
+     */
+    public function toJson($options = 0)
+    {
+        return json_encode($this->toArray(), $options);
+    }
+
+    /**
+     * Specify data which should be serialized to JSON.
+     *
+     * @return array
+     */
+    public function jsonSerialize()
+    {
+        return $this->toArray();
+    }
 }
