@@ -224,6 +224,8 @@ class Localization implements LocalizationInterface
      * Sets the base url for the site.
      *
      * @param  string  $url
+     *
+     * @return self
      */
     public function setBaseUrl($url)
     {
@@ -232,6 +234,8 @@ class Localization implements LocalizationInterface
         }
 
         $this->baseUrl = $url;
+
+        return $this;
     }
 
     /**
@@ -263,7 +267,7 @@ class Localization implements LocalizationInterface
     /**
      * Returns an URL adapted to $locale or current locale.
      *
-     * @param  string       $url
+     * @param  string|null  $url
      * @param  string|null  $locale
      *
      * @throws UnsupportedLocaleException
@@ -278,7 +282,7 @@ class Localization implements LocalizationInterface
     /**
      * It returns an URL without locale (if it has it).
      *
-     * @param  string|false  $url
+     * @param  string|null  $url
      *
      * @return string
      */
@@ -292,9 +296,9 @@ class Localization implements LocalizationInterface
      *
      * @todo: Refactor this beast
      *
-     * @param  string|bool   $locale
-     * @param  string|false  $url
-     * @param  array         $attributes
+     * @param  string|null  $locale
+     * @param  string|null  $url
+     * @param  array        $attributes
      *
      * @return string|false
      *
@@ -451,9 +455,9 @@ class Localization implements LocalizationInterface
     /**
      * Returns an URL adapted to the route name and the locale given.
      *
-     * @param  string|bool  $locale
-     * @param  string       $transKey
-     * @param  array        $attributes
+     * @param  string  $locale
+     * @param  string  $transKey
+     * @param  array   $attributes
      *
      * @return string|false
      *

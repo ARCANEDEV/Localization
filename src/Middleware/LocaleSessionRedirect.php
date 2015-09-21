@@ -2,7 +2,6 @@
 
 use Arcanedev\Localization\Bases\Middleware;
 use Closure;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 /**
@@ -37,18 +36,17 @@ class LocaleSessionRedirect extends Middleware
             return $next($request);
         }
 
-        $locale = session('locale', false);
+        $locale = session('locale', null);
 
-        if ($locale && ! $this->isDefaultLocaleHidden($locale)) {
+        if (
+            ! is_null($locale) &&
+            ! $this->isDefaultLocaleHidden($locale)
+        ) {
             session()->reflash();
 
-            $redirectUrl = $this->localization->getLocalizedURL($locale);
+            $redirect = $this->getLocalizedRedirect($locale);
 
-            if (is_string($redirectUrl)) {
-                return new RedirectResponse($redirectUrl, 302, [
-                    'Vary' => 'Accept-Language'
-                ]);
-            }
+            if ( ! is_null($redirect)) return $redirect;
         }
 
         return $next($request);

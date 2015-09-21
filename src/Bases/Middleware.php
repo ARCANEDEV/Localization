@@ -103,19 +103,17 @@ abstract class Middleware extends BaseMiddleware
     /**
      * Get the redirection response.
      *
-     * @param  false|string  $locale
+     * @param  string  $locale
      *
      * @return RedirectResponse|null
      */
-    protected function getRedirection($locale)
+    protected function getLocalizedRedirect($locale)
     {
-        $redirection = localization()->getLocalizedURL($locale);
+        $url = localization()->getLocalizedURL($locale);
 
-        if ( ! is_string($redirection)) {
-            return null;
-        }
+        if ( ! is_string($url)) return null;
 
-        return new RedirectResponse($redirection, 302, [
+        return new RedirectResponse($url, 302, [
             'Vary' => 'Accept-Language'
         ]);
     }
