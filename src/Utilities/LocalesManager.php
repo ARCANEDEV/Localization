@@ -137,11 +137,12 @@ class LocalesManager implements LocalesManagerInterface
     public function setDefaultLocale($defaultLocale = null)
     {
         if (is_null($defaultLocale)) {
-            $defaultLocale = $this->config()->get('app.locale');
+            $defaultLocale = $this->app->getLocale();
         }
 
         $this->isDefaultLocaleSupported($defaultLocale);
         $this->defaultLocale = $defaultLocale;
+        // TODO: Refresh locales & supportedLocales collection [Locale entity => default property]
 
         return $this;
     }

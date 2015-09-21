@@ -72,7 +72,7 @@ class Localization implements LocalizationInterface
         $this->localesManager   = $localesManager;
 
         $this->localesManager->setDefaultLocale(
-            $this->app['config']->get('app.locale')
+            $this->app->getLocale()
         );
     }
 

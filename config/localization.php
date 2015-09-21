@@ -23,7 +23,7 @@ return [
             'localization-cookie-redirect'  => false,
             'localization-redirect'         => true,
             'localized-routes'              => true,
-        ]
+        ],
     ],
 
     /* ------------------------------------------------------------------------------------------------
