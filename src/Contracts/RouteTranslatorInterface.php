@@ -1,4 +1,5 @@
 <?php namespace Arcanedev\Localization\Contracts;
+use Arcanedev\Localization\Entities\LocaleCollection;
 use Arcanedev\Localization\Exceptions\InvalidTranslationException;
 
 /**
@@ -51,6 +52,18 @@ interface RouteTranslatorInterface
      * @throws InvalidTranslationException
      */
     public function trans($route, $locale = null);
+
+    /**
+     * Get the translated route.
+     *
+     * @param  string                                             $baseUrl
+     * @param  array                                              $parsedUrl
+     * @param  string                                             $defaultLocale
+     * @param  \Arcanedev\Localization\Entities\LocaleCollection  $supportedLocales
+     *
+     * @return string
+     */
+    public function getTranslatedRoute($baseUrl, array &$parsedUrl, $defaultLocale, LocaleCollection $supportedLocales);
 
     /**
      * Returns the translation key for a given path.

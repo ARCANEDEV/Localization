@@ -1,6 +1,7 @@
 <?php namespace Arcanedev\Localization\Utilities;
 
 use Arcanedev\Localization\Contracts\RouteTranslatorInterface;
+use Arcanedev\Localization\Entities\LocaleCollection;
 use Arcanedev\Localization\Exceptions\InvalidTranslationException;
 use Illuminate\Translation\Translator;
 
@@ -112,6 +113,45 @@ class RouteTranslator implements RouteTranslatorInterface
         }
 
         return $this->translate($route, $locale);
+    }
+
+    /**
+     * Get the translated route.
+     *
+     * @param  string                                             $baseUrl
+     * @param  array                                              $parsedUrl
+     * @param  string                                             $defaultLocale
+     * @param  \Arcanedev\Localization\Entities\LocaleCollection  $supportedLocales
+     *
+     * @return string
+     */
+    public function getTranslatedRoute(
+        $baseUrl,
+        array &$parsedUrl,
+        $defaultLocale,
+        LocaleCollection $supportedLocales
+    ) {
+        if ( ! $parsedUrl || empty($parsedUrl['path'])) {
+            $parsedUrl['path'] = '';
+        }
+        else {
+            $path = $parsedUrl['path'] = str_replace($baseUrl, '', '/' . ltrim($parsedUrl['path'], '/'));
+
+            foreach ($supportedLocales->keys() as $locale) {
+                foreach (["%^/?$locale/%", "%^/?$locale$%"] as $pattern) {
+                    $parsedUrl['path'] = preg_replace($pattern, '$1', $parsedUrl['path']);
+
+                    if ($parsedUrl['path'] !== $path) {
+                        $defaultLocale = $locale;
+                        break 2;
+                    }
+                }
+            }
+        }
+
+        $parsedUrl['path'] = ltrim($parsedUrl['path'], '/');
+
+        return $this->findTranslatedRouteByPath($parsedUrl['path'], $defaultLocale);
     }
 
     /**

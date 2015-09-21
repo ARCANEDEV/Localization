@@ -336,36 +336,12 @@ class Localization implements LocalizationInterface
             return $this->getUrlFromRouteName($locale, $translatedRoute, $attributes);
         }
 
-        $baseUrl       = $this->request()->getBaseUrl();
-        $parsedUrl     = parse_url($url);
-        $defaultLocale = $this->getDefaultLocale();
+        $baseUrl    = $this->request()->getBaseUrl();
+        $parsedUrl  = parse_url($url);
 
-        if ( ! $parsedUrl || empty($parsedUrl['path'])) {
-            $parsedUrl['path'] = '';
-        }
-        else {
-            $path = $parsedUrl['path'] = str_replace($baseUrl, '', '/' . ltrim($parsedUrl['path'], '/'));
-
-            foreach ($this->getSupportedLocales() as $localeCode => $lang) {
-                $parsedUrl['path'] = preg_replace('%^/?' . $localeCode . '/%', '$1', $parsedUrl[ 'path' ]);
-
-                if ($parsedUrl['path'] !== $path) {
-                    $defaultLocale = $localeCode;
-                    break;
-                }
-
-                $parsedUrl['path'] = preg_replace('%^/?' . $localeCode . '$%', '$1', $parsedUrl['path']);
-
-                if ($parsedUrl['path'] !== $path) {
-                    $defaultLocale = $localeCode;
-                    break;
-                }
-            }
-        }
-
-        $parsedUrl['path'] = ltrim($parsedUrl['path'], '/');
-
-        $translatedRoute = $this->routeTranslator->findTranslatedRouteByPath($parsedUrl['path'], $defaultLocale);
+        $translatedRoute = $this->routeTranslator->getTranslatedRoute(
+            $baseUrl, $parsedUrl, $this->getDefaultLocale(), $this->getSupportedLocales()
+        );
 
         if ($translatedRoute) {
             return $this->getUrlFromRouteName($locale, $translatedRoute, $attributes);
