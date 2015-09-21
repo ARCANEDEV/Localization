@@ -307,7 +307,7 @@ class Localization implements LocalizationInterface
      */
     public function getLocalizedURL($locale = null, $url = null, $attributes = [])
     {
-        if ($locale === null) {
+        if (is_null($locale)) {
             $locale = $this->getCurrentLocale();
         }
 
