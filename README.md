@@ -20,13 +20,16 @@ Localization [![For Laravel 5.1][badge_laravel]](https://github.com/ARCANEDEV/Lo
 
 Easy i18n localization for Laravel, an useful tool to combine with Laravel localization classes.
 
-The Localization package was inspired from [mcamara/laravel-localization](https://github.com/mcamara/laravel-localization).
-
- > :warning: Beware, this package is still under some heavy development and interface is subject to change.
-
 Official documentation for Localization package can be found at the [Localization Wiki](https://github.com/ARCANEDEV/Localization/wiki).
 
 Feel free to check out the [releases](https://github.com/ARCANEDEV/Localization/releases), [license](https://github.com/ARCANEDEV/Localization/blob/master/LICENSE.md), and [contribution guidelines](https://github.com/ARCANEDEV/Localization/blob/master/CONTRIBUTING.md).
+  
+### Features
+
+  * Easy setup & configuration.
+  * New extended Router to manage your localized routes.
+  * Locales selector menu (Publishable & Customizable).
+  * Locales manager: List all locales / supported locales, change default locale / supported locales on the fly, and more.
   
 ## Table of contents
 
@@ -41,16 +44,22 @@ Feel free to check out the [releases](https://github.com/ARCANEDEV/Localization/
 
   - [ ] 100% Code coverage + Maximum code quality.
   - [ ] Refactoring.
+  - [ ] Complete the documentation (Wiki).
+  - [ ] Add examples (like how to generate a localized sitemap).
 
 ### TODOS
 
-  - [ ] Adding language selector view.
-  - [ ] Laravel 5.0 supported.
+  - [ ] Laravel 5.0 support.
 
 ### DONE
 
   - [x] Laravel 5.1 supported.
+  - [x] Adding language selector view.
   
+## Credit
+
+The Localization package was inspired from [mcamara/laravel-localization](https://github.com/mcamara/laravel-localization).
+
 ## Contribution
 
 Any ideas are welcome. Feel free to submit any issues or pull requests, please check the [contribution guidelines](https://github.com/ARCANEDEV/Localization/blob/master/CONTRIBUTING.md).
