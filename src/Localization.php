@@ -418,9 +418,9 @@ class Localization implements LocalizationInterface
 
         // check if this url is a translated url
         foreach ($this->routeTranslator->getTranslatedRoutes() as $translatedRoute) {
-            $routeName = $this->getUrlFromRouteName($locale, $translatedRoute, $attributes);
+            $translatedUrl = $this->getUrlFromRouteName($locale, $translatedRoute, $attributes);
 
-            if ($this->getNonLocalizedURL($routeName) == $this->getNonLocalizedURL($url))  {
+            if ($this->getNonLocalizedURL($translatedUrl) === $this->getNonLocalizedURL($url))  {
                 return $translatedRoute;
             }
         }
@@ -444,25 +444,13 @@ class Localization implements LocalizationInterface
     {
         $this->isLocaleSupportedOrFail($locale);
 
-        if ( ! is_string($locale)) {
-            $locale = $this->getDefaultLocale();
-        }
-
-        $route = '';
-
-        if (
-            ! ($locale === $this->getDefaultLocale() && $this->isDefaultLocaleHiddenInUrl())
-        ) {
-            $route = '/' . $locale;
-        }
-
-        if (
-            is_string($locale) &&
-            $this->routeTranslator->hasTranslation($transKey, $locale)
-        ) {
-            $translation = $this->routeTranslator->trans($transKey, $locale);
-            $route       = Url::substituteAttributes($attributes, $route . '/' . $translation);
-        }
+        $route = $this->routeTranslator->getUrlFromRouteName(
+            $locale,
+            $this->getDefaultLocale(),
+            $transKey,
+            $attributes,
+            $this->isDefaultLocaleHiddenInUrl()
+        );
 
         // This locale does not have any key for this route name
         if (empty($route)) return false;

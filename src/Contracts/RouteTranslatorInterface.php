@@ -85,6 +85,19 @@ interface RouteTranslatorInterface
      */
     public function findTranslatedRouteByPath($path, $locale);
 
+    /**
+     * Get URL from route name.
+     *
+     * @param  string      $locale
+     * @param  string      $defaultLocale
+     * @param  string      $transKey
+     * @param  array       $attributes
+     * @param  bool|false  $defaultHidden
+     *
+     * @return string
+     */
+    public function getUrlFromRouteName($locale, $defaultLocale, $transKey, $attributes = [], $defaultHidden = false);
+
     /* ------------------------------------------------------------------------------------------------
      |  Check Functions
      | ------------------------------------------------------------------------------------------------

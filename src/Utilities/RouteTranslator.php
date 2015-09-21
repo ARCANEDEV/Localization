@@ -197,6 +197,33 @@ class RouteTranslator implements RouteTranslatorInterface
         return false;
     }
 
+    /**
+     * Get URL from route name.
+     *
+     * @param  string      $locale
+     * @param  string      $defaultLocale
+     * @param  string      $transKey
+     * @param  array       $attributes
+     * @param  bool|false  $defaultHidden
+     *
+     * @return string
+     */
+    public function getUrlFromRouteName($locale, $defaultLocale, $transKey, $attributes = [], $defaultHidden = false)
+    {
+        if ( ! is_string($locale)) {
+            $locale = $defaultLocale;
+        }
+
+        $route = ($locale === $defaultLocale && $defaultHidden) ? '' : '/' . $locale;
+
+        if ( ! empty($locale) && $this->hasTranslation($transKey, $locale)) {
+            $translation = $this->trans($transKey, $locale);
+            $route       = Url::substituteAttributes($attributes, $route . '/' . $translation);
+        }
+
+        return $route;
+    }
+
     /* ------------------------------------------------------------------------------------------------
      |  Other Functions
      | ------------------------------------------------------------------------------------------------
@@ -219,11 +246,13 @@ class RouteTranslator implements RouteTranslatorInterface
 
         $translated = $this->translator->trans($key, [], '', $locale);
 
+        // @codeCoverageIgnoreStart
         if ( ! is_string($translated)) {
             throw new InvalidTranslationException(
-                "The translation key [$key] for locale [$locale] has returned an array instead of string."
+                "The translation key [$key] for locale [$locale] should return a string value."
             );
         }
+        // @codeCoverageIgnoreEnd
 
         return $translated;
     }
