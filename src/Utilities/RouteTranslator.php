@@ -119,19 +119,19 @@ class RouteTranslator implements RouteTranslatorInterface
      * Get the translated route.
      *
      * @param  string                                             $baseUrl
-     * @param  array                                              $parsedUrl
+     * @param  array|false                                        $parsedUrl
      * @param  string                                             $defaultLocale
      * @param  \Arcanedev\Localization\Entities\LocaleCollection  $supportedLocales
      *
-     * @return string
+     * @return string|false
      */
     public function getTranslatedRoute(
         $baseUrl,
-        array &$parsedUrl,
+        &$parsedUrl,
         $defaultLocale,
         LocaleCollection $supportedLocales
     ) {
-        if ( ! $parsedUrl || empty($parsedUrl['path'])) {
+        if (empty($parsedUrl) || ! isset($parsedUrl['path'])) {
             $parsedUrl['path'] = '';
         }
         else {
