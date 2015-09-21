@@ -162,41 +162,6 @@ abstract class TestCase extends BaseTestCase
             localization()->setLocale($locale);
         }
 
-        app('router')->localizedGroup(function () {
-            app('router')->get('/', [
-                'as'    =>  'index',
-                function () {
-                    return app('translator')->get('localization::routes.hello');
-                }
-            ]);
-
-            app('router')->get('test', [
-                'as'    => 'test',
-                function () {
-                    return app('translator')->get('localization::routes.test-text');
-                }
-            ]);
-
-            app('router')->transGet('localization::routes.about', [
-                'as'    => 'about',
-                function () {
-                    return localization()->getLocalizedURL('es') ? : "Not url available";
-                }
-            ]);
-
-            app('router')->transGet('localization::routes.view', [
-                'as'    => 'view',
-                function () {
-                    return localization()->getLocalizedURL('es') ? : "Not url available";
-                }
-            ]);
-
-            app('router')->transGet('localization::routes.view-project', [
-                'as'    => 'view-project',
-                function () {
-                    return localization()->getLocalizedURL('es') ? : "Not url available";
-                }
-            ]);
-        });
+        (new Stubs\Http\RouteRegistrar)->map(app('router'));
     }
 }

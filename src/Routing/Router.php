@@ -47,6 +47,8 @@ class Router extends IlluminateRouter
     }
 
     /**
+     * Register a new translated GET route with the router.
+     *
      * @param  string                 $trans
      * @param  \Closure|array|string  $action
      *
@@ -60,6 +62,8 @@ class Router extends IlluminateRouter
     }
 
     /**
+     * Register a new translated POST route with the router.
+     *
      * @param  string                 $trans
      * @param  \Closure|array|string  $action
      *
@@ -73,6 +77,8 @@ class Router extends IlluminateRouter
     }
 
     /**
+     * Register a new translated PUT route with the router.
+     *
      * @param  string                 $trans
      * @param  \Closure|array|string  $action
      *
@@ -86,7 +92,7 @@ class Router extends IlluminateRouter
     }
 
     /**
-     * Register a new PATCH route with the router.
+     * Register a new translated PATCH route with the router.
      *
      * @param  string                 $trans
      * @param  \Closure|array|string  $action
@@ -101,7 +107,7 @@ class Router extends IlluminateRouter
     }
 
     /**
-     * Register a new DELETE route with the router.
+     * Register a new translated DELETE route with the router.
      *
      * @param  string                 $trans
      * @param  \Closure|array|string  $action
@@ -116,7 +122,7 @@ class Router extends IlluminateRouter
     }
 
     /**
-     * Register a new OPTIONS route with the router.
+     * Register a new translated OPTIONS route with the router.
      *
      * @param  string                 $trans
      * @param  \Closure|array|string  $action
@@ -128,5 +134,20 @@ class Router extends IlluminateRouter
         $uri = localization()->transRoute($trans);
 
         return $this->options($uri, $action);
+    }
+
+    /**
+     * Register a new translated any route with the router.
+     *
+     * @param  string                 $trans
+     * @param  \Closure|array|string  $action
+     *
+     * @return \Illuminate\Routing\Route
+     */
+    public function transAny($trans, $action)
+    {
+        $uri = localization()->transRoute($trans);
+
+        return $this->any($uri, $action);
     }
 }
