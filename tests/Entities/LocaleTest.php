@@ -25,8 +25,6 @@ class LocaleTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-
-
     }
 
     public function tearDown()
@@ -75,6 +73,23 @@ class LocaleTest extends TestCase
         $this->locale = new Locale($key, $data);
 
         $this->assertEquals('ltr', $this->locale->direction());
+    }
+
+    /** @test */
+    public function it_can_convert_entity_to_array()
+    {
+        $this->locale = $this->makeLocale('en');
+
+        $this->assertInternalType('array', $this->locale->toArray());
+    }
+
+    /** @test */
+    public function it_can_convert_entity_to_json()
+    {
+        $this->locale = $this->makeLocale('en');
+
+        $this->assertJson($this->locale->toJson());
+        $this->assertJson(json_encode($this->locale, JSON_PRETTY_PRINT));
     }
 
     /* ------------------------------------------------------------------------------------------------
