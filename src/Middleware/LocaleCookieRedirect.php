@@ -37,18 +37,17 @@ class LocaleCookieRedirect extends Middleware
             return $next($request);
         }
 
-        $locale = cookie('locale', false);
+        $locale = $request->cookie('locale', null);
 
-        if ($locale && ! $this->isDefaultLocaleHidden($locale)) {
+        if (
+            ! is_null($locale) &&
+            ! $this->isDefaultLocaleHidden($locale)
+        ) {
             session()->reflash();
 
-            $redirectUrl = localization()->getLocalizedURL($locale);
+            $redirect = $this->getLocalizedRedirect($locale);
 
-            if (is_string($redirectUrl)) {
-                return new RedirectResponse($redirectUrl, 302, [
-                    'Vary' => 'Accept-Language'
-                ]);
-            }
+            if ( ! is_null($redirect)) return $redirect;
         }
 
         return $next($request);

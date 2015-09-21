@@ -87,7 +87,7 @@ abstract class Middleware extends BaseMiddleware
     /**
      * Check is default locale hidden.
      *
-     * @param  false|string  $locale
+     * @param  string|null  $locale
      *
      * @return bool
      */
@@ -109,11 +109,11 @@ abstract class Middleware extends BaseMiddleware
      */
     protected function getLocalizedRedirect($locale)
     {
-        $url = localization()->getLocalizedURL($locale);
+        $localizedUrl = localization()->getLocalizedURL($locale);
 
-        if ( ! is_string($url)) return null;
+        if ( ! is_string($localizedUrl)) return null;
 
-        return new RedirectResponse($url, 302, [
+        return new RedirectResponse($localizedUrl, 302, [
             'Vary' => 'Accept-Language'
         ]);
     }

@@ -117,14 +117,16 @@ abstract class TestCase extends BaseTestCase
      * Refresh routes and refresh application
      *
      * @param  bool|string  $locale
+     * @param  bool         $session
+     * @param  bool         $cookie
      */
-    protected function refreshApplication($locale = false, $session = false)
+    protected function refreshApplication($locale = false, $session = false, $cookie = false)
     {
         parent::refreshApplication();
 
         app('config')->set('localization.route.middleware', [
             'localization-session-redirect' => $session,
-            'localization-cookie-redirect'  => false,
+            'localization-cookie-redirect'  => $cookie,
             'localization-redirect'         => true,
             'localized-routes'              => true,
         ]);
