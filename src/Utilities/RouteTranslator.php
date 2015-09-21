@@ -214,9 +214,13 @@ class RouteTranslator implements RouteTranslatorInterface
             $locale = $defaultLocale;
         }
 
-        $route = ($locale === $defaultLocale && $defaultHidden) ? '' : '/' . $locale;
+        $route = '';
 
-        if ( ! empty($locale) && $this->hasTranslation($transKey, $locale)) {
+        if ( ! ($locale === $defaultLocale && $defaultHidden)) {
+            $route = '/' . $locale;
+        }
+
+        if ($this->hasTranslation($transKey, $locale)) {
             $translation = $this->trans($transKey, $locale);
             $route       = Url::substituteAttributes($attributes, $route . '/' . $translation);
         }
@@ -224,10 +228,6 @@ class RouteTranslator implements RouteTranslatorInterface
         return $route;
     }
 
-    /* ------------------------------------------------------------------------------------------------
-     |  Other Functions
-     | ------------------------------------------------------------------------------------------------
-     */
     /**
      * Get the translation for a given key.
      *
@@ -244,17 +244,10 @@ class RouteTranslator implements RouteTranslatorInterface
             $locale = $this->translator->getLocale();
         }
 
-        $translated = $this->translator->trans($key, [], '', $locale);
+        $translation = $this->translator->trans($key, [], '', $locale);
+        $this->checkTranslation($key, $locale, $translation);
 
-        // @codeCoverageIgnoreStart
-        if ( ! is_string($translated)) {
-            throw new InvalidTranslationException(
-                "The translation key [$key] for locale [$locale] should return a string value."
-            );
-        }
-        // @codeCoverageIgnoreEnd
-
-        return $translated;
+        return $translation;
     }
 
     /* ------------------------------------------------------------------------------------------------
@@ -282,5 +275,25 @@ class RouteTranslator implements RouteTranslatorInterface
     public function hasTranslation($key, $locale = null)
     {
         return $this->translator->has($key, $locale);
+    }
+
+    /**
+     * Check the translation.
+     *
+     * @param  string  $key
+     * @param  string  $locale
+     * @param  mixed   $translation
+     *
+     * @throws InvalidTranslationException
+     */
+    private function checkTranslation($key, $locale, $translation)
+    {
+        // @codeCoverageIgnoreStart
+        if ( ! is_string($translation)) {
+            throw new InvalidTranslationException(
+                "The translation key [$key] for locale [$locale] should return a string value."
+            );
+        }
+        // @codeCoverageIgnoreEnd
     }
 }
