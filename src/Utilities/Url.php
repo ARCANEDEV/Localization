@@ -42,83 +42,7 @@ class Url implements UrlInterface
             if ( ! empty($segment)) $url[] = $segment;
         }
 
-        return self::extractAttributesFormRoutes($url, $router->getRoutes());
-    }
-
-    /**
-     * Extract attributes from routes.
-     *
-     * @param  array                                $url
-     * @param  \Illuminate\Routing\RouteCollection  $routes
-     *
-     * @return array
-     */
-    private static function extractAttributesFormRoutes($url, $routes)
-    {
-        $attributes = [];
-
-        foreach ($routes as $route) {
-            /** @var Route $route */
-            $path = $route->getUri();
-
-            if ( ! preg_match('/{[\w]+}/', $path)) {
-                continue;
-            }
-
-            $i     = 0;
-            $match = true;
-
-            foreach (explode('/', $path) as $j => $segment) {
-                if (isset($url[$i])) {
-                    if ($segment !== $url[$i]) {
-                        self::extractAttributesFromSegment($url, $i, $j, $segment, $attributes);
-                    }
-
-                    $i++;
-                    continue;
-                }
-                elseif ( ! preg_match('/{[\w]+\?}/', $segment)) {
-                    // No optional parameters but no more $url given this route does not match the url
-                    $match = false;
-                    break;
-                }
-            }
-
-            if (isset($url[$i + 1])) {
-                $match = false;
-            }
-
-            if ($match) { break; }
-        }
-
-        return $attributes;
-    }
-
-    /**
-     * Extract attribute from a segment.
-     *
-     * @param  array   $url
-     * @param  int     $i
-     * @param  int     $j
-     * @param  string  $segment
-     * @param  array   $attributes
-     */
-    private static function extractAttributesFromSegment($url, $i, $j, $segment, &$attributes)
-    {
-        // Required parameters
-        if (preg_match('/{[\w]+}/', $segment)) {
-            $attributeName              = preg_replace(['/{/', '/\?/', '/}/'], '', $segment);
-            $attributes[$attributeName] = $url[$i];
-        }
-
-        // Optional parameter
-        if (
-            preg_match('/{[\w]+\?}/', $segment) &&
-            ( ! isset($path[$j + 1]) || $path[$j + 1] !== $url[$i])
-        ) {
-            $attributeName              = preg_replace(['/{/', '/\?/', '/}/'], '', $segment);
-            $attributes[$attributeName] = $url[$i];
-        }
+        return self::extractAttributesFromRoutes($url, $router->getRoutes());
     }
 
     /**
@@ -159,11 +83,11 @@ class Url implements UrlInterface
 
         return $url;
     }
+
     /* ------------------------------------------------------------------------------------------------
      |  Extract Functions
      | ------------------------------------------------------------------------------------------------
      */
-
     /**
      * Extract Attributes From Router.
      *
@@ -190,11 +114,107 @@ class Url implements UrlInterface
 
         return $attributes;
     }
+
+    /**
+     * Extract attributes from routes.
+     *
+     * @param  array                                $url
+     * @param  \Illuminate\Routing\RouteCollection  $routes
+     *
+     * @return array
+     */
+    private static function extractAttributesFromRoutes($url, $routes)
+    {
+        $attributes = [];
+
+        foreach ($routes as $route) {
+            /** @var Route $route */
+            $path = $route->getUri();
+
+            if ( ! preg_match('/{[\w]+}/', $path)) {
+                continue;
+            }
+
+            $match = self::hasAttributesFromUriPath($url, $path, $attributes);
+
+            if ($match) {
+                break;
+            }
+        }
+
+        return $attributes;
+    }
+
+    /**
+     * Check if has attributes from a route.
+     *
+     * @param  array   $url
+     * @param  string  $path
+     * @param  array   $attributes
+     *
+     * @return bool
+     */
+    private static function hasAttributesFromUriPath($url, $path, &$attributes)
+    {
+        $i     = 0;
+        $match = true;
+        $path  = explode('/', $path);
+
+        foreach ($path as $j => $segment) {
+            if (isset($url[$i])) {
+                if ($segment !== $url[$i]) {
+                    self::extractAttributesFromSegment($url, $path, $i, $j, $segment, $attributes);
+                }
+
+                $i++;
+                continue;
+            }
+            elseif ( ! preg_match('/{[\w]+\?}/', $segment)) {
+                // No optional parameters but no more $url given this route does not match the url
+                $match = false;
+                break;
+            }
+        }
+
+        if (isset($url[$i + 1])) {
+            $match = false;
+        }
+
+        return $match;
+    }
+
+    /**
+     * Extract attribute from a segment.
+     *
+     * @param  array   $url
+     * @param  array   $path
+     * @param  int     $i
+     * @param  int     $j
+     * @param  string  $segment
+     * @param  array   $attributes
+     */
+    private static function extractAttributesFromSegment($url, $path, $i, $j, $segment, &$attributes)
+    {
+        // Required parameters
+        if (preg_match('/{[\w]+}/', $segment)) {
+            $attributeName              = preg_replace(['/{/', '/\?/', '/}/'], '', $segment);
+            $attributes[$attributeName] = $url[$i];
+        }
+
+        // Optional parameter
+        if (
+            preg_match('/{[\w]+\?}/', $segment) &&
+            ( ! isset($path[$j + 1]) || $path[$j + 1] !== $url[$i])
+        ) {
+            $attributeName              = preg_replace(['/{/', '/\?/', '/}/'], '', $segment);
+            $attributes[$attributeName] = $url[$i];
+        }
+    }
+
     /* ------------------------------------------------------------------------------------------------
      |  Unparse Functions
      | ------------------------------------------------------------------------------------------------
      */
-
     /**
      * Check parsed URL.
      *
