@@ -165,7 +165,7 @@ class RouteTranslator implements RouteTranslatorInterface
     public function getRouteNameFromPath($uri, $locale)
     {
         $attributes = Url::extractAttributes($uri);
-        $uri        = str_replace([url(), "/$locale/"], ['', ''], $uri);
+        $uri        = str_replace([url(), "/$locale/"], '', $uri);
         $uri        = trim($uri, '/');
 
         foreach ($this->translatedRoutes as $route) {
@@ -245,9 +245,16 @@ class RouteTranslator implements RouteTranslatorInterface
         }
 
         $translation = $this->translator->trans($key, [], '', $locale);
-        $this->checkTranslation($key, $locale, $translation);
 
-        return $translation;
+        // @codeCoverageIgnoreStart
+        if ( ! is_string($translation)) {
+            throw new InvalidTranslationException(
+                "The translation key [$key] for locale [$locale] should return a string value."
+            );
+        }
+        // @codeCoverageIgnoreEnd
+
+        return (string) $translation;
     }
 
     /* ------------------------------------------------------------------------------------------------
@@ -275,25 +282,5 @@ class RouteTranslator implements RouteTranslatorInterface
     public function hasTranslation($key, $locale = null)
     {
         return $this->translator->has($key, $locale);
-    }
-
-    /**
-     * Check the translation.
-     *
-     * @param  string  $key
-     * @param  string  $locale
-     * @param  mixed   $translation
-     *
-     * @throws InvalidTranslationException
-     */
-    private function checkTranslation($key, $locale, $translation)
-    {
-        // @codeCoverageIgnoreStart
-        if ( ! is_string($translation)) {
-            throw new InvalidTranslationException(
-                "The translation key [$key] for locale [$locale] should return a string value."
-            );
-        }
-        // @codeCoverageIgnoreEnd
     }
 }
