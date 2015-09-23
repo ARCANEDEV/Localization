@@ -34,11 +34,11 @@ class Url implements UrlInterface
             return self::extractAttributesFromCurrentRoute($router->current());
         }
 
-        $parse      = parse_url($url);
-        $parse      = isset($parse['path']) ? explode('/', $parse['path']) : [];
-        $url        = [];
+        $parse  = parse_url($url);
+        $path   = isset($parse['path']) ? explode('/', $parse['path']) : [];
+        $url    = [];
 
-        foreach ($parse as $segment) {
+        foreach ($path as $segment) {
             if ( ! empty($segment)) $url[] = $segment;
         }
 
@@ -56,8 +56,7 @@ class Url implements UrlInterface
     public static function substituteAttributes(array $attributes, $uri)
     {
         foreach ($attributes as $key => $value) {
-            $uri = str_replace('{' . $key . '}',  $value, $uri);
-            $uri = str_replace('{' . $key . '?}', $value, $uri);
+            $uri = str_replace(['{' . $key . '?}', '{' . $key . '}'], $value, $uri);
         }
 
         // delete empty optional arguments that are not in the $attributes array
