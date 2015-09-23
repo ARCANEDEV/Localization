@@ -30,6 +30,7 @@ Feel free to check out the [releases](https://github.com/ARCANEDEV/Localization/
   * New extended Router to manage your localized routes.
   * Locales selector menu (Publishable & Customizable).
   * Locales manager: List all locales / supported locales, change default locale / supported locales on the fly, and more.
+  * Made with with :heart: &amp; :coffee:.
   
 ## Table of contents
 
