@@ -127,6 +127,16 @@ class RouteRegistrar
                     return 'Any method';
                 }
             ]);
+
+            /* ------------------------------------------------------------------------------------------------
+             |  Resource Controller
+             | ------------------------------------------------------------------------------------------------
+             */
+            $this->router->resource('dummy', Controllers\DummyController::class);
+
+            $this->router->group(['prefix'  => 'foo'], function () {
+                $this->router->resource('Bar', Controllers\BarController::class);
+            });
         });
     }
 }
