@@ -62,24 +62,6 @@ class Negotiator implements NegotiatorInterface
     }
 
     /* ------------------------------------------------------------------------------------------------
-     |  Getters & Setters
-     | ------------------------------------------------------------------------------------------------
-     */
-    /**
-     * Set request instance.
-     *
-     * @param  Request  $request
-     *
-     * @return self
-     */
-    private function setRequest(Request $request)
-    {
-        $this->request = $request;
-
-        return $this;
-    }
-
-    /* ------------------------------------------------------------------------------------------------
      |  Main Functions
      | ------------------------------------------------------------------------------------------------
      */
@@ -92,7 +74,7 @@ class Negotiator implements NegotiatorInterface
      */
     public function negotiate(Request $request)
     {
-        $this->setRequest($request);
+        $this->request = $request;
 
         $locale = $this->getFromAcceptedLanguagesHeader();
 
