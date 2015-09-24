@@ -26,6 +26,19 @@ class LocaleCollection extends Collection
      | ------------------------------------------------------------------------------------------------
      */
     /**
+     * Get the first locale from the collection.
+     *
+     * @param  callable|null  $callback
+     * @param  mixed          $default
+     *
+     * @return Locale|mixed
+     */
+    public function first(callable $callback = null, $default = null)
+    {
+        return parent::first($callback, $default);
+    }
+
+    /**
      * Load all locales.
      *
      * @todo:   Clean this method
