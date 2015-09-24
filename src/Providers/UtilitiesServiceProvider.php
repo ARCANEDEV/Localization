@@ -1,6 +1,7 @@
 <?php namespace Arcanedev\Localization\Providers;
 
 use Arcanedev\Localization\Utilities\LocalesManager;
+use Arcanedev\Localization\Utilities\Negotiator;
 use Arcanedev\Localization\Utilities\RouteTranslator;
 use Arcanedev\Support\ServiceProvider;
 
@@ -25,6 +26,7 @@ class UtilitiesServiceProvider extends ServiceProvider
     {
         $this->registerRouteTranslator();
         $this->registerLocalesManager();
+        $this->registerLocaleNegotiator();
     }
 
     /* ------------------------------------------------------------------------------------------------
@@ -48,6 +50,22 @@ class UtilitiesServiceProvider extends ServiceProvider
     {
         $this->app->singleton('arcanedev.localization.locales-manager', function ($app) {
             return new LocalesManager($app);
+        });
+    }
+
+    /**
+     * Register LocaleNegotiator utility.
+     */
+    private function registerLocaleNegotiator()
+    {
+        $this->app->bind('arcanedev.localization.negotiator', function ($app) {
+            /** @var LocalesManager $localesManager */
+            $localesManager = $app['arcanedev.localization.locales-manager'];
+
+            return new Negotiator(
+                $localesManager->getDefaultLocale(),
+                $localesManager->getSupportedLocales()
+            );
         });
     }
 }
