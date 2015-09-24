@@ -28,6 +28,9 @@ abstract class TestCase extends BaseTestCase
     /** @var string  */
     protected $testUrlTwo       = 'http://localhost';
 
+    /** @var Stubs\Http\RouteRegistrar */
+    protected $routeRegistrar;
+
     /* ------------------------------------------------------------------------------------------------
      |  Main Functions
      | ------------------------------------------------------------------------------------------------
@@ -70,8 +73,21 @@ abstract class TestCase extends BaseTestCase
     protected function getPackageAliases($app)
     {
         return [
-            \Arcanedev\Localization\Facades\Localization::class,
+            'Localization' => \Arcanedev\Localization\Facades\Localization::class,
         ];
+    }
+
+    /**
+     * Resolve application HTTP Kernel implementation.
+     *
+     * @param  \Illuminate\Foundation\Application  $app
+     */
+    protected function resolveApplicationHttpKernel($app)
+    {
+        $app->singleton(
+            'Illuminate\Contracts\Http\Kernel',
+            Stubs\Http\Kernel::class
+        );
     }
 
     /**
@@ -135,33 +151,18 @@ abstract class TestCase extends BaseTestCase
     }
 
     /**
-     * Resolve application HTTP Kernel implementation.
-     *
-     * @param  \Illuminate\Foundation\Application  $app
-     */
-    protected function resolveApplicationHttpKernel($app)
-    {
-        $app->singleton(
-            'Illuminate\Contracts\Http\Kernel',
-            Stubs\Http\Kernel::class
-        );
-    }
-
-    /* ------------------------------------------------------------------------------------------------
-     |  Other Functions
-     | ------------------------------------------------------------------------------------------------
-     */
-    /**
      * Set routes for testing
      *
      * @param  string|bool  $locale
      */
     protected function setRoutes($locale = false)
     {
+        $this->routeRegistrar = new Stubs\Http\RouteRegistrar;
+
         if ($locale) {
             localization()->setLocale($locale);
         }
 
-        (new Stubs\Http\RouteRegistrar)->map(app('router'));
+        $this->routeRegistrar->map(app('router'));
     }
 }
