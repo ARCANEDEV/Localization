@@ -40,6 +40,11 @@ class Negotiator implements NegotiatorInterface
      */
     private $supportedLocales;
 
+    /**
+     * @var Request
+     */
+    private $request;
+
     /* ------------------------------------------------------------------------------------------------
      |  Main Functions
      | ------------------------------------------------------------------------------------------------
@@ -57,6 +62,24 @@ class Negotiator implements NegotiatorInterface
     }
 
     /* ------------------------------------------------------------------------------------------------
+     |  Getters & Setters
+     | ------------------------------------------------------------------------------------------------
+     */
+    /**
+     * Set request instance.
+     *
+     * @param  Request  $request
+     *
+     * @return self
+     */
+    private function setRequest(Request $request)
+    {
+        $this->request = $request;
+
+        return $this;
+    }
+
+    /* ------------------------------------------------------------------------------------------------
      |  Main Functions
      | ------------------------------------------------------------------------------------------------
      */
@@ -69,43 +92,104 @@ class Negotiator implements NegotiatorInterface
      */
     public function negotiate(Request $request)
     {
-        $matches = $this->getMatchesFromAcceptedLanguages($request);
+        $this->setRequest($request);
 
-        foreach (array_keys($matches) as $locale) {
-            if ($this->isSupported($locale))
-                return $locale;
-        }
+        $locale = $this->getFromAcceptedLanguagesHeader();
 
-        // If any (i.e. "*") is acceptable, return the first supported format
-        if (isset($matches[ '*' ])) {
-            /** @var \Arcanedev\Localization\Entities\Locale $locale */
-            $locale = $this->supportedLocales->first();
+        if ( ! is_null($locale)) return $locale;
 
-            return $locale->key();
-        }
+        $locale = $this->getFromHttpAcceptedLanguagesServer();
 
-        if (class_exists('Locale') && ! empty($request->server('HTTP_ACCEPT_LANGUAGE'))) {
-            $httpAcceptLanguage = Locale::acceptFromHttp($request->server('HTTP_ACCEPT_LANGUAGE'));
+        if ( ! is_null($locale)) return $locale;
 
-            if ($this->isSupported($httpAcceptLanguage))
-                return $httpAcceptLanguage;
-        }
+        $locale = $this->getFromRemoteHostServer();
 
-        if ($request->server('REMOTE_HOST')) {
-            $remote_host = explode('.', $request->server('REMOTE_HOST'));
-            $locale      = strtolower(end($remote_host));
+        if ( ! is_null($locale)) return $locale;
 
-            if ($this->isSupported($locale))
-                return $locale;
-        }
+        // TODO: Adding negotiate form IP Address ??
 
         return $this->defaultLocale;
+    }
+
+    /**
+     * Get locale from accepted languages header.
+     *
+     * @return null|string
+     */
+    private function getFromAcceptedLanguagesHeader()
+    {
+        $matches = $this->getMatchesFromAcceptedLanguages();
+
+        if ($locale = $this->inSupportedLocales($matches)) {
+            return $locale;
+        }
+
+        // If any (i.e. "*") is acceptable, return the first supported locale
+        if (isset($matches['*'])) {
+            return $this->supportedLocales->first()->key();
+        }
+
+        return null;
+    }
+
+    /**
+     * Get locale from http accepted languages server.
+     *
+     * @return null|string
+     */
+    private function getFromHttpAcceptedLanguagesServer()
+    {
+        $httpAcceptLanguage = $this->request->server('HTTP_ACCEPT_LANGUAGE');
+
+        // @codeCoverageIgnoreStart
+        if ( ! class_exists('Locale') || empty($httpAcceptLanguage)) {
+            return null;
+        }
+        // @codeCoverageIgnoreEnd
+
+        $locale = Locale::acceptFromHttp($httpAcceptLanguage);
+
+        if ($this->isSupported($locale)) {
+            return $locale;
+        }
+
+        return null;
+    }
+
+    private function getFromRemoteHostServer()
+    {
+        if (empty($remoteHost = $this->request->server('REMOTE_HOST'))) {
+            return null;
+        }
+
+        $remoteHost = explode('.', $remoteHost);
+        $locale     = strtolower(end($remoteHost));
+
+        if ($this->isSupported($locale)) return $locale;
+
+        return null;
     }
 
     /* ------------------------------------------------------------------------------------------------
      |  Check Functions
      | ------------------------------------------------------------------------------------------------
      */
+    /**
+     * Check if matches a supported locale.
+     *
+     * @param  array  $matches
+     *
+     * @return null|string
+     */
+    private function inSupportedLocales(array $matches)
+    {
+        foreach (array_keys($matches) as $locale) {
+            if ($this->isSupported($locale)) return $locale;
+        }
+
+        return null;
+    }
+
     /**
      * Check if the locale is supported.
      *
@@ -125,15 +209,15 @@ class Negotiator implements NegotiatorInterface
     /**
      * Return all the accepted languages from the browser
      *
-     * @param  Request  $request
-     *
      * @return array  -  Matches from the header field Accept-Languages
      */
-    private function getMatchesFromAcceptedLanguages(Request $request)
+    private function getMatchesFromAcceptedLanguages()
     {
         $matches = [];
 
-        if ($acceptLanguages = $request->header('Accept-Language')) {
+        $acceptLanguages = $this->request->header('Accept-Language');
+
+        if ( ! empty($acceptLanguages)) {
             $acceptLanguages = explode(',', $acceptLanguages);
 
             $genericMatches = $this->retrieveGenericMatches($acceptLanguages, $matches);
