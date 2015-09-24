@@ -99,9 +99,7 @@ class Url implements UrlInterface
         if (is_null($route)) return [];
 
         $attributes = $route->parameters();
-        $response   = event('routes.translation', [
-            localization()->getCurrentLocale(), $attributes
-        ]);
+        $response   = self::fireTranslationEvent($route);
 
         if ( ! empty($response)) {
             $response = array_shift($response);
@@ -364,5 +362,23 @@ class Url implements UrlInterface
         }
 
         return $fragment;
+    }
+
+    /* ------------------------------------------------------------------------------------------------
+     |  Other Functions
+     | ------------------------------------------------------------------------------------------------
+     */
+    /**
+     * Fire route translation event.
+     *
+     * @param  \Illuminate\Routing\Route  $route
+     *
+     * @return array|null
+     */
+    private static function fireTranslationEvent($route)
+    {
+        return event('routes.translation', [
+            localization()->getCurrentLocale(), $route->parameters(), $route
+        ]);
     }
 }
