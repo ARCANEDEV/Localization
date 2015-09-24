@@ -100,7 +100,7 @@ class Url implements UrlInterface
 
         $attributes = $route->parameters();
         $response   = event('routes.translation', [
-            $attributes
+            localization()->getCurrentLocale(), $attributes
         ]);
 
         if ( ! empty($response)) {
