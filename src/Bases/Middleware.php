@@ -113,7 +113,20 @@ abstract class Middleware extends BaseMiddleware
 
         if ( ! is_string($localizedUrl)) return null;
 
-        return new RedirectResponse($localizedUrl, 302, [
+        return $this->makeRedirectResponse($localizedUrl);
+    }
+
+    /**
+     * Make a redirect response.
+     *
+     * @param  string  $url
+     * @param  int     $code
+     *
+     * @return RedirectResponse
+     */
+    protected function makeRedirectResponse($url, $code = 302)
+    {
+        return new RedirectResponse($url, $code, [
             'Vary' => 'Accept-Language'
         ]);
     }

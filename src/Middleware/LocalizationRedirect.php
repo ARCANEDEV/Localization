@@ -2,7 +2,6 @@
 
 use Arcanedev\Localization\Bases\Middleware;
 use Closure;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 /**
@@ -37,9 +36,7 @@ class LocalizationRedirect extends Middleware
             // Save any flashed data for redirect
             session()->reflash();
 
-            return new RedirectResponse($redirectUrl, 301, [
-                'Vary' => 'Accept-Language'
-            ]);
+            return $this->makeRedirectResponse($redirectUrl, 301);
         }
 
         return $next($request);
