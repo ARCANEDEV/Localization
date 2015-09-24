@@ -109,11 +109,13 @@ interface LocalizationInterface
     public function setBaseUrl($url);
 
     /**
-     * Set current route name.
+     * Set route name from path.
      *
-     * @param  false|string  $routeName
+     * @param  string  $uri
+     *
+     * @return self
      */
-    public function setRouteName($routeName);
+    public function setRouteNameFromCurrentUri($uri);
 
     /* ------------------------------------------------------------------------------------------------
      |  Main Functions

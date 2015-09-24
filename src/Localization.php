@@ -239,12 +239,16 @@ class Localization implements LocalizationInterface
     }
 
     /**
-     * Set current route name.
+     * Set route name from path.
      *
-     * @param  false|string  $routeName
+     * @param  string  $uri
+     *
+     * @return self
      */
-    public function setRouteName($routeName)
+    public function setRouteNameFromCurrentUri($uri)
     {
+        $routeName = $this->getRouteNameFromPath($uri);
+
         $this->routeTranslator->setCurrentRoute($routeName);
     }
 

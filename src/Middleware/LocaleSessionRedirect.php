@@ -30,7 +30,7 @@ class LocaleSessionRedirect extends Middleware
     {
         $locale = $request->segment(1, null);
 
-        if ($this->localization->isLocaleSupported($locale)) {
+        if (localization()->isLocaleSupported($locale)) {
             session()->put(compact('locale'));
 
             return $next($request);

@@ -2,7 +2,6 @@
 
 use Arcanedev\Localization\Entities\LocaleCollection;
 use Arcanedev\Localization\Exceptions\UndefinedSupportedLocalesException;
-use Arcanedev\Localization\Localization;
 use Arcanedev\Support\Bases\Middleware as BaseMiddleware;
 use Illuminate\Http\RedirectResponse;
 
@@ -15,26 +14,6 @@ use Illuminate\Http\RedirectResponse;
 abstract class Middleware extends BaseMiddleware
 {
     /* ------------------------------------------------------------------------------------------------
-     |  Properties
-     | ------------------------------------------------------------------------------------------------
-     */
-    /**
-     * The localization instance.
-     *
-     * @var Localization
-     */
-    protected $localization;
-
-    /* ------------------------------------------------------------------------------------------------
-     |  Constructor
-     | ------------------------------------------------------------------------------------------------
-     */
-    public function __construct()
-    {
-        $this->localization = localization();
-    }
-
-    /* ------------------------------------------------------------------------------------------------
      |  Getters & Setters
      | ------------------------------------------------------------------------------------------------
      */
@@ -45,7 +24,7 @@ abstract class Middleware extends BaseMiddleware
      */
     public function getDefaultLocale()
     {
-        return $this->localization->getDefaultLocale();
+        return localization()->getDefaultLocale();
     }
 
     /**
@@ -55,7 +34,7 @@ abstract class Middleware extends BaseMiddleware
      */
     public function getCurrentLocale()
     {
-        return $this->localization->getCurrentLocale();
+        return localization()->getCurrentLocale();
     }
 
     /**
@@ -67,7 +46,7 @@ abstract class Middleware extends BaseMiddleware
      */
     public function getSupportedLocales()
     {
-        return $this->localization->getSupportedLocales();
+        return localization()->getSupportedLocales();
     }
 
     /**
@@ -77,7 +56,7 @@ abstract class Middleware extends BaseMiddleware
      */
     protected function hideDefaultLocaleInURL()
     {
-        return $this->localization->isDefaultLocaleHiddenInUrl();
+        return localization()->isDefaultLocaleHiddenInUrl();
     }
 
     /* ------------------------------------------------------------------------------------------------
