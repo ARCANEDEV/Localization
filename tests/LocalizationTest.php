@@ -471,6 +471,8 @@ class LocalizationTest extends TestCase
     /** @test */
     public function it_can_get_localized_url_with_relative_urls()
     {
+        $this->assertEquals($this->testUrlOne . 'en', localization()->LocalizeURL('/'));
+
         $urls  = [
             '/contact',
             '/contact/',
