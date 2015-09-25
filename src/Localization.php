@@ -367,6 +367,10 @@ class Localization implements LocalizationInterface
             return $url;
         }
 
+        if (empty($url)) {
+            $url = $parsedUrl['path'];
+        }
+
         return $this->createUrlFromUri($url);
     }
 

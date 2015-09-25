@@ -469,6 +469,24 @@ class LocalizationTest extends TestCase
     }
 
     /** @test */
+    public function it_can_get_localized_url_with_relative_urls()
+    {
+        $urls  = [
+            '/contact',
+            '/contact/',
+            $this->testUrlOne . '/contact',
+            $this->testUrlOne . '/contact/'
+        ];
+
+        foreach ($urls as $url) {
+            $this->assertEquals(
+                $this->testUrlOne . 'en/contact',
+                localization()->LocalizeURL($url)
+            );
+        }
+    }
+
+    /** @test */
     public function it_can_use_facade()
     {
         $this->assertEquals(
