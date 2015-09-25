@@ -27,6 +27,7 @@ Feel free to check out the [releases](https://github.com/ARCANEDEV/Localization/
 ### Features
 
   * Easy setup & configuration.
+  * SEO-Friendly (Search engine optimization). 
   * New extended Router to manage your localized routes.
   * Locales selector menu (Publishable & Customizable).
   * Locales manager: List all locales / supported locales, change default locale / supported locales on the fly, and more.
