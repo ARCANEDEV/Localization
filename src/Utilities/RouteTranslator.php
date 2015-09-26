@@ -116,6 +116,55 @@ class RouteTranslator implements RouteTranslatorInterface
     }
 
     /**
+     * Translate a request.
+     *
+     * @param  string  $route
+     * @param  array   $attributes
+     *
+     * @return null|string
+     */
+    public function translateRoute($route, $attributes = [])
+    {
+        if (empty($attributes)) {
+            return null;
+        }
+
+        $translatedAttributes = $this->fireEvent($attributes, $route);
+
+        if (
+            ! empty($translatedAttributes) &&
+            $translatedAttributes !== $attributes
+        ) {
+            return route($route, $translatedAttributes);
+        }
+
+        return null;
+    }
+
+    /**
+     * @param  array   $attributes
+     * @param  string  $route
+     *
+     * @return array|mixed
+     */
+    private function fireEvent(array $attributes, $route)
+    {
+        $response   = event('routes.translation', [
+            localization()->getCurrentLocale(), $attributes, $route
+        ]);
+
+        if ( ! empty($response)) {
+            $attributes = array_shift($response);
+        }
+
+        if (is_array($response)) {
+            $attributes = array_merge($attributes, $response);
+        }
+
+        return $attributes;
+    }
+
+    /**
      * Get the translated route.
      *
      * @param  string                                             $baseUrl
@@ -168,10 +217,12 @@ class RouteTranslator implements RouteTranslatorInterface
         $uri        = str_replace([url(), "/$locale/"], '', $uri);
         $uri        = trim($uri, '/');
 
-        foreach ($this->translatedRoutes as $route) {
-            $url = Url::substituteAttributes($attributes, $this->translate($route));
+        foreach ($this->translatedRoutes as $routeName) {
+            $url = Url::substituteAttributes($attributes, $this->translate($routeName));
 
-            if ($url === $uri) return $route;
+            if ($url === $uri) {
+                return $routeName;
+            }
         }
 
         return false;

@@ -7,6 +7,7 @@ use Arcanedev\Localization\Exceptions\UndefinedSupportedLocalesException;
 use Arcanedev\Localization\Exceptions\UnsupportedLocaleException;
 use Arcanedev\Localization\Utilities\Url;
 use Illuminate\Foundation\Application;
+use Illuminate\Http\Request;
 
 /**
  * Class     Localization
@@ -83,7 +84,7 @@ class Localization implements LocalizationInterface
     /**
      * Get Request instance.
      *
-     * @return \Illuminate\Http\Request
+     * @return Request
      */
     private function request()
     {
@@ -238,20 +239,6 @@ class Localization implements LocalizationInterface
         return $this;
     }
 
-    /**
-     * Set route name from path.
-     *
-     * @param  string  $uri
-     *
-     * @return self
-     */
-    public function setRouteNameFromCurrentUri($uri)
-    {
-        $routeName = $this->getRouteNameFromPath($uri);
-
-        $this->routeTranslator->setCurrentRoute($routeName);
-    }
-
     /* ------------------------------------------------------------------------------------------------
      |  Main Functions
      | ------------------------------------------------------------------------------------------------
@@ -323,6 +310,10 @@ class Localization implements LocalizationInterface
 
         if (empty($url)) {
             if ($this->routeTranslator->hasCurrentRoute()) {
+                if (empty($attributes)) {
+                    $attributes = $this->request()->route()->parameters();
+                }
+
                 return $this->getUrlFromRouteName(
                     $locale,
                     $this->routeTranslator->getCurrentRoute(),
@@ -467,15 +458,18 @@ class Localization implements LocalizationInterface
     }
 
     /**
-     * Returns the translation key for a given path.
+     * Set route name from request.
      *
-     * @param  string  $path
-     *
-     * @return string|false
+     * @param  Request  $request
      */
-    public function getRouteNameFromPath($path)
+    public function setRouteNameFromRequest(Request $request)
     {
-        return $this->routeTranslator->getRouteNameFromPath($path, $this->getCurrentLocale());
+        $routeName = $this->routeTranslator->getRouteNameFromPath(
+            $request->getUri(),
+            $this->getCurrentLocale()
+        );
+
+        $this->routeTranslator->setCurrentRoute($routeName);
     }
 
     /* ------------------------------------------------------------------------------------------------

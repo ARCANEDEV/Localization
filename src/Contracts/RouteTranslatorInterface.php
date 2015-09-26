@@ -54,6 +54,15 @@ interface RouteTranslatorInterface
     public function trans($route, $locale = null);
 
     /**
+     * Translate a request.
+     *
+     * @param  string  $route
+     *
+     * @return null|string
+     */
+    public function translateRoute($route, $attributes = []);
+
+    /**
      * Get the translated route.
      *
      * @param  string                                             $baseUrl
