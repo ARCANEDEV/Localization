@@ -97,6 +97,7 @@ class TranslationRedirect extends Middleware
     /**
      * Fire translation event.
      *
+     * @param  string  $locale
      * @param  string  $route
      * @param  array   $attributes
      *

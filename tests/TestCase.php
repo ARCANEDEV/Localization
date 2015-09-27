@@ -113,6 +113,7 @@ abstract class TestCase extends BaseTestCase
             'localization-cookie-redirect'  => false,
             'localization-redirect'         => true,
             'localized-routes'              => true,
+            'translation-redirect'          => true,
         ]);
 
         $translator->getLoader()->addNamespace(

@@ -16,4 +16,17 @@ class Kernel extends HttpKernel
      | ------------------------------------------------------------------------------------------------
      */
     use LocalizationKernelTrait;
+
+    /* ------------------------------------------------------------------------------------------------
+     |  Properties
+     | ------------------------------------------------------------------------------------------------
+     */
+    /**
+     * The application's route middleware.
+     *
+     * @var array
+     */
+    protected $routeMiddleware = [
+        'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
+    ];
 }
