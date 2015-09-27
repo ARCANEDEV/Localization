@@ -15,7 +15,7 @@ Feel free to check out the [Releases](https://github.com/ARCANEDEV/Localization/
   
 ## Table of contents
 
-1. [Requirements](1.-Requirements.md)
+1. [Requirements](1-Requirements.md)
 2. [Installation and Setup](2-Installation-and-Setup.md)
 3. [Configuration](3-Configuration.md)
 4. [Usage](4-Usage.md)
