@@ -20,7 +20,7 @@ Localization [![For Laravel 5.1][badge_laravel]](https://github.com/ARCANEDEV/Lo
 
 Easy i18n localization for Laravel, an useful tool to combine with Laravel localization classes.
 
-Official documentation for Localization package can be found at the [Localization Wiki](https://github.com/ARCANEDEV/Localization/wiki).
+Official documentation for Localization package can be found at the [Docs folder](_docs).
 
 Feel free to check out the [releases](https://github.com/ARCANEDEV/Localization/releases), [license](https://github.com/ARCANEDEV/Localization/blob/master/LICENSE.md), and [contribution guidelines](https://github.com/ARCANEDEV/Localization/blob/master/CONTRIBUTING.md).
   
