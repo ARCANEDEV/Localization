@@ -17,7 +17,7 @@ class TranslationRedirect extends Middleware
      |  Constants
      | ------------------------------------------------------------------------------------------------
      */
-    const TRANSLATION_EVENT = 'routes.translation';
+    const EVENT_NAME = 'routes.translation';
 
     /* ------------------------------------------------------------------------------------------------
      |  Main Functions
@@ -81,13 +81,14 @@ class TranslationRedirect extends Middleware
             return null;
         }
 
-        $translatedAttributes = $this->fireEvent($attributes, $routeName);
+        $transAttributes = $this->fireEvent(
+            $this->getCurrentLocale(), $routeName, $attributes
+        );
 
         if (
-            ! empty($translatedAttributes) &&
-            $translatedAttributes !== $attributes
+            ! empty($transAttributes) && $transAttributes !== $attributes
         ) {
-            return route($routeName, $translatedAttributes);
+            return route($routeName, $transAttributes);
         }
 
         return null;
@@ -101,10 +102,10 @@ class TranslationRedirect extends Middleware
      *
      * @return array
      */
-    private function fireEvent($route, $attributes)
+    private function fireEvent($locale, $route, $attributes)
     {
-        $response = event(self::TRANSLATION_EVENT, [
-            $route, $attributes, $this->getCurrentLocale()
+        $response = event(self::EVENT_NAME, [
+            $locale, $route, $attributes
         ]);
 
         if ( ! empty($response)) {
