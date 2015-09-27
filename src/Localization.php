@@ -465,8 +465,7 @@ class Localization implements LocalizationInterface
     public function setRouteNameFromRequest(Request $request)
     {
         $routeName = $this->routeTranslator->getRouteNameFromPath(
-            $request->getUri(),
-            $this->getCurrentLocale()
+            $request->getUri(), $this->getCurrentLocale()
         );
 
         $this->routeTranslator->setCurrentRoute($routeName);

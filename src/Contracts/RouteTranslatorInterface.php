@@ -54,25 +54,18 @@ interface RouteTranslatorInterface
     public function trans($route, $locale = null);
 
     /**
-     * Translate a request.
-     *
-     * @param  string  $route
-     *
-     * @return null|string
-     */
-    public function translateRoute($route, $attributes = []);
-
-    /**
      * Get the translated route.
      *
      * @param  string                                             $baseUrl
-     * @param  array                                              $parsedUrl
+     * @param  array|false                                        $parsedUrl
      * @param  string                                             $defaultLocale
      * @param  \Arcanedev\Localization\Entities\LocaleCollection  $supportedLocales
      *
      * @return string|false
      */
-    public function getTranslatedRoute($baseUrl, &$parsedUrl, $defaultLocale, LocaleCollection $supportedLocales);
+    public function getTranslatedRoute(
+        $baseUrl, &$parsedUrl, $defaultLocale, LocaleCollection $supportedLocales
+    );
 
     /**
      * Returns the translation key for a given path.

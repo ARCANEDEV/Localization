@@ -116,55 +116,6 @@ class RouteTranslator implements RouteTranslatorInterface
     }
 
     /**
-     * Translate a request.
-     *
-     * @param  string  $route
-     * @param  array   $attributes
-     *
-     * @return null|string
-     */
-    public function translateRoute($route, $attributes = [])
-    {
-        if (empty($attributes)) {
-            return null;
-        }
-
-        $translatedAttributes = $this->fireEvent($attributes, $route);
-
-        if (
-            ! empty($translatedAttributes) &&
-            $translatedAttributes !== $attributes
-        ) {
-            return route($route, $translatedAttributes);
-        }
-
-        return null;
-    }
-
-    /**
-     * @param  array   $attributes
-     * @param  string  $route
-     *
-     * @return array|mixed
-     */
-    private function fireEvent(array $attributes, $route)
-    {
-        $response   = event('routes.translation', [
-            localization()->getCurrentLocale(), $attributes, $route
-        ]);
-
-        if ( ! empty($response)) {
-            $attributes = array_shift($response);
-        }
-
-        if (is_array($response)) {
-            $attributes = array_merge($attributes, $response);
-        }
-
-        return $attributes;
-    }
-
-    /**
      * Get the translated route.
      *
      * @param  string                                             $baseUrl
@@ -175,10 +126,7 @@ class RouteTranslator implements RouteTranslatorInterface
      * @return string|false
      */
     public function getTranslatedRoute(
-        $baseUrl,
-        &$parsedUrl,
-        $defaultLocale,
-        LocaleCollection $supportedLocales
+        $baseUrl, &$parsedUrl, $defaultLocale, LocaleCollection $supportedLocales
     ) {
         if (empty($parsedUrl) || ! isset($parsedUrl['path'])) {
             $parsedUrl['path'] = '';
