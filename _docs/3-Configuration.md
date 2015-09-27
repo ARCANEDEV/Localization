@@ -74,7 +74,15 @@ return [
             'dir'    => 'ltr',
             'native' => 'Qafar',
         ],
+        
         // ...
+        
+        'zu'         => [
+            'name'   => 'Zulu',
+            'script' => 'Latn',
+            'dir'    => 'ltr',
+            'native' => 'IsiZulu',
+        ],
     ],
 ];
 ```

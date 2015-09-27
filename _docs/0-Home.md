@@ -2,7 +2,7 @@
 
 Easy i18n localization for Laravel, an useful tool to combine with Laravel localization classes.
 
-Feel free to check out the [releases](https://github.com/ARCANEDEV/Localization/releases), [license](https://github.com/ARCANEDEV/Localization/blob/master/LICENSE.md), and [contribution guidelines](https://github.com/ARCANEDEV/Localization/blob/master/CONTRIBUTING.md).
+Feel free to check out the [Releases](https://github.com/ARCANEDEV/Localization/releases), [License](https://github.com/ARCANEDEV/Localization/blob/master/LICENSE.md), and [Contribution Guidelines](https://github.com/ARCANEDEV/Localization/blob/master/CONTRIBUTING.md).
   
 ### Features
 
@@ -15,9 +15,9 @@ Feel free to check out the [releases](https://github.com/ARCANEDEV/Localization/
   
 ## Table of contents
 
-1. [Requirements](https://github.com/ARCANEDEV/Localization/wiki/1.-Requirements)
-2. [Installation and Setup](https://github.com/ARCANEDEV/Localization/wiki/2.-Installation-and-Setup)
-3. [Configuration](https://github.com/ARCANEDEV/Localization/wiki/3.-Configuration)
-4. [Usage](https://github.com/ARCANEDEV/Localization/wiki/4.-Usage)
-5. [Extras](https://github.com/ARCANEDEV/Localization/wiki/5.-Extras)
-6. [FAQ](https://github.com/ARCANEDEV/Localization/wiki/6.-FAQ)
+1. [Requirements](1.-Requirements.md)
+2. [Installation and Setup](2-Installation-and-Setup.md)
+3. [Configuration](3-Configuration.md)
+4. [Usage](4-Usage.md)
+5. [Extras](5-Extras.md)
+6. [FAQ](6-FAQ.md)

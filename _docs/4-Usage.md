@@ -408,10 +408,11 @@ return [
      */
     'route'                  => [
         'middleware' => [
-            'localization-session-redirect' => false, // or true
-            'localization-cookie-redirect'  => false, // or true
-            'localization-redirect'         => true,
+            'localization-session-redirect' => true,  // Optional
+            'localization-cookie-redirect'  => false, // Optional
+            'localization-redirect'         => true,  // Optional
             'localized-routes'              => true,  // Required to be true
+            'translation-redirect'          => false, // Optional
         ],
     ],
     
@@ -515,19 +516,61 @@ You can capture the URL parameters during translation if you wish to translate t
 To do so, just create an event listener for the `routes.translation` event like so:
 
 ```php
-Event::listen('routes.translation', function ($locale, $attributes, $route) {
-    /**
-     * @var  string                     $locale
-     * @var  array                      $attributes
-     * @var  \Illuminate\Routing\Route  $route
-     */
+Event::listen('routes.translation', function ($locale, $route, $attributes) {
+    // You can store these translation in you database 
+    // or using the laravel's localization folders
+    $translations = [
+        'view'  => [
+            'en'    => [
+                'slug'  => 'hello',
+            ],
+            'es'    => [
+                'slug'  => 'hola',
+            ],
+            'fr'    => [
+                'slug'  => 'salut',
+            ],
+        ],
+    ];
 
-    // Translate your attributes.
+    // This is just a dummy thing to fetch and merge the translation.
+    if (
+        isset($translations[$route]) && isset($translations[$route][$locale])
+    ) {
+        $attributes = array_merge($attributes, $translations[$route][$locale]);
+    }
 
     return $attributes;
 });
 ```
 
-Be sure to pass `$locale` and `$attributes` as parameters to the closure (`$route` is optional) and you should return a translated `$attributes`. 
+Be sure to pass `$locale` and `$route` and `$attributes` as parameters to the closure and you should return a translated `$attributes`. 
+
+And also make sure that `localized-routes` and `translation-redirect` are enabled.
+
+```php
+// config/localization.php
+<?php
+
+return [
+    //...
+    
+    /* ------------------------------------------------------------------------------------------------
+     |  Route
+     | ------------------------------------------------------------------------------------------------
+     */
+    'route'                  => [
+        'middleware' => [
+            'localization-session-redirect' => true,  // Optional
+            'localization-cookie-redirect'  => false, // Optional
+            'localization-redirect'         => true,  // Optional
+            'localized-routes'              => true,  // Required to be true
+            'translation-redirect'          => true, // Required to be true
+        ],
+    ],
+    
+    //...
+];
+```
 
 You may also use [Event Subscribers](http://laravel.com/docs/5.1/events#event-subscribers).
