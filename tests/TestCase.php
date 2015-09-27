@@ -145,6 +145,7 @@ abstract class TestCase extends BaseTestCase
             'localization-cookie-redirect'  => $cookie,
             'localization-redirect'         => true,
             'localized-routes'              => true,
+            'translation-redirect'          => true,
         ]);
 
         $this->setRoutes($locale);
