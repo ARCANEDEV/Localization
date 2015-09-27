@@ -9,7 +9,7 @@ Or by adding the package to your `composer.json`.
 ```json
 {
     "require": {
-        "arcanedev/localization": "0.5.*"
+        "arcanedev/localization": "0.6.*"
     }
 }
 ```    
