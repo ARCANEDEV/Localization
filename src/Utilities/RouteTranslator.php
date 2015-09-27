@@ -126,10 +126,7 @@ class RouteTranslator implements RouteTranslatorInterface
      * @return string|false
      */
     public function getTranslatedRoute(
-        $baseUrl,
-        &$parsedUrl,
-        $defaultLocale,
-        LocaleCollection $supportedLocales
+        $baseUrl, &$parsedUrl, $defaultLocale, LocaleCollection $supportedLocales
     ) {
         if (empty($parsedUrl) || ! isset($parsedUrl['path'])) {
             $parsedUrl['path'] = '';
@@ -168,10 +165,12 @@ class RouteTranslator implements RouteTranslatorInterface
         $uri        = str_replace([url(), "/$locale/"], '', $uri);
         $uri        = trim($uri, '/');
 
-        foreach ($this->translatedRoutes as $route) {
-            $url = Url::substituteAttributes($attributes, $this->translate($route));
+        foreach ($this->translatedRoutes as $routeName) {
+            $url = Url::substituteAttributes($attributes, $this->translate($routeName));
 
-            if ($url === $uri) return $route;
+            if ($url === $uri) {
+                return $routeName;
+            }
         }
 
         return false;

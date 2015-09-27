@@ -1,6 +1,7 @@
 <?php namespace Arcanedev\Localization\Utilities;
 
 use Arcanedev\Localization\Contracts\UrlInterface;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Route;
 use Illuminate\Routing\Router;
 
@@ -29,10 +30,6 @@ class Url implements UrlInterface
     {
         /** @var Router $router */
         $router     = app('router');
-
-        if (empty($url)) {
-            return self::extractAttributesFromCurrentRoute($router->current());
-        }
 
         $parse  = parse_url($url);
         $path   = isset($parse['path']) ? explode('/', $parse['path']) : [];
@@ -88,31 +85,6 @@ class Url implements UrlInterface
      | ------------------------------------------------------------------------------------------------
      */
     /**
-     * Extract Attributes From Router.
-     *
-     * @param  Route|null  $route
-     *
-     * @return array
-     */
-    private static function extractAttributesFromCurrentRoute($route)
-    {
-        if (is_null($route)) return [];
-
-        $attributes = $route->parameters();
-        $response   = self::fireTranslationEvent($route);
-
-        if ( ! empty($response)) {
-            $response = array_shift($response);
-        }
-
-        if (is_array($response)) {
-            $attributes = array_merge($attributes, $response);
-        }
-
-        return $attributes;
-    }
-
-    /**
      * Extract attributes from routes.
      *
      * @param  array                                $url
@@ -125,18 +97,19 @@ class Url implements UrlInterface
         $attributes = [];
 
         foreach ($routes as $route) {
-            /** @var Route $route */
-            $path = $route->getUri();
+            /**
+             * @var  Route    $route
+             * @var  Request  $request
+             */
+            $request = Request::create(implode('/', $url));
 
-            if ( ! preg_match('/{[\w]+}/', $path)) {
+            if ( ! $route->matches($request)) {
                 continue;
             }
 
-            $match = self::hasAttributesFromUriPath($url, $path, $attributes);
+            $match = self::hasAttributesFromUriPath($url, $route->getUri(), $attributes);
 
-            if ($match) {
-                break;
-            }
+            if ($match) { break; }
         }
 
         return $attributes;
@@ -362,23 +335,5 @@ class Url implements UrlInterface
         }
 
         return $fragment;
-    }
-
-    /* ------------------------------------------------------------------------------------------------
-     |  Other Functions
-     | ------------------------------------------------------------------------------------------------
-     */
-    /**
-     * Fire route translation event.
-     *
-     * @param  \Illuminate\Routing\Route  $route
-     *
-     * @return array|null
-     */
-    private static function fireTranslationEvent($route)
-    {
-        return event('routes.translation', [
-            localization()->getCurrentLocale(), $route->parameters(), $route
-        ]);
     }
 }

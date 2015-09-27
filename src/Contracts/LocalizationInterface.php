@@ -3,6 +3,7 @@
 use Arcanedev\Localization\Entities\LocaleCollection;
 use Arcanedev\Localization\Exceptions\UndefinedSupportedLocalesException;
 use Arcanedev\Localization\Exceptions\UnsupportedLocaleException;
+use Illuminate\Http\Request;
 
 /**
  * Interface  LocalizationInterface
@@ -109,13 +110,11 @@ interface LocalizationInterface
     public function setBaseUrl($url);
 
     /**
-     * Set route name from path.
+     * Set route name from request.
      *
-     * @param  string  $uri
-     *
-     * @return self
+     * @param  \Illuminate\Http\Request  $request
      */
-    public function setRouteNameFromCurrentUri($uri);
+    public function setRouteNameFromRequest(Request $request);
 
     /* ------------------------------------------------------------------------------------------------
      |  Main Functions
@@ -191,15 +190,6 @@ interface LocalizationInterface
      * @return string|false
      */
     public function getUrlFromRouteName($locale, $transKey, $attributes = []);
-
-    /**
-     * Returns the translation key for a given path.
-     *
-     * @param  string  $path
-     *
-     * @return string|false
-     */
-    public function getRouteNameFromPath($path);
 
     /* ------------------------------------------------------------------------------------------------
      |  Check Functions
