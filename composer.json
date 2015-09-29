@@ -13,7 +13,7 @@
     ],
     "require": {
         "php" : ">=5.5.9",
-        "arcanedev/support": "~3.0"
+        "arcanedev/support": "~3.3.0"
     },
     "require-dev": {
         "orchestra/testbench": "~3.1",
