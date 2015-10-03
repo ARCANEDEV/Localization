@@ -565,7 +565,7 @@ return [
             'localization-cookie-redirect'  => false, // Optional
             'localization-redirect'         => true,  // Optional
             'localized-routes'              => true,  // Required to be true
-            'translation-redirect'          => true, // Required to be true
+            'translation-redirect'          => true,  // Required to be true
         ],
     ],
     
