@@ -39,7 +39,10 @@ class UtilitiesServiceProvider extends ServiceProvider
     private function registerRouteTranslator()
     {
         $this->app->singleton('arcanedev.localization.translator', function ($app) {
-            return new RouteTranslator($app['translator']);
+            /** @var  \Illuminate\Translation\Translator  $translator */
+            $translator = $app['translator'];
+
+            return new RouteTranslator($translator);
         });
     }
 
@@ -59,7 +62,7 @@ class UtilitiesServiceProvider extends ServiceProvider
     private function registerLocaleNegotiator()
     {
         $this->app->bind('arcanedev.localization.negotiator', function ($app) {
-            /** @var LocalesManager $localesManager */
+            /**  @var LocalesManager $localesManager  */
             $localesManager = $app['arcanedev.localization.locales-manager'];
 
             return new Negotiator(

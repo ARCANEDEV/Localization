@@ -89,6 +89,10 @@ class LocalizationServiceProvider extends PackageServiceProvider
     private function registerLocalization()
     {
         $this->app->singleton('arcanedev.localization', function($app) {
+            /**
+             * @var  Contracts\RouteTranslatorInterface  $routeTranslator
+             * @var  Contracts\LocalesManagerInterface   $localesManager
+             */
             $routeTranslator = $app['arcanedev.localization.translator'];
             $localesManager  = $app['arcanedev.localization.locales-manager'];
 
