@@ -1,5 +1,6 @@
 <?php namespace Arcanedev\Localization\Tests\Entities;
 
+use Arcanedev\Localization\Entities\Locale;
 use Arcanedev\Localization\Entities\LocaleCollection;
 use Arcanedev\Localization\Tests\TestCase;
 
@@ -52,7 +53,8 @@ class LocaleCollectionTest extends TestCase
     /** @test */
     public function it_can_get_all_locales()
     {
-        $this->locales->loadAll();
+        $data = config('localization.locales', []);
+        $this->locales->loadFromArray($data);
 
         $this->assertFalse($this->locales->isEmpty());
         $this->assertCount(289, $this->locales);
@@ -62,11 +64,45 @@ class LocaleCollectionTest extends TestCase
     /** @test */
     public function it_can_get_supported_locales()
     {
-        $this->locales->loadSupported();
+        $this->locales
+            ->loadFromArray(config('localization.locales', []))
+            ->setSupportedKeys(config('localization.supported-locales', []));
+
+        $supported = $this->locales->getSupported();
 
         $count = count($this->supportedLocales);
+        $this->assertFalse($supported->isEmpty());
+        $this->assertCount($count, $supported);
+        $this->assertEquals($count, $supported->count());
+    }
+
+    /** @test */
+    public function it_can_load_locales_from_config()
+    {
+        $this->locales->loadFromConfig();
+
+        $supported = $this->locales->getSupported();
+
+        // Assert all locales
         $this->assertFalse($this->locales->isEmpty());
-        $this->assertCount($count, $this->locales);
-        $this->assertEquals($count, $this->locales->count());
+        $this->assertCount(289,  $this->locales);
+        $this->assertEquals(289, $this->locales->count());
+
+        // Assert supported locales
+        $this->assertFalse($supported->isEmpty());
+        $count = count($this->supportedLocales);
+        $this->assertCount($count,  $supported);
+        $this->assertEquals($count, $supported->count());
+    }
+
+    /** @test */
+    public function it_can_get_first_locale()
+    {
+        $this->locales->loadFromConfig();
+
+        $locale = $this->locales->first();
+
+        $this->assertInstanceOf(Locale::class, $locale);
+        $this->assertEquals('aa', $locale->key());
     }
 }

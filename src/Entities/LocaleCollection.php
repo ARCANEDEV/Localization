@@ -21,6 +21,31 @@ class LocaleCollection extends Collection
      */
     protected $items     = [];
 
+    /**
+     * Supported locales.
+     *
+     * @var array
+     */
+    protected $supported = [];
+
+    /* ------------------------------------------------------------------------------------------------
+     |  Getters & Setters
+     | ------------------------------------------------------------------------------------------------
+     */
+    /**
+     * Set supported locales keys.
+     *
+     * @param  array  $supported
+     *
+     * @return self
+     */
+    public function setSupportedKeys(array $supported)
+    {
+        $this->supported = $supported;
+
+        return $this;
+    }
+
     /* ------------------------------------------------------------------------------------------------
      |  Main Function
      | ------------------------------------------------------------------------------------------------
@@ -39,34 +64,29 @@ class LocaleCollection extends Collection
     }
 
     /**
-     * Load all locales.
-     *
-     * @todo:   Clean this method
+     * Get supported locales collection.
      *
      * @return self
      */
-    public function loadAll()
+    public function getSupported()
     {
-        $this->loadFromArray(config('localization.locales', []));
-
-        return $this;
+        return $this->filter(function(Locale $locale) {
+            return in_array($locale->key(), $this->supported);
+        });
     }
 
     /**
-     * Get all supported locales.
-     *
-     * @todo:   Clean this method
+     * Load from config.
      *
      * @return self
      */
-    public function loadSupported()
+    public function loadFromConfig()
     {
-        $this->items = [];
-        $supported   = config('localization.supported-locales', []);
+        $locales   = config('localization.locales', []);
+        $supported = config('localization.supported-locales', []);
 
-        $this->items = $this->loadAll()->filter(function(Locale $locale) use ($supported) {
-            return in_array($locale->key(), $supported);
-        })->toArray();
+        $this->loadFromArray($locales);
+        $this->setSupportedKeys($supported);
 
         return $this;
     }
@@ -80,6 +100,8 @@ class LocaleCollection extends Collection
      */
     public function loadFromArray(array $locales)
     {
+        $this->reset();
+
         foreach ($locales as $key => $locale) {
             $this->put($key, new Locale($key, $locale));
         }
