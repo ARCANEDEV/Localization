@@ -24,9 +24,11 @@ class ResourceRegistrar extends IlluminateResourceRegistrar
      */
     protected function getGroupResourceName($prefix, $resource, $method)
     {
-        $group = trim(str_replace('/', '.', $this->router->getLastGroupPrefix()), '.');
+        $currentLocale = localization()->getCurrentLocale();
+        $group         = trim(str_replace('/', '.', $this->router->getLastGroupPrefix()), '.');
+        $group         = str_replace($currentLocale . '.', '', $group);
 
-        if ( ! empty($group) && $group !== localization()->getCurrentLocale()) {
+        if ( ! empty($group) && $group !== $currentLocale) {
             return trim("{$prefix}{$group}.{$resource}.{$method}", '.');
         }
 
