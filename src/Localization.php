@@ -200,6 +200,16 @@ class Localization implements LocalizationInterface
     }
 
     /**
+     * Returns current locale regional.
+     *
+     * @return string
+     */
+    public function getCurrentLocaleRegional()
+    {
+        return $this->getCurrentLocaleEntity()->regional();
+    }
+
+    /**
      * Get all locales.
      *
      * @return \Arcanedev\Localization\Entities\LocaleCollection

@@ -113,6 +113,7 @@ class LocalesManager implements LocalesManagerInterface
         }
 
         $this->app->setLocale($this->getCurrentLocale());
+        $this->updateRegional();
 
         return $locale;
     }
@@ -370,5 +371,17 @@ class LocalesManager implements LocalesManagerInterface
         return $this->locales->filter(function(Locale $locale) use ($supportedLocales) {
             return in_array($locale->key(), $supportedLocales);
         });
+    }
+
+    /**
+     * Update locale regional.
+     */
+    private function updateRegional()
+    {
+        $currentLocale = $this->getCurrentLocaleEntity();
+
+        if ( ! empty($regional = $currentLocale->regional())) {
+            setlocale(LC_TIME, $regional . '.utf8');
+        }
     }
 }

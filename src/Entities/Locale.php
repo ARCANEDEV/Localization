@@ -52,6 +52,13 @@ class Locale implements Arrayable, Jsonable, JsonSerializable
     private $native;
 
     /**
+     * Locale regional.
+     *
+     * @var string
+     */
+    private $regional;
+
+    /**
      * Default locale.
      *
      * @var bool
@@ -75,6 +82,7 @@ class Locale implements Arrayable, Jsonable, JsonSerializable
         $this->setScript($data['script']);
         $this->setDirection($data['dir']);
         $this->setNative($data['native']);
+        $this->setRegional(isset($data['regional']) ? $data['regional'] : '');
     }
 
     /* ------------------------------------------------------------------------------------------------
@@ -211,6 +219,30 @@ class Locale implements Arrayable, Jsonable, JsonSerializable
     }
 
     /**
+     * Get locale regional.
+     *
+     * @return string
+     */
+    public function regional()
+    {
+        return $this->regional;
+    }
+
+    /**
+     * Set Regional.
+     *
+     * @param  string  $regional
+     *
+     * @return self
+     */
+    private function setRegional($regional)
+    {
+        $this->regional = $regional;
+
+        return $this;
+    }
+
+    /**
      * Check if it is a default locale.
      *
      * @return bool
@@ -233,6 +265,23 @@ class Locale implements Arrayable, Jsonable, JsonSerializable
     }
 
     /* ------------------------------------------------------------------------------------------------
+     |  Main Functions
+     | ------------------------------------------------------------------------------------------------
+     */
+    /**
+     * Create Locale instance.
+     *
+     * @param  string  $key
+     * @param  array   $data
+     *
+     * @return self
+     */
+    public static function make($key, array $data)
+    {
+        return new self($key, $data);
+    }
+
+    /* ------------------------------------------------------------------------------------------------
      |  Other Functions
      | ------------------------------------------------------------------------------------------------
      */
@@ -244,11 +293,12 @@ class Locale implements Arrayable, Jsonable, JsonSerializable
     public function toArray()
     {
         return [
-            'key'    => $this->key(),
-            'name'   => $this->name(),
-            'script' => $this->script(),
-            'dir'    => $this->direction(),
-            'native' => $this->native(),
+            'key'      => $this->key(),
+            'name'     => $this->name(),
+            'script'   => $this->script(),
+            'dir'      => $this->direction(),
+            'native'   => $this->native(),
+            'regional' => $this->regional(),
         ];
     }
 

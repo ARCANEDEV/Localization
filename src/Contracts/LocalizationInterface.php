@@ -94,6 +94,13 @@ interface LocalizationInterface
     public function getCurrentLocaleNative();
 
     /**
+     * Returns current locale regional.
+     *
+     * @return string
+     */
+    public function getCurrentLocaleRegional();
+
+    /**
      * Set and return current locale.
      *
      * @param  string  $locale
