@@ -33,9 +33,9 @@ class NegotiatorTest extends TestCase
 
     public function tearDown()
     {
-        parent::tearDown();
-
         unset($this->negotiator);
+
+        parent::tearDown();
     }
 
     /* ------------------------------------------------------------------------------------------------

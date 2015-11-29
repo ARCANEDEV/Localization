@@ -29,9 +29,9 @@ class LocaleTest extends TestCase
 
     public function tearDown()
     {
-        parent::tearDown();
-
         unset($this->locale);
+
+        parent::tearDown();
     }
 
     /* ------------------------------------------------------------------------------------------------
@@ -50,6 +50,8 @@ class LocaleTest extends TestCase
         $this->assertEquals('Latin',   $this->locale->script());
         $this->assertEquals('ltr',     $this->locale->direction());
         $this->assertEquals('English', $this->locale->native());
+        $this->assertEquals('en_GB',   $this->locale->regional());
+
         $this->assertTrue($this->locale->isDefault());
     }
 
@@ -96,33 +98,48 @@ class LocaleTest extends TestCase
      |  Other Functions
      | ------------------------------------------------------------------------------------------------
      */
+    /**
+     * Make a locale.
+     *
+     * @param  string  $key
+     *
+     * @return Locale
+     */
     private function makeLocale($key)
     {
-        $data = $this->getLocale($key);
-
-        return new Locale($key, $data);
+        return Locale::make($key, $this->getLocale($key));
     }
 
+    /**
+     * Get locale data.
+     *
+     * @param  string  $key
+     *
+     * @return array
+     */
     private function getLocale($key)
     {
         return array_get([
-            'ar'         => [
-                'name'   => 'Arabic',
-                'script' => 'Arab',
-                'dir'    => 'rtl',
-                'native' => 'العربية',
+            'ar' => [
+                'name'     => 'Arabic',
+                'script'   => 'Arab',
+                'dir'      => 'rtl',
+                'native'   => 'العربية',
+                'regional' => 'ar_AE',
             ],
-            'en'         => [
-                'name'   => 'English',
-                'script' => 'Latin',
-                'dir'    => 'ltr',
-                'native' => 'English',
+            'en' => [
+                'name'     => 'English',
+                'script'   => 'Latin',
+                'dir'      => 'ltr',
+                'native'   => 'English',
+                'regional' => 'en_GB',
             ],
-            'fr'         => [
-                'name'   => 'French',
-                'script' => 'Latin',
-                'dir'    => 'ltr',
-                'native' => 'Français',
+            'fr' => [
+                'name'     => 'French',
+                'script'   => 'Latin',
+                'dir'      => 'ltr',
+                'native'   => 'Français',
+                'regional' => 'fr_FR',
             ],
         ], $key);
     }

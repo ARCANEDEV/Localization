@@ -103,7 +103,7 @@ class LocaleCollection extends Collection
         $this->reset();
 
         foreach ($locales as $key => $locale) {
-            $this->put($key, new Locale($key, $locale));
+            $this->put($key, Locale::make($key, $locale));
         }
 
         return $this;

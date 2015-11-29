@@ -31,9 +31,9 @@ class RouterTest extends TestCase
 
     public function tearDown()
     {
-        parent::tearDown();
-
         unset($this->router);
+
+        parent::tearDown();
     }
 
     /* ------------------------------------------------------------------------------------------------

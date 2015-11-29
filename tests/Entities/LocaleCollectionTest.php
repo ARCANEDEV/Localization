@@ -32,9 +32,9 @@ class LocaleCollectionTest extends TestCase
 
     public function tearDown()
     {
-        parent::tearDown();
+        unset($this->locales);
 
-        unset($locales);
+        parent::tearDown();
     }
 
     /* ------------------------------------------------------------------------------------------------

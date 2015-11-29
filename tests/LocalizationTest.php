@@ -429,6 +429,22 @@ class LocalizationTest extends TestCase
     }
 
     /** @test */
+    public function testGetCurrentLocaleRegional()
+    {
+        $locales = [
+            'en' => 'en_GB',
+            'es' => 'es_ES',
+            'fr' => 'fr_FR',
+        ];
+
+        foreach ($locales as $locale => $regional) {
+            $this->refreshApplication($locale);
+
+            $this->assertEquals($regional, localization()->getCurrentLocaleRegional());
+        }
+    }
+
+    /** @test */
     public function it_can_create_url_from_uri()
     {
         $this->assertEquals(
