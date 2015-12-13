@@ -1,5 +1,6 @@
 <?php namespace Arcanedev\Localization\Utilities;
 
+use Arcanedev\Localization\Contracts\RouteBindable;
 use Arcanedev\Localization\Contracts\UrlInterface;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Route;
@@ -53,6 +54,10 @@ class Url implements UrlInterface
     public static function substituteAttributes(array $attributes, $uri)
     {
         foreach ($attributes as $key => $value) {
+            if ($value instanceof RouteBindable) {
+                $value = $value->getWildcardValue();
+            }
+
             $uri = str_replace(['{' . $key . '?}', '{' . $key . '}'], $value, $uri);
         }
 
