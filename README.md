@@ -1,4 +1,4 @@
-# Localization [![Packagist License][badge_license]](LICENSE.md) [![For Laravel 5.1][badge_laravel]](https://github.com/ARCANEDEV/LogViewer#logviewer)
+# Localization [![Packagist License][badge_license]](LICENSE.md) [![For Laravel 5.1][badge_laravel]](https://github.com/ARCANEDEV/Localization#localization)
 
 [![Travis Status][badge_build]](https://travis-ci.org/ARCANEDEV/Localization)
 [![HHVM Status][badge_hhvm]](http://hhvm.h4cc.de/package/arcanedev/localization)
@@ -15,7 +15,7 @@
 [badge_laravel]:   https://img.shields.io/badge/For%20Laravel-5.1-orange.svg?style=flat-square
 
 [badge_build]:     http://img.shields.io/travis/ARCANEDEV/Localization.svg?style=flat-square
-[badge_hhvm]:      https://img.shields.io/hhvm/arcanedev/seo-helper.svg?style=flat-square
+[badge_hhvm]:      https://img.shields.io/hhvm/arcanedev/localization.svg?style=flat-square
 [badge_coverage]:  https://img.shields.io/scrutinizer/coverage/g/ARCANEDEV/Localization.svg?style=flat-square
 [badge_quality]:   https://img.shields.io/scrutinizer/g/ARCANEDEV/Localization.svg?style=flat-square
 [badge_insight]:   https://img.shields.io/sensiolabs/i/30a231b2-295e-466a-8733-fe95cf2bc48d.svg?style=flat-square
