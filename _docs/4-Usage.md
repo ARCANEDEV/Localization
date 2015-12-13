@@ -70,7 +70,7 @@ And if you want to do it manually:
 Route::group([
     'prefix'     => Localization::setLocale(),
     'middleware' => [
-        'localization-session-redirect', 
+        'localization-session-redirect',
         'localization-redirect',
     ],
 ], function() {
@@ -204,9 +204,9 @@ public function getSupportedLocalesKeys()
 ```php
 /**
  * Set the supported locales.
- * 
+ *
  * @param  array  $supportedLocales
- * 
+ *
  * @return self
  */
 public function setSupportedLocales(array $supportedLocales)
@@ -386,13 +386,13 @@ http://your-project-url/fr/a-propos  (a-propos is about in French)
 ```
 
 Or with wildcards :
-   
+
 ```
-http://your-project-url/en/view/5 
+http://your-project-url/en/view/5
 http://your-project-url/es/ver/5       (view == ver in Spanish)
 http://your-project-url/fr/afficher/5  (view == afficher in French)
 ```
- 
+
 This would be redirected to the same controller using the proper middleware and setting up the translation files as follows :
 
 ```php
@@ -401,7 +401,7 @@ This would be redirected to the same controller using the proper middleware and 
 
 return [
     //...
-    
+
     /* ------------------------------------------------------------------------------------------------
      |  Route
      | ------------------------------------------------------------------------------------------------
@@ -415,7 +415,7 @@ return [
             'translation-redirect'          => false, // Optional
         ],
     ],
-    
+
     //...
 ];
 ```
@@ -434,11 +434,11 @@ Route::localizedGroup(function () {
     Route::get('/', function () {
         return view('home');
     });
-    
+
     Route::transGet('routes.about', function () {
         return view('about');
     });
-    
+
     Route::transGet('routes.view', function ($id) {
         return view('page', compact('id'));
     });
@@ -448,8 +448,8 @@ Route::localizedGroup(function () {
 In the routes file you just have to enable the `localized-routes` middleware and the `Route::transGet` function to every route you want to translate using the translation key.
 
  > Note: *Route::transGet* is a translated get method, *Route::transPost* for the post method and so on.
-  
-Then you have to create the translation files and add there every key you want to translate. I suggest to create a `routes.php` file inside your `resources/lang/{locale}` folder. 
+
+Then you have to create the translation files and add there every key you want to translate. I suggest to create a `routes.php` file inside your `resources/lang/{locale}` folder.
 
 For the previous example, I have created three translations files, these three files would look like:
 
@@ -498,7 +498,7 @@ http://your-project-url/fr/a-propos
 ```
 
 Or:
-   
+
 ```
 http://your-project-url/en/view/5
 http://your-project-url/es/ver/5
@@ -507,17 +507,54 @@ http://your-project-url/fr/afficher/5
 
 The `localesNavbar` function would work as desired and it will translate the routes to all translated languages.
 
- > *Note: Don't forget to add any new route to the translation file.* 
+ > *Note: Don't forget to add any new route to the translation file.*
+
+ > *IMPORTANT: You may have an issue with `localesNavbar` method if you're using the Route bindings (See #8).*
+
+If you're using some route bindings by using `$router->bind()` or `$router->model()`.
+
+You need to implement the `Arcanedev\Localization\Contracts\RouteBindable` interface to your binded class to render the correct wildcard values.
+
+For example:
+
+```php
+<?php namespace App;
+
+// Other use statements...
+use Arcanedev\Localization\Contracts\RouteBindable;
+
+class User
+    extends Model
+    implements AuthenticatableContract,
+               AuthorizableContract,
+               CanResetPasswordContract,
+               RouteBindable
+{
+    //...
+
+    /**
+     * Get the wildcard value from the class.
+     *
+     * @return int|string
+     */
+    public function getWildcardValue()
+    {
+        return $this->id; // You can return whatever you want (username, hashed id ...)
+    }
+
+    //...
+}
+```
 
 ## Events
 
-You can capture the URL parameters during translation if you wish to translate them too. 
+You can capture the URL parameters during translation if you wish to translate them too.
 
 To do so, just create an event listener for the `routes.translation` event like so:
 
 ```php
 Event::listen('routes.translation', function ($locale, $route, $attributes) {
-    // You can store these translation in you database 
+    // You can store these translation in you database
     // or using the laravel's localization folders
     $translations = [
         'view'  => [
@@ -544,7 +581,7 @@ Event::listen('routes.translation', function ($locale, $route, $attributes) {
 });
 ```
 
-Be sure to pass `$locale` and `$route` and `$attributes` as parameters to the closure and you should return a translated `$attributes`. 
+Be sure to pass `$locale` and `$route` and `$attributes` as parameters to the closure and you should return a translated `$attributes`.
 
 And also make sure that `localized-routes` and `translation-redirect` are enabled.
 
@@ -554,7 +591,7 @@ And also make sure that `localized-routes` and `translation-redirect` are enable
 
 return [
     //...
-    
+
     /* ------------------------------------------------------------------------------------------------
      |  Route
      | ------------------------------------------------------------------------------------------------
@@ -568,7 +605,7 @@ return [
             'translation-redirect'          => true,  // Required to be true
         ],
     ],
-    
+
     //...
 ];
 ```

@@ -4,7 +4,7 @@
 
 You can install this package via [Composer](http://getcomposer.org/) by running this command: `composer require arcanedev/localization`.
 
-Or by adding the package to your `composer.json`. 
+Or by adding the package to your `composer.json`.
 
 ```json
 {
@@ -12,7 +12,7 @@ Or by adding the package to your `composer.json`.
         "arcanedev/localization": "0.6.*"
     }
 }
-```    
+```
 
 Then install it via `composer install` or `composer update`.
 
@@ -51,7 +51,7 @@ class Kernel extends HttpKernel
 ### Artisan commands
 
 To publish the config &amp; view files, run this command:
- 
+
 ```bash
 php artisan vendor:publish --provider="Arcanedev\Localization\LocalizationServiceProvider"
 ```

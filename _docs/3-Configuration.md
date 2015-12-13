@@ -34,7 +34,7 @@ return [
 
 return [
     // ...
-    
+
     'route'                  => [
         'middleware' => [
             'localization-session-redirect' => true,
@@ -74,9 +74,9 @@ return [
             'dir'    => 'ltr',
             'native' => 'Qafar',
         ],
-        
+
         // ...
-        
+
         'zu'         => [
             'name'   => 'Zulu',
             'script' => 'Latn',
