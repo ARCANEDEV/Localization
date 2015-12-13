@@ -40,4 +40,17 @@ class UrlTest extends TestCase
             $this->assertEquals($url, Url::unparse($parsed));
         }
     }
+
+    /** @test */
+    public function it_can_substitute_route_bindings()
+    {
+        $attributes = [
+            'user' => new \Arcanedev\Localization\Tests\Stubs\User('admin'),
+        ];
+
+        $this->assertEquals(
+            'users/admin',
+            Url::substituteAttributes($attributes, 'users/{user}')
+        );
+    }
 }
