@@ -3,8 +3,7 @@
 ## Table of contents
 
 * [Middleware](#middleware)
-* [Helpers](#helpers)
-  * [Localization (Facade or helper function)](#localization-facade-or-helper-function)
+* [Localization](#localization)
 * [Localization Entities](#localization-entities)
 * [Translated Routes](#translated-routes)
 * [Events](#events)
@@ -21,7 +20,7 @@ Localization uses the URL given for the request. In order to achieve this purpos
  | ---------------------------------------------------------
  */
 Route::localizedGroup(function () {
-    /** ADD ALL LOCALIZED ROUTES INSIDE THIS GROUP **/
+    // ADD ALL LOCALIZED ROUTES INSIDE THIS GROUP
     Route::get('/', function() {
         return view('home');
     });
@@ -31,7 +30,7 @@ Route::localizedGroup(function () {
     });
 });
 
-/** OTHER PAGES THAT SHOULD NOT BE LOCALIZED **/
+// OTHER PAGES THAT SHOULD NOT BE LOCALIZED
 ```
 
 Once this localized route group is added to the routes file, a user can access all locales added into `supported-locales` (`en`, `es` and `fr` by default, look at the config section to change that option).
@@ -93,11 +92,7 @@ If you want to hide the default locale but always show other locales in the url,
 
 **IMPORTANT** - When `hide-default-in-url` is set to true, the unlocalized root is treated as the applications default locale `app.locale`.  Because of this language negotiation using the Accept-Language header will **NEVER** occur when `hide-default-in-url` is true.
 
-## Helpers
-
-This package comes with some useful functions, like:
-
-### Localization (Facade or helper function)
+## Localization
 
 ##### Get URL for an specific locale
 
@@ -132,7 +127,7 @@ public function getLocalizedURL($locale = null, $url = null, $attributes = [])
 public function localizeURL($url = null, $locale = null);
 ```
 
-(Description & Example here)
+It returns a localized URL to the desired locale.
 
 ##### Get Clean routes
 
@@ -147,7 +142,7 @@ public function localizeURL($url = null, $locale = null);
 public function getNonLocalizedURL($url = null)
 ```
 
-(Description & Example here)
+It returns a clean URL of any localization.
 
 ##### Get URL for an specific translation key
 
@@ -167,7 +162,9 @@ public function getNonLocalizedURL($url = null)
 public function getUrlFromRouteName($locale, $transKey, $attributes = [])
 ```
 
-(Description & Example here)
+It returns a route, localized to the desired locale using the locale passed.
+
+If the translation key does not exist in the locale given, this function will return `false`.
 
 ##### Get Supported Locales Collection
 
@@ -182,7 +179,7 @@ public function getUrlFromRouteName($locale, $transKey, $attributes = [])
 public function getSupportedLocales()
 ```
 
-(Description & Example here)
+It returns all locales as a `Arcanedev\Localization\Entities\LocaleCollection` Collection. For more details, check the [LocaleCollection Entity](#localecollection-entity).
 
 ##### Get Supported Locales Keys
 
@@ -197,7 +194,7 @@ public function getSupportedLocales()
 public function getSupportedLocalesKeys()
 ```
 
-(Description & Example here)
+It returns an array with all the supported locales keys.
 
 ##### Set Supported Locales
 
@@ -212,7 +209,7 @@ public function getSupportedLocalesKeys()
 public function setSupportedLocales(array $supportedLocales)
 ```
 
-(Description & Example here)
+Set the localization's supported locales.
 
 ##### Get Current Locale
 
@@ -225,7 +222,7 @@ public function setSupportedLocales(array $supportedLocales)
 public function getCurrentLocale()
 ```
 
-(Description & Example here)
+It returns the key of the current locale.
 
 ##### Get Current Locale Entity
 
@@ -238,7 +235,7 @@ public function getCurrentLocale()
 public function getCurrentLocaleEntity()
 ```
 
-(Description & Example here)
+It returns the `Entity` of the current locale. Check the `Arcanedev\Localization\Entities\Locale` class for more details.
 
 ##### Get Current Locale Name
 
@@ -251,7 +248,7 @@ public function getCurrentLocaleEntity()
 public function getCurrentLocaleName()
 ```
 
-(Description & Example here)
+It returns the name of the current locale (For example `English`, `Spanish` or `Arabic` ...).
 
 ##### Get Current Locale Script
 
@@ -264,7 +261,7 @@ public function getCurrentLocaleName()
 public function getCurrentLocaleScript()
 ```
 
-(Description & Example here)
+It returns the [ISO 15924 code](http://www.unicode.org/iso15924/) of the current locale (For example `Latn`, `Cyrl` or `Arab` ...).
 
 ##### Get Current Locale Direction
 
@@ -277,7 +274,7 @@ public function getCurrentLocaleScript()
 public function getCurrentLocaleDirection()
 ```
 
-(Description & Example here)
+It returns the direction of the current locale: `ltr` (Left to Right) or `rtl` (Right to Left).
 
 ##### Get Current Locale Native Language
 
@@ -290,7 +287,7 @@ public function getCurrentLocaleDirection()
 public function getCurrentLocaleNative()
 ```
 
-(Description & Example here)
+It returns the native name of the current locale.
 
 ##### Get all locales collection
 
@@ -303,7 +300,7 @@ public function getCurrentLocaleNative()
 public function getAllLocales()
 ```
 
-(Description & Example here)
+It returns all locales as a `Arcanedev\Localization\Entities\LocaleCollection` Collection. For more details, check the [LocaleCollection Entity](#localecollection-entity).
 
 ##### Set and return current locale
 
@@ -318,7 +315,9 @@ public function getAllLocales()
 public function setLocale($locale = null)
 ```
 
-(Description & Example here)
+This function will change the application's current locale.
+
+If the locale is not passed or `null`, the locale will be determined via a cookie or the session (if stored previously), browser Accept-Language header or the default application locale (depending on your config file).
 
 ##### Set the base URL
 
@@ -330,8 +329,6 @@ public function setLocale($locale = null)
  */
 public function setBaseUrl($url)
 ```
-
-(Description & Example here)
 
 ##### Check if given locale is supported
 
@@ -359,21 +356,139 @@ public function isLocaleSupported($locale)
 public function localesNavbar()
 ```
 
-(Description & Example here)
+If you're supporting multiple locales in your project you will probably want to provide the users with a way to change language.
+
+**Note :** You can publish and modify the blade template markups.
+
+The `localesNavbar` function would work as desired and it will translate the routes to all translated languages.
+
+ > *Note: Don't forget to add any new route to the translation file.*
+
+**IMPORTANT: You may have an issue with `localesNavbar` method if you're using the Route bindings (See #8).**
+
+If you're using some route bindings by using `$router->bind()` or `$router->model()`.
+
+You need to implement the `Arcanedev\Localization\Contracts\RouteBindable` interface to your binded class to render the correct wildcard values.
+
+For example:
+
+```php
+<?php namespace App;
+
+// Other use statements...
+use Arcanedev\Localization\Contracts\RouteBindable;
+
+class User
+    extends Model
+    implements AuthenticatableContract,
+               AuthorizableContract,
+               CanResetPasswordContract,
+               RouteBindable
+{
+    //...
+
+    /**
+     * Get the wildcard value from the class.
+     *
+     * @return int|string
+     */
+    public function getWildcardValue()
+    {
+        return $this->id; // You can return whatever you want (username, hashed id ...)
+    }
+
+    //...
+}
+```
 
 ## Localization Entities
 
 ##### LocaleCollection Entity
 
-The `Arcanedev\Localization\Entities\LocaleCollection` class extends from `Illuminate\Support\Collection`, so it provides a fluent, convenient wrapper for working with locales data (Locale entities).
+The `Arcanedev\Localization\Entities\LocaleCollection` class extends from `Illuminate\Support\Collection`, so it provides a fluent, convenient wrapper for working with locales data (`Locale` entities).
 
-For more details, check the [Collection documentation](http://laravel.com/docs/5.1/collections).
-
-(More details & Examples here)
+For more details, check the [Illuminate\Support\Collection documentation](http://laravel.com/docs/5.1/collections).
 
 ##### Locale Entity
 
-(Description & Examples here)
+The `Locale` Entity implements the `Illuminate\Contracts\Support\Arrayable`, `Illuminate\Contracts\Support\Jsonable` and `JsonSerializable` to simplify the conversion.
+
+The available methods:
+
+```php
+/**
+ * Get local key.
+ *
+ * @return string
+ */
+public function key()
+```
+
+```php
+/**
+ * Get locale name.
+ *
+ * @return string
+ */
+public function name()
+```
+
+```php
+/**
+ * Get locale Script.
+ *
+ * @return string
+ */
+public function script()
+```
+
+```php
+/**
+ * Get locale direction.
+ *
+ * @return string
+ */
+public function direction()
+```
+
+```php
+/**
+ * Get locale native.
+ *
+ * @return string
+ */
+public function native()
+```
+
+```php
+/**
+ * Get locale regional.
+ *
+ * @return string
+ */
+public function regional()
+```
+
+```php
+/**
+ * Check if it is a default locale.
+ *
+ * @return bool
+ */
+public function isDefault()
+```
+
+```php
+/**
+ * Create Locale instance.
+ *
+ * @param  string  $key
+ * @param  array   $data
+ *
+ * @return self
+ */
+public static function make($key, array $data)
+```
 
 ## Translated Routes
 
@@ -503,47 +618,6 @@ Or:
 http://your-project-url/en/view/5
 http://your-project-url/es/ver/5
 http://your-project-url/fr/afficher/5
-```
-
-The `localesNavbar` function would work as desired and it will translate the routes to all translated languages.
-
- > *Note: Don't forget to add any new route to the translation file.*
-
- > *IMPORTANT: You may have an issue with `localesNavbar` method if you're using the Route bindings (See #8).*
-
-If you're using some route bindings by using `$router->bind()` or `$router->model()`.
-
-You need to implement the `Arcanedev\Localization\Contracts\RouteBindable` interface to your binded class to render the correct wildcard values.
-
-For example:
-
-```php
-<?php namespace App;
-
-// Other use statements...
-use Arcanedev\Localization\Contracts\RouteBindable;
-
-class User
-    extends Model
-    implements AuthenticatableContract,
-               AuthorizableContract,
-               CanResetPasswordContract,
-               RouteBindable
-{
-    //...
-
-    /**
-     * Get the wildcard value from the class.
-     *
-     * @return int|string
-     */
-    public function getWildcardValue()
-    {
-        return $this->id; // You can return whatever you want (username, hashed id ...)
-    }
-
-    //...
-}
 ```
 
 ## Events

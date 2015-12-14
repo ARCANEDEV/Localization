@@ -1,4 +1,4 @@
-# Localization [![Packagist License][badge_license]](LICENSE.md) [![For Laravel 5.1][badge_laravel]](https://github.com/ARCANEDEV/Localization#localization)
+# Localization [![Packagist License][badge_license]](LICENSE.md) [![For Laravel 5][badge_laravel]](https://github.com/ARCANEDEV/Localization#localization)
 
 [![Travis Status][badge_build]](https://travis-ci.org/ARCANEDEV/Localization)
 [![HHVM Status][badge_hhvm]](http://hhvm.h4cc.de/package/arcanedev/localization)
@@ -12,7 +12,7 @@
 [![Packagist Downloads][badge_downloads]](https://packagist.org/packages/arcanedev/localization)
 
 [badge_license]:   http://img.shields.io/packagist/l/arcanedev/localization.svg?style=flat-square
-[badge_laravel]:   https://img.shields.io/badge/For%20Laravel-5.1-orange.svg?style=flat-square
+[badge_laravel]:   https://img.shields.io/badge/For%20Laravel-5-orange.svg?style=flat-square
 
 [badge_build]:     http://img.shields.io/travis/ARCANEDEV/Localization.svg?style=flat-square
 [badge_hhvm]:      https://img.shields.io/hhvm/arcanedev/localization.svg?style=flat-square
@@ -55,16 +55,17 @@ Feel free to check out the [releases](https://github.com/ARCANEDEV/Localization/
 
   - [ ] 100% Code coverage + Maximum code quality.
   - [ ] Refactoring.
-  - [ ] Complete the documentation (Wiki).
+  - [ ] Complete the documentation.
   - [ ] Add examples (like how to generate a localized sitemap).
 
 ### TODOS
 
-  - [ ] Laravel 5.0 support.
+  - [ ] Laravel 5.2 support.
 
 ### DONE
 
   - [x] Laravel 5.1 supported.
+  - [x] Laravel 5.0 supported.
   - [x] Adding language selector view.
 
 ## Credit

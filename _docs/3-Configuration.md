@@ -48,13 +48,13 @@ return [
     // ...
 ```
 
-| Name                          | Description                                                                                      |
-| ----------------------------- | ------------------------------------------------------------------------------------------------ |
-| localization-session-redirect | (Coming soon &hellip;)                                                                           |
-| localization-cookie-redirect  | (Coming soon &hellip;)                                                                           |
-| localization-redirect         | (Coming soon &hellip;)                                                                           |
-| localized-routes              | (Coming soon &hellip;)                                                                           |
-| translation-redirect          | (Coming soon &hellip;)                                                                           |
+| Name                          | Description                                                              |
+| ----------------------------- | ------------------------------------------------------------------------ |
+| localization-session-redirect | Redirect all "non-localized" to the "localized" URLs by using sessions.  |
+| localization-cookie-redirect  | Redirect all "non-localized" to the "localized" URLs by using cookies.   |
+| localization-redirect         | Redirect all "non-localized" to the "localized" URLs.                    |
+| localized-routes              | Allows to register all translatable routes.                              |
+| translation-redirect          | Allows to translate the route attributes by using the translation event. |
 
 ## Locales
 
