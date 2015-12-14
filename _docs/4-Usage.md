@@ -377,7 +377,7 @@ The `localesNavbar` function would work as desired and it will translate the rou
 
  > *Note: Don't forget to add any new route to the translation file.*
 
-**IMPORTANT: You may have an issue with `localesNavbar` method if you're using the Route bindings (See #8).**
+**IMPORTANT: You may have an issue with `localesNavbar` method if you're using the Route bindings, See [Issue  #19](https://github.com/ARCANEDEV/Localization/issues/19) for more details.**
 
 If you're using some route bindings by using `$router->bind()` or `$router->model()`.
 
