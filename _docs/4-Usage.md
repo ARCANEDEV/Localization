@@ -289,6 +289,19 @@ public function getCurrentLocaleNative()
 
 It returns the native name of the current locale.
 
+##### Get Current Locale Regional
+
+```php
+/**
+ * Returns current locale regional.
+ *
+ * @return string
+ */
+public function getCurrentLocaleRegional()
+```
+
+It returns the regional of the current locale. The regional locale could be used with the [setlocale()](http://php.net/manual/en/function.setlocale.php) method.
+
 ##### Get all locales collection
 
 ```php

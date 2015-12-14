@@ -51,15 +51,11 @@ Feel free to check out the [releases](https://github.com/ARCANEDEV/Localization/
   5. [Extras](_docs/5-Extras.md)
   6. [FAQ](_docs/6-FAQ.md)
 
-### ONGOING
-
-  - [ ] 100% Code coverage + Maximum code quality.
-  - [ ] Refactoring.
-  - [ ] Complete the documentation.
-  - [ ] Add examples (like how to generate a localized sitemap).
-
 ### TODOS
 
+  - [ ] 100% Code coverage + Maximum code quality.
+  - [ ] Complete the documentation.
+  - [ ] Adding more regionals for locales.
   - [ ] Laravel 5.2 support.
 
 ### DONE
