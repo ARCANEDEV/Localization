@@ -162,7 +162,7 @@ class RouteTranslator implements RouteTranslatorInterface
     public function getRouteNameFromPath($uri, $locale)
     {
         $attributes = Url::extractAttributes($uri);
-        $uri        = str_replace([url(), "/$locale/"], '', $uri);
+        $uri        = str_replace([url('/'), "/$locale/"], '', $uri);
         $uri        = trim($uri, '/');
 
         foreach ($this->translatedRoutes as $routeName) {

@@ -18,7 +18,6 @@
         "arcanedev/support":   "~3.6.0"
     },
     "require-dev": {
-        "orchestra/testbench": "~3.1",
         "phpunit/phpcov":      "~2.0",
         "phpunit/phpunit":     "~4.0|~5.0"
     },
@@ -32,6 +31,9 @@
         "psr-4": {
             "Arcanedev\\Localization\\Tests\\": "tests/"
         }
+    },
+    "scripts": {
+        "testbench": "composer require --dev \"orchestra/testbench=~3.0\""
     },
     "suggest": {
         "ext-intl": "Use Intl extension for 'Locale' class (an identifier used to get language)."
