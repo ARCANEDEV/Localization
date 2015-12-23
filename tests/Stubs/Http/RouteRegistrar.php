@@ -195,8 +195,7 @@ class RouteRegistrar
                 'dummy.store',
                 'dummy.show',
                 'dummy.edit',
-                'dummy.update', // PUT
-                'dummy.update', // PATCH
+                'dummy.update',
                 'dummy.destroy',
             ]);
 
@@ -209,8 +208,7 @@ class RouteRegistrar
                 'foo.bar.store',
                 'foo.bar.show',
                 'foo.bar.edit',
-                'foo.bar.update', // PUT
-                'foo.bar.update', // PATCH
+                'foo.bar.update',
                 'foo.bar.destroy',
             ]);
         });

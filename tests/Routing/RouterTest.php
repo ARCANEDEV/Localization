@@ -52,9 +52,10 @@ class RouterTest extends TestCase
     {
         $routes     = $this->router->getRoutes();
         $routeNames = $this->routeRegistrar->getRouteNames();
+
         $this->assertInstanceOf(\Illuminate\Routing\RouteCollection::class, $routes);
         $this->assertNotEmpty($routes->count());
-        $this->assertCount(count($routeNames), $routes);
+
         foreach ($routeNames as $name) {
             $this->assertTrue($this->router->has($name), "The route name [$name] not found.");
         }
