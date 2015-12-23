@@ -12,7 +12,7 @@
 [![Packagist Downloads][badge_downloads]](https://packagist.org/packages/arcanedev/localization)
 
 [badge_license]:   http://img.shields.io/packagist/l/arcanedev/localization.svg?style=flat-square
-[badge_laravel]:   https://img.shields.io/badge/For%20Laravel-5-orange.svg?style=flat-square
+[badge_laravel]:   https://img.shields.io/badge/For-Laravel%205-orange.svg?style=flat-square
 
 [badge_build]:     http://img.shields.io/travis/ARCANEDEV/Localization.svg?style=flat-square
 [badge_hhvm]:      https://img.shields.io/hhvm/arcanedev/localization.svg?style=flat-square
@@ -56,10 +56,10 @@ Feel free to check out the [releases](https://github.com/ARCANEDEV/Localization/
   - [ ] 100% Code coverage + Maximum code quality.
   - [ ] Complete the documentation.
   - [ ] Adding more regionals for locales.
-  - [ ] Laravel 5.2 support.
 
 ### DONE
 
+  - [x] Laravel 5.2 support.
   - [x] Laravel 5.1 supported.
   - [x] Laravel 5.0 supported.
   - [x] Adding language selector view.
