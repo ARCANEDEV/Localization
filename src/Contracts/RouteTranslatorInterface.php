@@ -1,4 +1,5 @@
 <?php namespace Arcanedev\Localization\Contracts;
+
 use Arcanedev\Localization\Entities\LocaleCollection;
 use Arcanedev\Localization\Exceptions\InvalidTranslationException;
 
