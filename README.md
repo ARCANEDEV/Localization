@@ -59,7 +59,7 @@ Feel free to check out the [releases](https://github.com/ARCANEDEV/Localization/
 
 ### DONE
 
-  - [x] Laravel 5.2 support.
+  - [x] Laravel 5.2 supported.
   - [x] Laravel 5.1 supported.
   - [x] Laravel 5.0 supported.
   - [x] Adding language selector view.
