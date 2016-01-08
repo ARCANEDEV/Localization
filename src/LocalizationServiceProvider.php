@@ -88,7 +88,7 @@ class LocalizationServiceProvider extends PackageServiceProvider
      */
     private function registerLocalization()
     {
-        $this->app->singleton('arcanedev.localization', function($app) {
+        $this->singleton('arcanedev.localization', function($app) {
             /**
              * @var  Contracts\RouteTranslatorInterface  $routeTranslator
              * @var  Contracts\LocalesManagerInterface   $localesManager
@@ -99,7 +99,7 @@ class LocalizationServiceProvider extends PackageServiceProvider
             return new Localization($app, $routeTranslator, $localesManager);
         });
 
-        $this->addFacade(
+        $this->alias(
             $this->app['config']->get('localization.facade', 'Localization'),
             Facades\Localization::class
         );
