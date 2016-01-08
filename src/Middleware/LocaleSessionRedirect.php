@@ -28,15 +28,18 @@ class LocaleSessionRedirect extends Middleware
      */
     public function handle(Request $request, Closure $next)
     {
-        $locale = $request->segment(1, null);
+        $segment = $request->segment(1, null);
+        $locale  = session('locale', null);
 
-        if (localization()->isLocaleSupported($locale)) {
-            session()->put(compact('locale'));
+        if (localization()->isLocaleSupported($segment)) {
+            session()->put(['locale' => $segment]);
 
             return $next($request);
         }
-
-        $locale = session('locale', null);
+        elseif (localization()->isDefaultLocaleHiddenInUrl()) {
+            $locale = localization()->getDefaultLocale();
+            session()->put(compact('locale'));
+        }
 
         if (is_string($locale) && ! $this->isDefaultLocaleHidden($locale)) {
             session()->reflash();
