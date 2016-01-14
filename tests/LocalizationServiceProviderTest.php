@@ -1,4 +1,5 @@
 <?php namespace Arcanedev\Localization\Tests;
+
 use Arcanedev\Localization\LocalizationServiceProvider;
 
 /**
@@ -29,9 +30,9 @@ class LocalizationServiceProviderTest extends TestCase
 
     public function tearDown()
     {
-        parent::tearDown();
-
         unset($this->provider);
+
+        parent::tearDown();
     }
 
     /* ------------------------------------------------------------------------------------------------
@@ -53,5 +54,14 @@ class LocalizationServiceProviderTest extends TestCase
         $this->assertEquals([
             'arcanedev.localization',
         ], $provided);
+    }
+
+    /** @test */
+    public function it_can_register_localization_facade()
+    {
+        $this->assertEquals(
+            $this->app->getLocale(),
+            \Localization::getDefaultLocale()
+        );
     }
 }

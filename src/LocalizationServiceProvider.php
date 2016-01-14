@@ -56,6 +56,7 @@ class LocalizationServiceProvider extends PackageServiceProvider
         $this->app->register(Providers\RoutingServiceProvider::class);
         $this->app->register(Providers\UtilitiesServiceProvider::class);
         $this->registerLocalization();
+        $this->registerAliases();
     }
 
     /**
