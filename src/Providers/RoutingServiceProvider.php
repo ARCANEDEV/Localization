@@ -1,10 +1,6 @@
 <?php namespace Arcanedev\Localization\Providers;
 
-use Arcanedev\Localization\Middleware\LocaleCookieRedirect;
-use Arcanedev\Localization\Middleware\LocaleSessionRedirect;
-use Arcanedev\Localization\Middleware\LocalizationRedirect;
-use Arcanedev\Localization\Middleware\LocalizationRoutes;
-use Arcanedev\Localization\Middleware\TranslationRedirect;
+use Arcanedev\Localization\Middleware;
 use Illuminate\Routing\RoutingServiceProvider as ServiceProvider;
 use Arcanedev\Localization\Routing\Router;
 
@@ -65,11 +61,11 @@ class RoutingServiceProvider extends ServiceProvider
         /** @var Router $router */
         $router      = $this->app['router'];
         $middlewares = [
-            'localization-session-redirect' => LocaleSessionRedirect::class,
-            'localization-cookie-redirect'  => LocaleCookieRedirect::class,
-            'localization-redirect'         => LocalizationRedirect::class,
-            'localized-routes'              => LocalizationRoutes::class,
-            'translation-redirect'          => TranslationRedirect::class,
+            'localization-session-redirect' => Middleware\LocaleSessionRedirect::class,
+            'localization-cookie-redirect'  => Middleware\LocaleCookieRedirect::class,
+            'localization-redirect'         => Middleware\LocalizationRedirect::class,
+            'localized-routes'              => Middleware\LocalizationRoutes::class,
+            'translation-redirect'          => Middleware\TranslationRedirect::class,
         ];
 
         foreach ($middlewares as $name => $class) {
