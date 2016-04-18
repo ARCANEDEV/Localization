@@ -67,7 +67,7 @@ class LocalizationServiceProvider extends PackageServiceProvider
         parent::boot();
 
         $this->publishConfig();
-        $this->registerViews();
+        $this->publishViews();
     }
 
     /**
@@ -104,32 +104,5 @@ class LocalizationServiceProvider extends PackageServiceProvider
             $this->app['config']->get('localization.facade', 'Localization'),
             Facades\Localization::class
         );
-    }
-
-    /* ------------------------------------------------------------------------------------------------
-     |  Resources
-     | ------------------------------------------------------------------------------------------------
-     */
-    /**
-     * Publishes configs.
-     */
-    private function publishConfig()
-    {
-        $this->publishes([
-            $this->getConfigFile() => config_path("{$this->package}.php"),
-        ], 'config');
-    }
-
-    /**
-     * Register and published Views.
-     */
-    private function registerViews()
-    {
-        $viewsPath = $this->getBasePath() . '/resources/views';
-
-        $this->loadViewsFrom($viewsPath, $this->package);
-        $this->publishes([
-            $viewsPath => base_path('resources/views/vendor/' . $this->package),
-        ], 'views');
     }
 }
