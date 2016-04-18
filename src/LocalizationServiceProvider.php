@@ -113,7 +113,7 @@ class LocalizationServiceProvider extends PackageServiceProvider
     /**
      * Publishes configs.
      */
-    private function publishConfig()
+    protected function publishConfig()
     {
         $this->publishes([
             $this->getConfigFile() => config_path("{$this->package}.php"),
