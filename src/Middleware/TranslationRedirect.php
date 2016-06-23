@@ -36,7 +36,7 @@ class TranslationRedirect extends Middleware
         $translatedUrl = $this->getTranslatedUrl($request);
 
         if ( ! is_null($translatedUrl)) {
-            return $this->makeRedirectResponse($translatedUrl, 301);
+            return $this->makeRedirectResponse($translatedUrl);
         }
 
         return $next($request);
