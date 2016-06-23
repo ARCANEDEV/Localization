@@ -45,7 +45,7 @@ class LocaleSessionRedirectTest extends TestCase
         /** @var RedirectResponse $response */
         $response = $this->call('GET', $this->testUrlOne);
 
-        $this->assertEquals(301, $response->getStatusCode());
+        $this->assertEquals(302, $response->getStatusCode());
         $this->assertEquals($this->testUrlOne . 'en', $response->getTargetUrl());
     }
 }

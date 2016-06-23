@@ -105,8 +105,6 @@ abstract class Middleware extends BaseMiddleware
      */
     protected function makeRedirectResponse($url, $code = 302)
     {
-        return new RedirectResponse($url, $code, [
-            'Vary' => 'Accept-Language'
-        ]);
+        return new RedirectResponse($url, $code, ['Vary' => 'Accept-Language']);
     }
 }

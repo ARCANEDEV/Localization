@@ -28,15 +28,11 @@ class LocalizationRedirect extends Middleware
      */
     public function handle(Request $request, Closure $next)
     {
-        $locale = $request->segment(1, null);
-
-        if (
-            $redirectUrl = $this->getRedirectionUrl($locale)
-        ) {
+        if ($redirectUrl = $this->getRedirectionUrl($request)) {
             // Save any flashed data for redirect
             session()->reflash();
 
-            return $this->makeRedirectResponse($redirectUrl, 301);
+            return $this->makeRedirectResponse($redirectUrl);
         }
 
         return $next($request);
@@ -49,12 +45,14 @@ class LocalizationRedirect extends Middleware
     /**
      * Get redirection.
      *
-     * @param  string  $locale
+     * @param  \Illuminate\Http\Request  $request
      *
      * @return string|false
      */
-    protected function getRedirectionUrl($locale)
+    protected function getRedirectionUrl(Request $request)
     {
+        $locale = $request->segment(1, null);
+
         if ($this->getSupportedLocales()->has($locale)) {
             return $this->isDefaultLocaleHidden($locale)
                 ? localization()->getNonLocalizedURL()
@@ -67,7 +65,7 @@ class LocalizationRedirect extends Middleware
             $this->getCurrentLocale() !== $this->getDefaultLocale() ||
             ! $this->hideDefaultLocaleInURL()
         ) {
-            return localization()->getLocalizedURL();
+            return localization()->getLocalizedURL(session('locale'), $request->path());
         }
 
         return false;
