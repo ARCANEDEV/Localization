@@ -381,7 +381,8 @@ class LocalesManager implements LocalesManagerInterface
         $currentLocale = $this->getCurrentLocaleEntity();
 
         if ( ! empty($regional = $currentLocale->regional())) {
-            setlocale(LC_TIME, $regional . '.utf8');
+            setlocale(LC_TIME, "$regional.UTF-8");
+            setlocale(LC_MONETARY, "$regional.UTF-8");
         }
     }
 }
