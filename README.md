@@ -47,6 +47,7 @@ Feel free to check out the [releases](https://github.com/ARCANEDEV/Localization/
 ### TODOS
 
   - [ ] 100% Code coverage + Maximum code quality.
+  - [ ] Laravel 5.3 support.
   - [ ] Complete the documentation.
   - [ ] Adding more regionals for locales.
 
