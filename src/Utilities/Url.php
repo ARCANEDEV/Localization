@@ -4,7 +4,6 @@ use Arcanedev\Localization\Contracts\RouteBindable;
 use Arcanedev\Localization\Contracts\UrlInterface;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Route;
-use Illuminate\Routing\Router;
 
 /**
  * Class     Url
@@ -29,9 +28,6 @@ class Url implements UrlInterface
      */
     public static function extractAttributes($url = false)
     {
-        /** @var Router $router */
-        $router     = app('router');
-
         $parse  = parse_url($url);
         $path   = isset($parse['path']) ? explode('/', $parse['path']) : [];
         $url    = [];
@@ -39,6 +35,9 @@ class Url implements UrlInterface
         foreach ($path as $segment) {
             if ( ! empty($segment)) $url[] = $segment;
         }
+
+        /** @var \Illuminate\Routing\Router $router */
+        $router = app('router');
 
         return self::extractAttributesFromRoutes($url, $router->getRoutes());
     }
@@ -194,8 +193,6 @@ class Url implements UrlInterface
      * Check parsed URL.
      *
      * @param  array  $parsed
-     *
-     * @return array
      */
     private static function checkParsedUrl(array &$parsed)
     {
