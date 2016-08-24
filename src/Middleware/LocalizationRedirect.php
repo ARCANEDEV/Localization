@@ -65,7 +65,7 @@ class LocalizationRedirect extends Middleware
             $this->getCurrentLocale() !== $this->getDefaultLocale() ||
             ! $this->hideDefaultLocaleInURL()
         ) {
-            return localization()->getLocalizedURL(session('locale'), $request->path());
+            return localization()->getLocalizedURL(session('locale'), $request->fullUrl());
         }
 
         return false;
