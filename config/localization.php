@@ -1766,7 +1766,7 @@ return [
             'script'   => 'Latn',
             'dir'      => 'ltr',
             'native'   => 'Svenska',
-            'regional' => 'sv_FI',
+            'regional' => 'sv_SE',
         ],
         'sw'          => [
             'name'     => 'Swahili',
