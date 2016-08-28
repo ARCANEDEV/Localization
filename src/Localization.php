@@ -3,7 +3,6 @@
 use Arcanedev\Localization\Contracts\LocalesManagerInterface;
 use Arcanedev\Localization\Contracts\LocalizationInterface;
 use Arcanedev\Localization\Contracts\RouteTranslatorInterface;
-use Arcanedev\Localization\Exceptions\UndefinedSupportedLocalesException;
 use Arcanedev\Localization\Exceptions\UnsupportedLocaleException;
 use Arcanedev\Localization\Utilities\Url;
 use Illuminate\Foundation\Application;
@@ -22,13 +21,6 @@ class Localization implements LocalizationInterface
      | ------------------------------------------------------------------------------------------------
      */
     /**
-     * Laravel application instance.
-     *
-     * @var Application
-     */
-    private $app;
-
-    /**
      * Base url.
      *
      * @var string
@@ -36,16 +28,23 @@ class Localization implements LocalizationInterface
     protected $baseUrl;
 
     /**
+     * Laravel application instance.
+     *
+     * @var \Illuminate\Foundation\Application
+     */
+    private $app;
+
+    /**
      * The RouteTranslator instance.
      *
-     * @var RouteTranslatorInterface
+     * @var \Arcanedev\Localization\Contracts\RouteTranslatorInterface
      */
     protected $routeTranslator;
 
     /**
      * The LocalesManager instance.
      *
-     * @var LocalesManagerInterface
+     * @var \Arcanedev\Localization\Contracts\LocalesManagerInterface
      */
     private $localesManager;
 
@@ -56,12 +55,9 @@ class Localization implements LocalizationInterface
     /**
      * Creates new instance.
      *
-     * @param  Application               $app
-     * @param  RouteTranslatorInterface  $routeTranslator
-     * @param  LocalesManagerInterface   $localesManager
-     *
-     * @throws UndefinedSupportedLocalesException
-     * @throws UnsupportedLocaleException
+     * @param  \Illuminate\Foundation\Application                          $app
+     * @param  \Arcanedev\Localization\Contracts\RouteTranslatorInterface  $routeTranslator
+     * @param  \Arcanedev\Localization\Contracts\LocalesManagerInterface   $localesManager
      */
     public function __construct(
         Application              $app,
@@ -84,7 +80,7 @@ class Localization implements LocalizationInterface
     /**
      * Get Request instance.
      *
-     * @return Request
+     * @return \Illuminate\Http\Request
      */
     private function request()
     {
@@ -105,8 +101,6 @@ class Localization implements LocalizationInterface
      * Return an array of all supported Locales.
      *
      * @return \Arcanedev\Localization\Entities\LocaleCollection
-     *
-     * @throws UndefinedSupportedLocalesException
      */
     public function getSupportedLocales()
     {
@@ -131,8 +125,6 @@ class Localization implements LocalizationInterface
      * Get supported locales keys.
      *
      * @return array
-     *
-     * @throws UndefinedSupportedLocalesException
      */
     public function getSupportedLocalesKeys()
     {
@@ -240,9 +232,7 @@ class Localization implements LocalizationInterface
      */
     public function setBaseUrl($url)
     {
-        if (substr($url, -1) !== '/') {
-            $url .= '/';
-        }
+        if (substr($url, -1) !== '/') $url .= '/';
 
         $this->baseUrl = $url;
 
@@ -270,8 +260,6 @@ class Localization implements LocalizationInterface
      *
      * @param  string|null  $url
      * @param  string|null  $locale
-     *
-     * @throws UnsupportedLocaleException
      *
      * @return string
      */
@@ -302,9 +290,6 @@ class Localization implements LocalizationInterface
      * @param  array        $attributes
      *
      * @return string|false
-     *
-     * @throws UndefinedSupportedLocalesException
-     * @throws UnsupportedLocaleException
      */
     public function getLocalizedURL($locale = null, $url = null, $attributes = [])
     {
@@ -386,11 +371,7 @@ class Localization implements LocalizationInterface
     {
         $uri = ltrim($uri, '/');
 
-        if (empty($this->baseUrl)) {
-            return app('url')->to($uri);
-        }
-
-        return $this->baseUrl . $uri;
+        return empty($this->baseUrl) ? app('url')->to($uri) : $this->baseUrl.$uri;
     }
 
     /**
@@ -417,9 +398,6 @@ class Localization implements LocalizationInterface
      * @param  string  $locale
      *
      * @return string|false
-     *
-     * @throws UndefinedSupportedLocalesException
-     * @throws UnsupportedLocaleException
      */
     private function findTranslatedRouteByUrl($url, $attributes, $locale)
     {
@@ -445,9 +423,6 @@ class Localization implements LocalizationInterface
      * @param  array   $attributes
      *
      * @return string|false
-     *
-     * @throws UndefinedSupportedLocalesException
-     * @throws UnsupportedLocaleException
      */
     public function getUrlFromRouteName($locale, $transKey, $attributes = [])
     {
@@ -470,7 +445,7 @@ class Localization implements LocalizationInterface
     /**
      * Set route name from request.
      *
-     * @param  Request  $request
+     * @param  \Illuminate\Http\Request  $request
      */
     public function setRouteNameFromRequest(Request $request)
     {
@@ -500,15 +475,11 @@ class Localization implements LocalizationInterface
      *
      * @param  string|bool  $locale
      *
-     * @throws UndefinedSupportedLocalesException
-     *
      * @return bool
      */
     public function isLocaleSupported($locale)
     {
-        return (
-            $locale !== false && ! $this->localesManager->isSupportedLocale($locale)
-        ) ? false : true;
+        return ! ($locale !== false && ! $this->localesManager->isSupportedLocale($locale));
     }
 
     /**
@@ -516,7 +487,7 @@ class Localization implements LocalizationInterface
      *
      * @param  string  $locale
      *
-     * @throws UnsupportedLocaleException
+     * @throws \Arcanedev\Localization\Exceptions\UnsupportedLocaleException
      */
     private function isLocaleSupportedOrFail($locale)
     {
