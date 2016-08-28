@@ -150,9 +150,7 @@ class Url implements UrlInterface
             }
         }
 
-        if (isset($url[$i + 1])) {
-            $match = false;
-        }
+        if (isset($url[$i + 1])) $match = false;
 
         return $match;
     }
