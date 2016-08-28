@@ -7,6 +7,7 @@ Feel free to check out the [Releases](https://github.com/ARCANEDEV/Localization/
 ### Features
 
   * Easy setup & configuration.
+  * Laravel `5.0 | 5.1 | 5.2 | 5.3` are supported.
   * SEO-Friendly (Search engine optimization).
   * New extended Router to manage your localized routes.
   * Locales selector menu (Publishable & Customizable).
