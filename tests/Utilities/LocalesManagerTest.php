@@ -55,7 +55,7 @@ class LocalesManagerTest extends TestCase
         foreach ($this->supportedLocales as $locale) {
             $this->localesManager->setCurrentLocale($locale);
 
-            $this->assertEquals($locale, $this->localesManager->getCurrentLocale());
+            $this->assertSame($locale, $this->localesManager->getCurrentLocale());
         }
     }
 
@@ -68,7 +68,7 @@ class LocalesManagerTest extends TestCase
             $localeEntity = $this->localesManager->getCurrentLocaleEntity();
 
             $this->assertInstanceOf(Locale::class, $localeEntity);
-            $this->assertEquals($locale, $localeEntity->key());
+            $this->assertSame($locale, $localeEntity->key());
         }
     }
 
@@ -82,7 +82,7 @@ class LocalesManagerTest extends TestCase
         );
         $this->assertFalse($locales->isEmpty());
         $this->assertCount(289, $locales);
-        $this->assertEquals(289, $locales->count());
+        $this->assertSame(289, $locales->count());
     }
 
     /** @test */
@@ -95,7 +95,7 @@ class LocalesManagerTest extends TestCase
         );
         $this->assertFalse($supportedLocales->isEmpty());
         $this->assertCount(count($this->supportedLocales), $supportedLocales);
-        $this->assertEquals(count($this->supportedLocales), $supportedLocales->count());
+        $this->assertSame(count($this->supportedLocales), $supportedLocales->count());
     }
 
     /** @test */
@@ -109,7 +109,7 @@ class LocalesManagerTest extends TestCase
 
         $this->assertFalse($supportedLocales->isEmpty());
         $this->assertCount(2, $supportedLocales);
-        $this->assertEquals(2, $supportedLocales->count());
+        $this->assertSame(2, $supportedLocales->count());
 
         foreach ($supported as $locale) {
             $this->assertTrue($supportedLocales->has($locale));
@@ -122,7 +122,7 @@ class LocalesManagerTest extends TestCase
         $supportedKeys = $this->localesManager->getSupportedLocalesKeys();
 
         $this->assertCount(count($this->supportedLocales), $supportedKeys);
-        $this->assertEquals($this->supportedLocales, $supportedKeys);
+        $this->assertSame($this->supportedLocales, $supportedKeys);
     }
 
     /** @test */
@@ -135,7 +135,7 @@ class LocalesManagerTest extends TestCase
 
             $this->localesManager = new LocalesManager($this->app);
 
-            $this->assertEquals($locale, $this->localesManager->getCurrentLocale());
+            $this->assertSame($locale, $this->localesManager->getCurrentLocale());
         }
     }
 
@@ -147,18 +147,18 @@ class LocalesManagerTest extends TestCase
         $this->localesManager = new LocalesManager($this->app);
         $this->localesManager->setCurrentLocale('fr');
 
-        $this->assertEquals('en', $this->localesManager->getDefaultLocale());
-        $this->assertEquals('fr', $this->localesManager->getCurrentLocale());
-        $this->assertEquals('fr', $this->localesManager->getCurrentOrDefaultLocale());
+        $this->assertSame('en', $this->localesManager->getDefaultLocale());
+        $this->assertSame('fr', $this->localesManager->getCurrentLocale());
+        $this->assertSame('fr', $this->localesManager->getCurrentOrDefaultLocale());
 
         $this->app['config']->set('localization.hide-default-in-url', true);
 
         $this->localesManager = new LocalesManager($this->app);
         $this->localesManager->setCurrentLocale('fr');
 
-        $this->assertEquals('en', $this->localesManager->getDefaultLocale());
-        $this->assertEquals('fr', $this->localesManager->getCurrentLocale());
-        $this->assertEquals('en', $this->localesManager->getCurrentOrDefaultLocale());
+        $this->assertSame('en', $this->localesManager->getDefaultLocale());
+        $this->assertSame('fr', $this->localesManager->getCurrentLocale());
+        $this->assertSame('en', $this->localesManager->getCurrentOrDefaultLocale());
     }
 
     /** @test */
@@ -167,7 +167,7 @@ class LocalesManagerTest extends TestCase
         foreach ($this->supportedLocales as $locale) {
             $this->localesManager->setDefaultLocale($locale);
 
-            $this->assertEquals($locale, $this->localesManager->getDefaultLocale());
+            $this->assertSame($locale, $this->localesManager->getDefaultLocale());
         }
     }
 

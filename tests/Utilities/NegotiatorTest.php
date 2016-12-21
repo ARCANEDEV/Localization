@@ -61,7 +61,7 @@ class NegotiatorTest extends TestCase
             /** @var Request $request */
             $request = $this->mockRequestWithAcceptLanguage($language[1])->reveal();
 
-            $this->assertEquals($language[0], $this->negotiator->negotiate($request));
+            $this->assertSame($language[0], $this->negotiator->negotiate($request));
         }
     }
 
@@ -71,7 +71,7 @@ class NegotiatorTest extends TestCase
         /** @var Request $request */
         $request = $this->mockRequestWithAcceptLanguage('*')->reveal();
 
-        $this->assertEquals('en', $this->negotiator->negotiate($request));
+        $this->assertSame('en', $this->negotiator->negotiate($request));
     }
 
     /** @test */
@@ -80,11 +80,11 @@ class NegotiatorTest extends TestCase
         /** @var Request $request */
         $request = $this->mockRequestWithHttpAcceptLanguage('fr;q=0.8,en;q=0.4', 'jp; q=1.0')->reveal();
 
-        $this->assertEquals('fr', $this->negotiator->negotiate($request));
+        $this->assertSame('fr', $this->negotiator->negotiate($request));
 
         $request = $this->mockRequestWithHttpAcceptLanguage('fr;q=0.8,en;q=0.4', '*/*')->reveal();
 
-        $this->assertEquals('fr', $this->negotiator->negotiate($request));
+        $this->assertSame('fr', $this->negotiator->negotiate($request));
     }
 
     /** @test */
@@ -97,7 +97,7 @@ class NegotiatorTest extends TestCase
             'jp; q=1.0'
         )->reveal();
 
-        $this->assertEquals('fr', $this->negotiator->negotiate($request));
+        $this->assertSame('fr', $this->negotiator->negotiate($request));
     }
 
     /** @test */
@@ -110,7 +110,7 @@ class NegotiatorTest extends TestCase
             'jp; q=1.0'
         )->reveal();
 
-        $this->assertEquals('en', $this->negotiator->negotiate($request));
+        $this->assertSame('en', $this->negotiator->negotiate($request));
     }
 
     /** @test */
@@ -123,7 +123,7 @@ class NegotiatorTest extends TestCase
             'jp; q=1.0'
         )->reveal();
 
-        $this->assertEquals('en', $this->negotiator->negotiate($request));
+        $this->assertSame('en', $this->negotiator->negotiate($request));
     }
 
     /* ------------------------------------------------------------------------------------------------

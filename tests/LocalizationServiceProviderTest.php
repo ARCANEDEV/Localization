@@ -14,7 +14,7 @@ class LocalizationServiceProviderTest extends TestCase
      |  Properties
      | ------------------------------------------------------------------------------------------------
      */
-    /** @var LocalizationServiceProvider */
+    /** @var \Arcanedev\Localization\LocalizationServiceProvider */
     private $provider;
 
     /* ------------------------------------------------------------------------------------------------
@@ -42,18 +42,27 @@ class LocalizationServiceProviderTest extends TestCase
     /** @test */
     public function it_can_be_instantiated()
     {
-        $this->assertInstanceOf(LocalizationServiceProvider::class, $this->provider);
+        $expectations = [
+            \Illuminate\Support\ServiceProvider::class,
+            \Arcanedev\Support\ServiceProvider::class,
+            \Arcanedev\Support\PackageServiceProvider::class,
+            \Arcanedev\Localization\LocalizationServiceProvider::class,
+        ];
+
+        foreach ($expectations as $expected) {
+            $this->assertInstanceOf($expected, $this->provider);
+        }
     }
 
     /** @test */
     public function it_can_provides()
     {
-        $provided = $this->provider->provides();
-
-        $this->assertCount(1, $provided);
-        $this->assertEquals([
+        $expected = [
+            \Arcanedev\Localization\Contracts\Localization::class,
             'arcanedev.localization',
-        ], $provided);
+        ];
+
+        $this->assertSame($expected, $this->provider->provides());
     }
 
     /** @test */
@@ -61,7 +70,7 @@ class LocalizationServiceProviderTest extends TestCase
     {
         $this->assertEquals(
             $this->app->getLocale(),
-            \Localization::getDefaultLocale()
+            \Arcanedev\Localization\Facades\Localization::getDefaultLocale()
         );
     }
 }

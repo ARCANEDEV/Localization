@@ -1,7 +1,5 @@
 <?php namespace Arcanedev\Localization\Tests;
 
-use Arcanedev\Localization\Localization;
-use Illuminate\Foundation\Application;
 use Orchestra\Testbench\TestCase as BaseTestCase;
 
 /**
@@ -35,24 +33,10 @@ abstract class TestCase extends BaseTestCase
      |  Main Functions
      | ------------------------------------------------------------------------------------------------
      */
-    public function setUp()
-    {
-        parent::setUp();
-    }
-
-    public function tearDown()
-    {
-        parent::tearDown();
-    }
-
-    /* ------------------------------------------------------------------------------------------------
-     |  Package Functions
-     | ------------------------------------------------------------------------------------------------
-     */
     /**
      * Get package providers.
      *
-     * @param  Application  $app
+     * @param  \Illuminate\Foundation\Application  $app
      *
      * @return array
      */
@@ -66,7 +50,7 @@ abstract class TestCase extends BaseTestCase
     /**
      * Get package aliases.
      *
-     * @param  Application  $app
+     * @param  \Illuminate\Foundation\Application  $app
      *
      * @return array
      */
@@ -84,23 +68,22 @@ abstract class TestCase extends BaseTestCase
      */
     protected function resolveApplicationHttpKernel($app)
     {
-        $app->singleton(
-            'Illuminate\Contracts\Http\Kernel',
-            Stubs\Http\Kernel::class
-        );
+        $app->singleton(\Illuminate\Contracts\Http\Kernel::class, Stubs\Http\Kernel::class);
     }
 
     /**
      * Define environment setup.
      *
-     * @param  Application  $app
+     * @param  \Illuminate\Foundation\Application   $app
+     *
+     * @return void
      */
     protected function getEnvironmentSetUp($app)
     {
         /**
-         * @var  \Illuminate\Config\Repository       $config
-         * @var  \Illuminate\Translation\Translator  $translator
-         * @var  Localization                        $localization
+         * @var  \Illuminate\Contracts\Config\Repository         $config
+         * @var  \Illuminate\Translation\Translator              $translator
+         * @var  \Arcanedev\Localization\Contracts\Localization  $localization
          */
         $config       = $app['config'];
         $translator   = $app['translator'];
