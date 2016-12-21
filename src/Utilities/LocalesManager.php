@@ -1,6 +1,6 @@
 <?php namespace Arcanedev\Localization\Utilities;
 
-use Arcanedev\Localization\Contracts\LocalesManagerInterface;
+use Arcanedev\Localization\Contracts\LocalesManager as LocalesManagerContract;
 use Arcanedev\Localization\Entities\Locale;
 use Arcanedev\Localization\Entities\LocaleCollection;
 use Arcanedev\Localization\Exceptions\UndefinedSupportedLocalesException;
@@ -15,7 +15,7 @@ use Illuminate\Http\Request;
  * @package  Arcanedev\Localization
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
-class LocalesManager implements LocalesManagerInterface
+class LocalesManager implements LocalesManagerContract
 {
     /* ------------------------------------------------------------------------------------------------
      |  Properties
@@ -295,7 +295,9 @@ class LocalesManager implements LocalesManagerInterface
     /**
      * Check if default is supported.
      *
-     * @throws UnsupportedLocaleException
+     * @param  string  $defaultLocale
+     *
+     * @throws \Arcanedev\Localization\Exceptions\UnsupportedLocaleException
      */
     public function isDefaultLocaleSupported($defaultLocale)
     {

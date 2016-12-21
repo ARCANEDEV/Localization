@@ -3,12 +3,12 @@
 use Illuminate\Http\Request;
 
 /**
- * Interface  NegotiatorInterface
+ * Interface  Negotiator
  *
  * @package   Arcanedev\Localization\Contracts
  * @author    ARCANEDEV <arcanedev.maroc@gmail.com>
  */
-interface NegotiatorInterface
+interface Negotiator
 {
     /* ------------------------------------------------------------------------------------------------
      |  Main Functions
@@ -17,7 +17,7 @@ interface NegotiatorInterface
     /**
      * Negotiate the request.
      *
-     * @param  Request  $request
+     * @param  \Illuminate\Http\Request  $request
      *
      * @return string
      */

@@ -4,10 +4,10 @@ if ( ! function_exists('localization')) {
     /**
      * Get the Localization instance.
      *
-     * @return \Arcanedev\Localization\Localization
+     * @return Arcanedev\Localization\Contracts\Localization
      */
     function localization()
     {
-        return app('arcanedev.localization');
+        return app(Arcanedev\Localization\Contracts\Localization::class);
     }
 }

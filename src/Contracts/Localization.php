@@ -1,17 +1,14 @@
 <?php namespace Arcanedev\Localization\Contracts;
 
-use Arcanedev\Localization\Entities\LocaleCollection;
-use Arcanedev\Localization\Exceptions\UndefinedSupportedLocalesException;
-use Arcanedev\Localization\Exceptions\UnsupportedLocaleException;
 use Illuminate\Http\Request;
 
 /**
- * Interface  LocalizationInterface
+ * Interface  Localization
  *
  * @package   Arcanedev\Localization\Contracts
  * @author    ARCANEDEV <arcanedev.maroc@gmail.com>
  */
-interface LocalizationInterface
+interface Localization
 {
     /* ------------------------------------------------------------------------------------------------
      |  Getters & Setters
@@ -27,9 +24,7 @@ interface LocalizationInterface
     /**
      * Return an array of all supported Locales.
      *
-     * @throws UndefinedSupportedLocalesException
-     *
-     * @return LocaleCollection
+     * @return \Arcanedev\Localization\Entities\LocaleCollection
      */
     public function getSupportedLocales();
 
@@ -46,8 +41,6 @@ interface LocalizationInterface
      * Get supported locales keys.
      *
      * @return array
-     *
-     * @throws UndefinedSupportedLocalesException
      */
     public function getSupportedLocalesKeys();
 
@@ -142,8 +135,6 @@ interface LocalizationInterface
      * @param  string       $url
      * @param  string|null  $locale
      *
-     * @throws UnsupportedLocaleException
-     *
      * @return string
      */
     public function localizeURL($url = null, $locale = null);
@@ -163,9 +154,6 @@ interface LocalizationInterface
      * @param  string|bool   $locale
      * @param  string|false  $url
      * @param  array         $attributes
-     *
-     * @throws UndefinedSupportedLocalesException
-     * @throws UnsupportedLocaleException
      *
      * @return string|false
      */
@@ -191,9 +179,6 @@ interface LocalizationInterface
      * @param  string       $transKey
      * @param  array        $attributes
      *
-     * @throws UndefinedSupportedLocalesException
-     * @throws UnsupportedLocaleException
-     *
      * @return string|false
      */
     public function getUrlFromRouteName($locale, $transKey, $attributes = []);
@@ -206,8 +191,6 @@ interface LocalizationInterface
      * Check if Locale exists on the supported locales collection.
      *
      * @param  string|bool  $locale
-     *
-     * @throws UndefinedSupportedLocalesException
      *
      * @return bool
      */

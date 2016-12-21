@@ -17,6 +17,6 @@ class Localization extends Facade
      */
     protected static function getFacadeAccessor()
     {
-        return 'arcanedev.localization';
+        return \Arcanedev\Localization\Contracts\Localization::class;
     }
 }

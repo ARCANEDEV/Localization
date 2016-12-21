@@ -1,6 +1,6 @@
 <?php namespace Arcanedev\Localization\Utilities;
 
-use Arcanedev\Localization\Contracts\RouteTranslatorInterface;
+use Arcanedev\Localization\Contracts\RouteTranslator as RouteTranslatorContract;
 use Arcanedev\Localization\Entities\LocaleCollection;
 use Arcanedev\Localization\Exceptions\InvalidTranslationException;
 use Illuminate\Translation\Translator;
@@ -11,7 +11,7 @@ use Illuminate\Translation\Translator;
  * @package  Arcanedev\Localization\Utilities
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
-class RouteTranslator implements RouteTranslatorInterface
+class RouteTranslator implements RouteTranslatorContract
 {
     /* ------------------------------------------------------------------------------------------------
      |  Properties

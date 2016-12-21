@@ -1,6 +1,6 @@
 <?php namespace Arcanedev\Localization\Utilities;
 
-use Arcanedev\Localization\Contracts\NegotiatorInterface;
+use Arcanedev\Localization\Contracts\Negotiator as NegotiatorContract;
 use Arcanedev\Localization\Entities\LocaleCollection;
 use Illuminate\Http\Request;
 use Locale;
@@ -22,7 +22,7 @@ use Locale;
  * Quality factors in the Accept-Language: header are supported, e.g.:
  * Accept-Language: en-UK;q=0.7, en-US;q=0.6, no, dk;q=0.8
  */
-class Negotiator implements NegotiatorInterface
+class Negotiator implements NegotiatorContract
 {
     /* ------------------------------------------------------------------------------------------------
      |  Properties
@@ -36,12 +36,16 @@ class Negotiator implements NegotiatorInterface
     private $defaultLocale;
 
     /**
-     * @var LocaleCollection
+     * The supported locales collection.
+     *
+     * @var \Arcanedev\Localization\Entities\LocaleCollection
      */
     private $supportedLocales;
 
     /**
-     * @var Request
+     * The HTTP request instance.
+     *
+     * @var \Illuminate\Http\Request
      */
     private $request;
 
@@ -52,13 +56,13 @@ class Negotiator implements NegotiatorInterface
     /**
      * Make Negotiator instance.
      *
-     * @param  string            $defaultLocale
-     * @param  LocaleCollection  $supportedLanguages
+     * @param  string                                             $defaultLocale
+     * @param  \Arcanedev\Localization\Entities\LocaleCollection  $supportedLanguages
      */
-    public function __construct($defaultLocale, $supportedLanguages)
+    public function __construct($defaultLocale, LocaleCollection $supportedLanguages)
     {
-        $this->defaultLocale      = $defaultLocale;
-        $this->supportedLocales   = $supportedLanguages;
+        $this->defaultLocale    = $defaultLocale;
+        $this->supportedLocales = $supportedLanguages;
     }
 
     /* ------------------------------------------------------------------------------------------------
@@ -68,7 +72,7 @@ class Negotiator implements NegotiatorInterface
     /**
      * Negotiate the request.
      *
-     * @param  Request  $request
+     * @param  \Illuminate\Http\Request  $request
      *
      * @return string
      */
@@ -138,18 +142,20 @@ class Negotiator implements NegotiatorInterface
         return null;
     }
 
+    /**
+     * Get locale from remote host server.
+     *
+     * @return null|string
+     */
     private function getFromRemoteHostServer()
     {
-        if (empty($remoteHost = $this->request->server('REMOTE_HOST'))) {
+        if (empty($remoteHost = $this->request->server('REMOTE_HOST')))
             return null;
-        }
 
         $remoteHost = explode('.', $remoteHost);
         $locale     = strtolower(end($remoteHost));
 
-        if ($this->isSupported($locale)) return $locale;
-
-        return null;
+        return $this->isSupported($locale) ? $locale : null;
     }
 
     /* ------------------------------------------------------------------------------------------------
@@ -166,7 +172,8 @@ class Negotiator implements NegotiatorInterface
     private function inSupportedLocales(array $matches)
     {
         foreach (array_keys($matches) as $locale) {
-            if ($this->isSupported($locale)) return $locale;
+            if ($this->isSupported($locale))
+                return $locale;
         }
 
         return null;
