@@ -1,9 +1,8 @@
 <?php namespace Arcanedev\Localization\Utilities;
 
 use Arcanedev\Localization\Contracts\RouteBindable;
-use Arcanedev\Localization\Contracts\UrlInterface;
+use Arcanedev\Localization\Contracts\Url as UrlContract;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Route;
 
 /**
  * Class     Url
@@ -13,7 +12,7 @@ use Illuminate\Routing\Route;
  *
  * @todo:    Refactoring
  */
-class Url implements UrlInterface
+class Url implements UrlContract
 {
     /* ------------------------------------------------------------------------------------------------
      |  Main Functions
@@ -102,8 +101,8 @@ class Url implements UrlInterface
 
         foreach ($routes as $route) {
             /**
-             * @var  Route    $route
-             * @var  Request  $request
+             * @var  \Illuminate\Routing\Route  $route
+             * @var  \Illuminate\Http\Request   $request
              */
             $request = Request::create(implode('/', $url));
 
@@ -113,7 +112,8 @@ class Url implements UrlInterface
 
             $match = self::hasAttributesFromUriPath($url, $route->getUri(), $attributes);
 
-            if ($match) { break; }
+            if ($match)
+                break;
         }
 
         return $attributes;
@@ -150,7 +150,8 @@ class Url implements UrlInterface
             }
         }
 
-        if (isset($url[$i + 1])) $match = false;
+        if (isset($url[$i + 1]))
+            $match = false;
 
         return $match;
     }

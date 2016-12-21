@@ -45,7 +45,7 @@ class RouteTranslator implements RouteTranslatorContract
     /**
      * Create RouteTranslator instance.
      *
-     * @param  Translator  $translator
+     * @param  \Illuminate\Translation\Translator  $translator
      */
     public function __construct(Translator $translator)
     {
@@ -103,8 +103,6 @@ class RouteTranslator implements RouteTranslatorContract
      * @param  string|null  $locale
      *
      * @return string
-     *
-     * @throws InvalidTranslationException
      */
     public function trans($route, $locale = null)
     {
@@ -179,7 +177,7 @@ class RouteTranslator implements RouteTranslatorContract
     /**
      * Returns the translated route for the path and the url given.
      *
-     * @param  string  $path       -  Path to check if it is a translated route
+     * @param  string  $path    -  Path to check if it is a translated route
      * @param  string  $locale  -  Language to check if the path exists
      *
      * @return false|string
@@ -235,7 +233,7 @@ class RouteTranslator implements RouteTranslatorContract
      *
      * @return string
      *
-     * @throws InvalidTranslationException
+     * @throws \Arcanedev\Localization\Exceptions\InvalidTranslationException
      */
     private function translate($key, $locale = null)
     {

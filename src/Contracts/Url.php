@@ -1,12 +1,12 @@
 <?php namespace Arcanedev\Localization\Contracts;
 
 /**
- * Interface  UrlInterface
+ * Interface  Url
  *
  * @package   Arcanedev\Localization\Contracts
  * @author    ARCANEDEV <arcanedev.maroc@gmail.com>
  */
-interface UrlInterface
+interface Url
 {
     /* ------------------------------------------------------------------------------------------------
      |  Main Functions

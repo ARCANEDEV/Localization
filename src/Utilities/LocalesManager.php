@@ -5,9 +5,7 @@ use Arcanedev\Localization\Entities\Locale;
 use Arcanedev\Localization\Entities\LocaleCollection;
 use Arcanedev\Localization\Exceptions\UndefinedSupportedLocalesException;
 use Arcanedev\Localization\Exceptions\UnsupportedLocaleException;
-use Illuminate\Config\Repository as Config;
-use Illuminate\Foundation\Application;
-use Illuminate\Http\Request;
+use Illuminate\Contracts\Foundation\Application;
 
 /**
  * Class     LocalesManager
@@ -48,7 +46,7 @@ class LocalesManager implements LocalesManagerContract
     /**
      * The application instance.
      *
-     * @var Application
+     * @var \Illuminate\Contracts\Foundation\Application
      */
     private $app;
 
@@ -59,7 +57,7 @@ class LocalesManager implements LocalesManagerContract
     /**
      * Create LocaleManager instance.
      *
-     * @param  Application  $app
+     * @param  \Illuminate\Contracts\Foundation\Application  $app
      */
     public function __construct(Application $app)
     {
@@ -72,8 +70,6 @@ class LocalesManager implements LocalesManagerContract
 
     /**
      * Load all locales data.
-     *
-     * @throws UndefinedSupportedLocalesException
      */
     private function load()
     {
@@ -246,7 +242,7 @@ class LocalesManager implements LocalesManagerContract
     /**
      * Get config repository.
      *
-     * @return Config
+     * @return \Illuminate\Contracts\Config\Repository  Config
      */
     private function config()
     {
@@ -256,7 +252,7 @@ class LocalesManager implements LocalesManagerContract
     /**
      * Get config repository.
      *
-     * @return Request
+     * @return \Illuminate\Http\Request
      */
     private function request()
     {

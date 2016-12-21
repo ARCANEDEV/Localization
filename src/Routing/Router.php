@@ -22,9 +22,9 @@ class Router extends IlluminateRouter
      */
     protected function getActiveMiddlewares()
     {
-        $middleware = config('localization.route.middleware', []);
-
-        return array_keys(array_filter($middleware));
+        return array_keys(array_filter(
+            config('localization.route.middleware', [])
+        ));
     }
 
     /* ------------------------------------------------------------------------------------------------
@@ -37,13 +37,10 @@ class Router extends IlluminateRouter
      * @param  string  $name
      * @param  string  $controller
      * @param  array   $options
-     * @return void
      */
     public function resource($name, $controller, array $options = [])
     {
-        $registrar = new ResourceRegistrar($this);
-
-        $registrar->register($name, $controller, $options);
+        (new ResourceRegistrar($this))->register($name, $controller, $options);
     }
 
     /* ------------------------------------------------------------------------------------------------
@@ -58,9 +55,10 @@ class Router extends IlluminateRouter
      */
     public function localizedGroup(Closure $callback, $attributes = [])
     {
-        $prefix     = localization()->setLocale();
-        $middleware = $this->getActiveMiddlewares();
-        $attributes = array_merge($attributes, compact('prefix', 'middleware'));
+        $attributes = array_merge($attributes, [
+            'prefix'     => localization()->setLocale(),
+            'middleware' => $this->getActiveMiddlewares(),
+        ]);
 
         $this->group(array_filter($attributes), $callback);
     }
@@ -75,9 +73,9 @@ class Router extends IlluminateRouter
      */
     public function transGet($trans, $action)
     {
-        $uri = localization()->transRoute($trans);
-
-        return $this->get($uri, $action);
+        return $this->get(
+            localization()->transRoute($trans), $action
+        );
     }
 
     /**
@@ -90,9 +88,9 @@ class Router extends IlluminateRouter
      */
     public function transPost($trans, $action)
     {
-        $uri = localization()->transRoute($trans);
-
-        return $this->post($uri, $action);
+        return $this->post(
+            localization()->transRoute($trans), $action
+        );
     }
 
     /**
@@ -105,9 +103,9 @@ class Router extends IlluminateRouter
      */
     public function transPut($trans, $action)
     {
-        $uri = localization()->transRoute($trans);
-
-        return $this->put($uri, $action);
+        return $this->put(
+            localization()->transRoute($trans), $action
+        );
     }
 
     /**
@@ -120,9 +118,9 @@ class Router extends IlluminateRouter
      */
     public function transPatch($trans, $action)
     {
-        $uri = localization()->transRoute($trans);
-
-        return $this->patch($uri, $action);
+        return $this->patch(
+            localization()->transRoute($trans), $action
+        );
     }
 
     /**
@@ -135,9 +133,9 @@ class Router extends IlluminateRouter
      */
     public function transDelete($trans, $action)
     {
-        $uri = localization()->transRoute($trans);
-
-        return $this->delete($uri, $action);
+        return $this->delete(
+            localization()->transRoute($trans), $action
+        );
     }
 
     /**
@@ -150,9 +148,9 @@ class Router extends IlluminateRouter
      */
     public function transOptions($trans, $action)
     {
-        $uri = localization()->transRoute($trans);
-
-        return $this->options($uri, $action);
+        return $this->options(
+            localization()->transRoute($trans), $action
+        );
     }
 
     /**
@@ -165,8 +163,8 @@ class Router extends IlluminateRouter
      */
     public function transAny($trans, $action)
     {
-        $uri = localization()->transRoute($trans);
-
-        return $this->any($uri, $action);
+        return $this->any(
+            localization()->transRoute($trans), $action
+        );
     }
 }
