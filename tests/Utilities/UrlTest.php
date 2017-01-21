@@ -37,7 +37,7 @@ class UrlTest extends TestCase
         foreach ($urls as $url) {
             $parsed = ! empty($url) ? parse_url($url) : [];
 
-            $this->assertEquals($url, Url::unparse($parsed));
+            $this->assertSame($url, Url::unparse($parsed));
         }
     }
 
@@ -48,7 +48,7 @@ class UrlTest extends TestCase
             'user' => new \Arcanedev\Localization\Tests\Stubs\User('admin'),
         ];
 
-        $this->assertEquals(
+        $this->assertSame(
             'users/admin',
             Url::substituteAttributes($attributes, 'users/{user}')
         );

@@ -1,15 +1,12 @@
 <?php namespace Arcanedev\Localization\Contracts;
 
-use Arcanedev\Localization\Exceptions\UndefinedSupportedLocalesException;
-use Arcanedev\Localization\Exceptions\UnsupportedLocaleException;
-
 /**
- * Interface  LocalesManagerInterface
+ * Interface  LocalesManager
  *
  * @package   Arcanedev\Localization\Contracts
  * @author    ARCANEDEV <arcanedev.maroc@gmail.com>
  */
-interface LocalesManagerInterface
+interface LocalesManager
 {
     /* ------------------------------------------------------------------------------------------------
      |  Getters & Setters
@@ -90,8 +87,6 @@ interface LocalesManagerInterface
      * @param  array  $supportedLocales
      *
      * @return self
-     *
-     * @throws UndefinedSupportedLocalesException
      */
     public function setSupportedLocales(array $supportedLocales);
 
@@ -102,7 +97,9 @@ interface LocalesManagerInterface
     /**
      * Check if default is supported.
      *
-     * @throws UnsupportedLocaleException
+     * @param  string  $defaultLocale
+     *
+     * @throws \Arcanedev\Localization\Exceptions\UnsupportedLocaleException
      */
     public function isDefaultLocaleSupported($defaultLocale);
 

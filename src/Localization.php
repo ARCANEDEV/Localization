@@ -1,8 +1,8 @@
 <?php namespace Arcanedev\Localization;
 
-use Arcanedev\Localization\Contracts\LocalesManagerInterface;
-use Arcanedev\Localization\Contracts\LocalizationInterface;
-use Arcanedev\Localization\Contracts\RouteTranslatorInterface;
+use Arcanedev\Localization\Contracts\LocalesManager as LocalesManagerContract;
+use Arcanedev\Localization\Contracts\Localization as LocalizationContract;
+use Arcanedev\Localization\Contracts\RouteTranslator as RouteTranslatorContract;
 use Arcanedev\Localization\Exceptions\UnsupportedLocaleException;
 use Arcanedev\Localization\Utilities\Url;
 use Illuminate\Foundation\Application;
@@ -14,7 +14,7 @@ use Illuminate\Http\Request;
  * @package  Arcanedev\Localization
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
-class Localization implements LocalizationInterface
+class Localization implements LocalizationContract
 {
     /* ------------------------------------------------------------------------------------------------
      |  Properties
@@ -37,14 +37,14 @@ class Localization implements LocalizationInterface
     /**
      * The RouteTranslator instance.
      *
-     * @var \Arcanedev\Localization\Contracts\RouteTranslatorInterface
+     * @var \Arcanedev\Localization\Contracts\RouteTranslator
      */
     protected $routeTranslator;
 
     /**
      * The LocalesManager instance.
      *
-     * @var \Arcanedev\Localization\Contracts\LocalesManagerInterface
+     * @var \Arcanedev\Localization\Contracts\LocalesManager
      */
     private $localesManager;
 
@@ -56,17 +56,17 @@ class Localization implements LocalizationInterface
      * Creates new instance.
      *
      * @param  \Illuminate\Foundation\Application                          $app
-     * @param  \Arcanedev\Localization\Contracts\RouteTranslatorInterface  $routeTranslator
-     * @param  \Arcanedev\Localization\Contracts\LocalesManagerInterface   $localesManager
+     * @param  \Arcanedev\Localization\Contracts\RouteTranslator  $routeTranslator
+     * @param  \Arcanedev\Localization\Contracts\LocalesManager   $localesManager
      */
     public function __construct(
-        Application              $app,
-        RouteTranslatorInterface $routeTranslator,
-        LocalesManagerInterface  $localesManager
+        Application             $app,
+        RouteTranslatorContract $routeTranslator,
+        LocalesManagerContract  $localesManager
     ) {
-        $this->app              = $app;
-        $this->routeTranslator  = $routeTranslator;
-        $this->localesManager   = $localesManager;
+        $this->app             = $app;
+        $this->routeTranslator = $routeTranslator;
+        $this->localesManager  = $localesManager;
 
         $this->localesManager->setDefaultLocale(
             $this->app->getLocale()

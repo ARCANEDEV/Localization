@@ -78,7 +78,7 @@ class LocalizationTest extends TestCase
     /** @test */
     public function it_can_get_supported_locales_keys()
     {
-        $this->assertEquals(
+        $this->assertSame(
             $this->supportedLocales,
             localization()->getSupportedLocalesKeys()
         );
@@ -87,39 +87,39 @@ class LocalizationTest extends TestCase
     /** @test */
     public function it_can_set_locale()
     {
-        $this->assertEquals(route('about'), 'http://localhost/about');
+        $this->assertSame(route('about'), 'http://localhost/about');
 
         $this->refreshApplication('es');
 
-        $this->assertEquals('es', localization()->setLocale('es'));
-        $this->assertEquals('es', localization()->getCurrentLocale());
-        $this->assertEquals(route('about'), 'http://localhost/acerca');
+        $this->assertSame('es', localization()->setLocale('es'));
+        $this->assertSame('es', localization()->getCurrentLocale());
+        $this->assertSame(route('about'), 'http://localhost/acerca');
 
         $this->refreshApplication();
         $this->localization = app('arcanedev.localization');
 
-        $this->assertEquals('en', localization()->setLocale('en'));
-        $this->assertEquals(route('about'), 'http://localhost/about');
+        $this->assertSame('en', localization()->setLocale('en'));
+        $this->assertSame(route('about'), 'http://localhost/about');
 
         $this->assertNull(localization()->setLocale('de'));
-        $this->assertEquals('en', localization()->getCurrentLocale());
+        $this->assertSame('en', localization()->getCurrentLocale());
     }
 
     /** @test */
     public function it_can_get_default_locale()
     {
-        $this->assertEquals('en', localization()->getDefaultLocale());
+        $this->assertSame('en', localization()->getDefaultLocale());
 
         localization()->setLocale('es');
         $this->refreshApplication('es');
 
-        $this->assertEquals('en', localization()->getDefaultLocale());
+        $this->assertSame('en', localization()->getDefaultLocale());
     }
 
     /** @test */
     public function it_can_get_current_locale()
     {
-        $this->assertEquals('en', localization()->getCurrentLocale());
+        $this->assertSame('en', localization()->getCurrentLocale());
         $this->assertNotEquals('es', localization()->getCurrentLocale());
         $this->assertNotEquals('fr', localization()->getCurrentLocale());
 
@@ -127,7 +127,7 @@ class LocalizationTest extends TestCase
         $this->refreshApplication('es');
 
         $this->assertNotEquals('en', localization()->getCurrentLocale());
-        $this->assertEquals('es', localization()->getCurrentLocale());
+        $this->assertSame('es', localization()->getCurrentLocale());
         $this->assertNotEquals('fr', localization()->getCurrentLocale());
 
         localization()->setLocale('fr');
@@ -135,20 +135,20 @@ class LocalizationTest extends TestCase
 
         $this->assertNotEquals('en', localization()->getCurrentLocale());
         $this->assertNotEquals('es', localization()->getCurrentLocale());
-        $this->assertEquals('fr', localization()->getCurrentLocale());
+        $this->assertSame('fr', localization()->getCurrentLocale());
     }
 
     /** @test */
     public function it_can_localize_url()
     {
-        $this->assertEquals(
-            $this->testUrlOne . localization()->getCurrentLocale(),
+        $this->assertSame(
+            $this->testUrlOne.localization()->getCurrentLocale(),
             localization()->localizeURL()
         );
 
         // Missing trailing slash in a URL
-        $this->assertEquals(
-            $this->testUrlTwo . '/' . localization()->getCurrentLocale(),
+        $this->assertSame(
+            $this->testUrlTwo.'/'.localization()->getCurrentLocale(),
             localization()->localizeURL()
         );
 
@@ -156,87 +156,87 @@ class LocalizationTest extends TestCase
 
         // testing hide default locale option
         $this->assertNotEquals(
-            $this->testUrlOne . localization()->getDefaultLocale(),
+            $this->testUrlOne.localization()->getDefaultLocale(),
             localization()->localizeURL()
         );
-        $this->assertEquals(
+        $this->assertSame(
             $this->testUrlOne,
             localization()->localizeURL()
         );
 
         localization()->setLocale('es');
 
-        $this->assertEquals(
-            $this->testUrlOne . 'es',
+        $this->assertSame(
+            $this->testUrlOne.'es',
             localization()->localizeURL()
         );
-        $this->assertEquals(
-            $this->testUrlOne . 'about',
-            localization()->localizeURL($this->testUrlOne . 'about', 'en')
+        $this->assertSame(
+            $this->testUrlOne.'about',
+            localization()->localizeURL($this->testUrlOne.'about', 'en')
         );
         $this->assertNotEquals(
-            $this->testUrlOne . 'en/about',
-            localization()->localizeURL($this->testUrlOne . 'about', 'en')
+            $this->testUrlOne.'en/about',
+            localization()->localizeURL($this->testUrlOne.'about', 'en')
         );
 
         app('config')->set('localization.hide-default-in-url', false);
 
-        $this->assertEquals(
-            $this->testUrlOne . 'en/about',
-            localization()->localizeURL($this->testUrlOne . 'about', 'en')
+        $this->assertSame(
+            $this->testUrlOne.'en/about',
+            localization()->localizeURL($this->testUrlOne.'about', 'en')
         );
 
         $this->assertNotEquals(
-            $this->testUrlOne . 'about',
-            localization()->localizeURL($this->testUrlOne . 'about', 'en')
+            $this->testUrlOne.'about',
+            localization()->localizeURL($this->testUrlOne.'about', 'en')
         );
     }
 
     /** @test */
     public function it_can_get_localized_url()
     {
-        $this->assertEquals(
-            $this->testUrlOne . 'es/acerca',
-            localization()->getLocalizedURL('es', $this->testUrlOne . 'en/about')
+        $this->assertSame(
+            $this->testUrlOne.'es/acerca',
+            localization()->getLocalizedURL('es', $this->testUrlOne.'en/about')
         );
-        $this->assertEquals(
-            $this->testUrlOne . 'es/ver/1',
-            localization()->getLocalizedURL('es', $this->testUrlOne . 'view/1')
+        $this->assertSame(
+            $this->testUrlOne.'es/ver/1',
+            localization()->getLocalizedURL('es', $this->testUrlOne.'view/1')
         );
-        $this->assertEquals(
-            $this->testUrlOne . 'es/ver/1/proyecto',
-            localization()->getLocalizedURL('es', $this->testUrlOne . 'view/1/project')
+        $this->assertSame(
+            $this->testUrlOne.'es/ver/1/proyecto',
+            localization()->getLocalizedURL('es', $this->testUrlOne.'view/1/project')
         );
-        $this->assertEquals(
-            $this->testUrlOne . 'es/ver/1/proyecto/1',
-            localization()->getLocalizedURL('es', $this->testUrlOne . 'view/1/project/1')
+        $this->assertSame(
+            $this->testUrlOne.'es/ver/1/proyecto/1',
+            localization()->getLocalizedURL('es', $this->testUrlOne.'view/1/project/1')
         );
-        $this->assertEquals(
-            $this->testUrlOne . 'en/about',
-            localization()->getLocalizedURL('en', $this->testUrlOne . 'about')
+        $this->assertSame(
+            $this->testUrlOne.'en/about',
+            localization()->getLocalizedURL('en', $this->testUrlOne.'about')
         );
-        $this->assertEquals(
-            $this->testUrlOne . localization()->getCurrentLocale(),
+        $this->assertSame(
+            $this->testUrlOne.localization()->getCurrentLocale(),
             localization()->getLocalizedURL()
         );
 
         app('config')->set('localization.hide-default-in-url', true);
 
         // testing default language hidden
-        $this->assertEquals(
-            $this->testUrlOne . 'es/acerca',
-            localization()->getLocalizedURL('es', $this->testUrlOne . 'about')
+        $this->assertSame(
+            $this->testUrlOne.'es/acerca',
+            localization()->getLocalizedURL('es', $this->testUrlOne.'about')
         );
-        $this->assertEquals(
-            $this->testUrlOne . 'about',
-            localization()->getLocalizedURL('en', $this->testUrlOne . 'about')
+        $this->assertSame(
+            $this->testUrlOne.'about',
+            localization()->getLocalizedURL('en', $this->testUrlOne.'about')
         );
-        $this->assertEquals(
+        $this->assertSame(
             $this->testUrlOne,
             localization()->getLocalizedURL()
         );
         $this->assertNotEquals(
-            $this->testUrlOne . localization()->getDefaultLocale(),
+            $this->testUrlOne.localization()->getDefaultLocale(),
             localization()->getLocalizedURL()
         );
 
@@ -247,98 +247,98 @@ class LocalizationTest extends TestCase
             localization()->getLocalizedURL()
         );
         $this->assertNotEquals(
-            $this->testUrlOne . localization()->getDefaultLocale(),
+            $this->testUrlOne.localization()->getDefaultLocale(),
             localization()->getLocalizedURL()
         );
-        $this->assertEquals(
-            $this->testUrlOne . localization()->getCurrentLocale(),
+        $this->assertSame(
+            $this->testUrlOne.localization()->getCurrentLocale(),
             localization()->getLocalizedURL()
         );
-        $this->assertEquals(
-            $this->testUrlOne . 'es/acerca',
-            localization()->getLocalizedURL('es', $this->testUrlOne . 'about')
+        $this->assertSame(
+            $this->testUrlOne.'es/acerca',
+            localization()->getLocalizedURL('es', $this->testUrlOne.'about')
         );
 
         localization()->setLocale('en');
         $response = $this->makeCall(
-            $this->testUrlOne . 'about',
+            $this->testUrlOne.'about',
             ['HTTP_ACCEPT_LANGUAGE' => 'en,es']
         );
 
         $this->assertResponseOk();
-        $this->assertEquals($this->testUrlOne . 'es/acerca', $response->getContent());
+        $this->assertSame($this->testUrlOne.'es/acerca', $response->getContent());
 
         $this->refreshApplication();
         app('config')->set('localization.hide-default-in-url', true);
 
-        $this->assertEquals(
-            $this->testUrlOne . 'test',
-            localization()->getLocalizedURL('en', $this->testUrlOne . 'test')
+        $this->assertSame(
+            $this->testUrlOne.'test',
+            localization()->getLocalizedURL('en', $this->testUrlOne.'test')
         );
 
         $response = $this->makeCall(
-            localization()->getLocalizedURL('en', $this->testUrlOne . 'test'),
+            localization()->getLocalizedURL('en', $this->testUrlOne.'test'),
             ['HTTP_ACCEPT_LANGUAGE' => 'en,es']
         );
 
         $this->assertResponseOk();
-        $this->assertEquals('Test text', $response->getContent());
+        $this->assertSame('Test text', $response->getContent());
 
         $this->refreshApplication('es');
 
-        $this->assertEquals(
-            $this->testUrlOne . 'es/test',
-            localization()->getLocalizedURL('es', $this->testUrlOne . 'test')
+        $this->assertSame(
+            $this->testUrlOne.'es/test',
+            localization()->getLocalizedURL('es', $this->testUrlOne.'test')
         );
     }
 
     /** @test */
     public function it_can_get_url_from_route_name_translated()
     {
-        $this->assertEquals(
-            $this->testUrlOne . 'es/acerca',
+        $this->assertSame(
+            $this->testUrlOne.'es/acerca',
             localization()->getUrlFromRouteName('es', 'localization::routes.about')
         );
-        $this->assertEquals(
-            $this->testUrlOne . 'en/about',
+        $this->assertSame(
+            $this->testUrlOne.'en/about',
             localization()->getUrlFromRouteName('en', 'localization::routes.about')
         );
-        $this->assertEquals(
-            $this->testUrlOne . 'en/view/1',
+        $this->assertSame(
+            $this->testUrlOne.'en/view/1',
             localization()->getUrlFromRouteName('en', 'localization::routes.view', [ 'id' => 1 ])
         );
 
         app('config')->set('localization.hide-default-in-url', true);
 
-        $this->assertEquals(
-            $this->testUrlOne . 'about',
+        $this->assertSame(
+            $this->testUrlOne.'about',
             localization()->getUrlFromRouteName('en', 'localization::routes.about')
         );
-        $this->assertEquals(
-            $this->testUrlOne . 'es/acerca',
+        $this->assertSame(
+            $this->testUrlOne.'es/acerca',
             localization()->getUrlFromRouteName('es', 'localization::routes.about')
         );
-        $this->assertEquals(
-            $this->testUrlOne . 'es/ver/1',
+        $this->assertSame(
+            $this->testUrlOne.'es/ver/1',
             localization()->getUrlFromRouteName('es', 'localization::routes.view', ['id' => 1])
         );
-        $this->assertEquals(
-            $this->testUrlOne . 'view/1',
+        $this->assertSame(
+            $this->testUrlOne.'view/1',
             localization()->getUrlFromRouteName('en', 'localization::routes.view', ['id' => 1])
         );
         $this->assertNotEquals(
-            $this->testUrlOne . 'en/view/1',
+            $this->testUrlOne.'en/view/1',
             localization()->getUrlFromRouteName('en', 'localization::routes.view', ['id' => 1])
         );
 
         app('config')->set('localization.hide-default-in-url', false);
 
         $this->assertNotEquals(
-            $this->testUrlOne . 'view/1',
+            $this->testUrlOne.'view/1',
             localization()->getUrlFromRouteName('en', 'localization::routes.view', ['id' => 1])
         );
-        $this->assertEquals(
-            $this->testUrlOne . 'en/view/1',
+        $this->assertSame(
+            $this->testUrlOne.'en/view/1',
             localization()->getUrlFromRouteName('en', 'localization::routes.view', ['id' => 1])
         );
     }
@@ -357,21 +357,21 @@ class LocalizationTest extends TestCase
     /** @test */
     public function it_can_get_non_localized_url()
     {
-        $this->assertEquals(
+        $this->assertSame(
             $this->testUrlOne,
-            localization()->getNonLocalizedURL($this->testUrlOne . 'en')
+            localization()->getNonLocalizedURL($this->testUrlOne.'en')
         );
-        $this->assertEquals(
+        $this->assertSame(
             $this->testUrlOne,
-            localization()->getNonLocalizedURL($this->testUrlOne . 'es')
+            localization()->getNonLocalizedURL($this->testUrlOne.'es')
         );
-        $this->assertEquals(
-            $this->testUrlOne . 'view/1',
-            localization()->getNonLocalizedURL($this->testUrlOne . 'en/view/1')
+        $this->assertSame(
+            $this->testUrlOne.'view/1',
+            localization()->getNonLocalizedURL($this->testUrlOne.'en/view/1')
         );
-        $this->assertEquals(
-            $this->testUrlOne . 'ver/1',
-            localization()->getNonLocalizedURL($this->testUrlOne . 'es/ver/1')
+        $this->assertSame(
+            $this->testUrlOne.'ver/1',
+            localization()->getNonLocalizedURL($this->testUrlOne.'es/ver/1')
         );
     }
 
@@ -379,15 +379,15 @@ class LocalizationTest extends TestCase
     public function it_can_get_current_locale_name()
     {
         $locales = [
-            'en'    => 'English',
-            'es'    => 'Spanish',
-            'fr'    => 'French',
+            'en' => 'English',
+            'es' => 'Spanish',
+            'fr' => 'French',
         ];
 
         foreach ($locales as $locale => $name) {
             $this->refreshApplication($locale);
 
-            $this->assertEquals($name, localization()->getCurrentLocaleName());
+            $this->assertSame($name, localization()->getCurrentLocaleName());
         }
     }
 
@@ -398,7 +398,7 @@ class LocalizationTest extends TestCase
             localization()->setLocale($locale);
             $this->refreshApplication($locale);
 
-            $this->assertEquals('Latn', localization()->getCurrentLocaleScript());
+            $this->assertSame('Latn', localization()->getCurrentLocaleScript());
         }
     }
 
@@ -408,7 +408,7 @@ class LocalizationTest extends TestCase
         foreach ($this->supportedLocales as $locale) {
             $this->refreshApplication($locale);
 
-            $this->assertEquals('ltr', localization()->getCurrentLocaleDirection());
+            $this->assertSame('ltr', localization()->getCurrentLocaleDirection());
         }
     }
 
@@ -416,15 +416,15 @@ class LocalizationTest extends TestCase
     public function it_can_get_current_locale_native()
     {
         $locales = [
-            'en'    => 'English',
-            'es'    => 'Español',
-            'fr'    => 'Français',
+            'en' => 'English',
+            'es' => 'Español',
+            'fr' => 'Français',
         ];
 
         foreach ($locales as $locale => $name) {
             $this->refreshApplication($locale);
 
-            $this->assertEquals($name, localization()->getCurrentLocaleNative());
+            $this->assertSame($name, localization()->getCurrentLocaleNative());
         }
     }
 
@@ -440,14 +440,14 @@ class LocalizationTest extends TestCase
         foreach ($locales as $locale => $regional) {
             $this->refreshApplication($locale);
 
-            $this->assertEquals($regional, localization()->getCurrentLocaleRegional());
+            $this->assertSame($regional, localization()->getCurrentLocaleRegional());
         }
     }
 
     /** @test */
     public function it_can_create_url_from_uri()
     {
-        $this->assertEquals(
+        $this->assertSame(
             'http://localhost/view/1',
             localization()->createUrlFromUri('/view/1')
         );
@@ -455,7 +455,7 @@ class LocalizationTest extends TestCase
         localization()->setLocale('es');
         $this->refreshApplication('es');
 
-        $this->assertEquals(
+        $this->assertSame(
             'http://localhost/ver/1',
             localization()->createUrlFromUri('/ver/1')
         );
@@ -481,24 +481,24 @@ class LocalizationTest extends TestCase
         $this->assertInstanceOf(LocaleCollection::class, $locales);
         $this->assertFalse($locales->isEmpty());
         $this->assertCount(289, $locales);
-        $this->assertEquals(289, $locales->count());
+        $this->assertSame(289, $locales->count());
     }
 
     /** @test */
     public function it_can_get_localized_url_with_relative_urls()
     {
-        $this->assertEquals($this->testUrlOne . 'en', localization()->LocalizeURL('/'));
+        $this->assertSame($this->testUrlOne.'en', localization()->LocalizeURL('/'));
 
         $urls  = [
             '/contact',
             '/contact/',
-            $this->testUrlOne . '/contact',
-            $this->testUrlOne . '/contact/'
+            $this->testUrlOne.'/contact',
+            $this->testUrlOne.'/contact/'
         ];
 
         foreach ($urls as $url) {
-            $this->assertEquals(
-                $this->testUrlOne . 'en/contact',
+            $this->assertSame(
+                $this->testUrlOne.'en/contact',
                 localization()->LocalizeURL($url)
             );
         }
@@ -507,7 +507,7 @@ class LocalizationTest extends TestCase
     /** @test */
     public function it_can_use_facade()
     {
-        $this->assertEquals(
+        $this->assertSame(
             $this->app->getLocale(),
             \Arcanedev\Localization\Facades\Localization::getDefaultLocale()
         );

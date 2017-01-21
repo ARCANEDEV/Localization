@@ -1,6 +1,6 @@
 <?php namespace Arcanedev\Localization\Utilities;
 
-use Arcanedev\Localization\Contracts\RouteTranslatorInterface;
+use Arcanedev\Localization\Contracts\RouteTranslator as RouteTranslatorContract;
 use Arcanedev\Localization\Entities\LocaleCollection;
 use Arcanedev\Localization\Exceptions\InvalidTranslationException;
 use Illuminate\Translation\Translator;
@@ -11,7 +11,7 @@ use Illuminate\Translation\Translator;
  * @package  Arcanedev\Localization\Utilities
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
-class RouteTranslator implements RouteTranslatorInterface
+class RouteTranslator implements RouteTranslatorContract
 {
     /* ------------------------------------------------------------------------------------------------
      |  Properties
@@ -45,7 +45,7 @@ class RouteTranslator implements RouteTranslatorInterface
     /**
      * Create RouteTranslator instance.
      *
-     * @param  Translator  $translator
+     * @param  \Illuminate\Translation\Translator  $translator
      */
     public function __construct(Translator $translator)
     {
@@ -103,8 +103,6 @@ class RouteTranslator implements RouteTranslatorInterface
      * @param  string|null  $locale
      *
      * @return string
-     *
-     * @throws InvalidTranslationException
      */
     public function trans($route, $locale = null)
     {
@@ -179,7 +177,7 @@ class RouteTranslator implements RouteTranslatorInterface
     /**
      * Returns the translated route for the path and the url given.
      *
-     * @param  string  $path       -  Path to check if it is a translated route
+     * @param  string  $path    -  Path to check if it is a translated route
      * @param  string  $locale  -  Language to check if the path exists
      *
      * @return false|string
@@ -235,7 +233,7 @@ class RouteTranslator implements RouteTranslatorInterface
      *
      * @return string
      *
-     * @throws InvalidTranslationException
+     * @throws \Arcanedev\Localization\Exceptions\InvalidTranslationException
      */
     private function translate($key, $locale = null)
     {

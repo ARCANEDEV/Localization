@@ -1,13 +1,11 @@
 <?php namespace Arcanedev\Localization\Utilities;
 
-use Arcanedev\Localization\Contracts\LocalesManagerInterface;
+use Arcanedev\Localization\Contracts\LocalesManager as LocalesManagerContract;
 use Arcanedev\Localization\Entities\Locale;
 use Arcanedev\Localization\Entities\LocaleCollection;
 use Arcanedev\Localization\Exceptions\UndefinedSupportedLocalesException;
 use Arcanedev\Localization\Exceptions\UnsupportedLocaleException;
-use Illuminate\Config\Repository as Config;
-use Illuminate\Foundation\Application;
-use Illuminate\Http\Request;
+use Illuminate\Contracts\Foundation\Application;
 
 /**
  * Class     LocalesManager
@@ -15,7 +13,7 @@ use Illuminate\Http\Request;
  * @package  Arcanedev\Localization
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
-class LocalesManager implements LocalesManagerInterface
+class LocalesManager implements LocalesManagerContract
 {
     /* ------------------------------------------------------------------------------------------------
      |  Properties
@@ -48,7 +46,7 @@ class LocalesManager implements LocalesManagerInterface
     /**
      * The application instance.
      *
-     * @var Application
+     * @var \Illuminate\Contracts\Foundation\Application
      */
     private $app;
 
@@ -59,7 +57,7 @@ class LocalesManager implements LocalesManagerInterface
     /**
      * Create LocaleManager instance.
      *
-     * @param  Application  $app
+     * @param  \Illuminate\Contracts\Foundation\Application  $app
      */
     public function __construct(Application $app)
     {
@@ -72,8 +70,6 @@ class LocalesManager implements LocalesManagerInterface
 
     /**
      * Load all locales data.
-     *
-     * @throws UndefinedSupportedLocalesException
      */
     private function load()
     {
@@ -246,7 +242,7 @@ class LocalesManager implements LocalesManagerInterface
     /**
      * Get config repository.
      *
-     * @return Config
+     * @return \Illuminate\Contracts\Config\Repository  Config
      */
     private function config()
     {
@@ -256,7 +252,7 @@ class LocalesManager implements LocalesManagerInterface
     /**
      * Get config repository.
      *
-     * @return Request
+     * @return \Illuminate\Http\Request
      */
     private function request()
     {
@@ -295,7 +291,9 @@ class LocalesManager implements LocalesManagerInterface
     /**
      * Check if default is supported.
      *
-     * @throws UnsupportedLocaleException
+     * @param  string  $defaultLocale
+     *
+     * @throws \Arcanedev\Localization\Exceptions\UnsupportedLocaleException
      */
     public function isDefaultLocaleSupported($defaultLocale)
     {

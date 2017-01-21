@@ -45,12 +45,12 @@ class LocaleTest extends TestCase
 
         $this->assertInstanceOf(Locale::class, $this->locale);
 
-        $this->assertEquals('en',      $this->locale->key());
-        $this->assertEquals('English', $this->locale->name());
-        $this->assertEquals('Latin',   $this->locale->script());
-        $this->assertEquals('ltr',     $this->locale->direction());
-        $this->assertEquals('English', $this->locale->native());
-        $this->assertEquals('en_GB',   $this->locale->regional());
+        $this->assertSame('en',      $this->locale->key());
+        $this->assertSame('English', $this->locale->name());
+        $this->assertSame('Latin',   $this->locale->script());
+        $this->assertSame('ltr',     $this->locale->direction());
+        $this->assertSame('English', $this->locale->native());
+        $this->assertSame('en_GB',   $this->locale->regional());
 
         $this->assertTrue($this->locale->isDefault());
     }
@@ -63,7 +63,7 @@ class LocaleTest extends TestCase
         $data['dir']  = 'LTR';
         $this->locale = new Locale($key, $data);
 
-        $this->assertEquals(strtolower($data['dir']), $this->locale->direction());
+        $this->assertSame(strtolower($data['dir']), $this->locale->direction());
     }
 
     /** @test */
@@ -74,7 +74,7 @@ class LocaleTest extends TestCase
         $data['dir']  = '';
         $this->locale = new Locale($key, $data);
 
-        $this->assertEquals('ltr', $this->locale->direction());
+        $this->assertSame('ltr', $this->locale->direction());
     }
 
     /** @test */

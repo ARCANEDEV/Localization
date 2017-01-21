@@ -47,7 +47,7 @@ class LocaleCollectionTest extends TestCase
         $this->assertInstanceOf(LocaleCollection::class, $this->locales);
         $this->assertTrue($this->locales->isEmpty());
         $this->assertCount(0, $this->locales);
-        $this->assertEquals(0, $this->locales->count());
+        $this->assertSame(0, $this->locales->count());
     }
 
     /** @test */
@@ -58,7 +58,7 @@ class LocaleCollectionTest extends TestCase
 
         $this->assertFalse($this->locales->isEmpty());
         $this->assertCount(289, $this->locales);
-        $this->assertEquals(289, $this->locales->count());
+        $this->assertSame(289, $this->locales->count());
     }
 
     /** @test */
@@ -73,7 +73,7 @@ class LocaleCollectionTest extends TestCase
         $count = count($this->supportedLocales);
         $this->assertFalse($supported->isEmpty());
         $this->assertCount($count, $supported);
-        $this->assertEquals($count, $supported->count());
+        $this->assertSame($count, $supported->count());
     }
 
     /** @test */
@@ -86,13 +86,13 @@ class LocaleCollectionTest extends TestCase
         // Assert all locales
         $this->assertFalse($this->locales->isEmpty());
         $this->assertCount(289,  $this->locales);
-        $this->assertEquals(289, $this->locales->count());
+        $this->assertSame(289, $this->locales->count());
 
         // Assert supported locales
         $this->assertFalse($supported->isEmpty());
         $count = count($this->supportedLocales);
         $this->assertCount($count,  $supported);
-        $this->assertEquals($count, $supported->count());
+        $this->assertSame($count, $supported->count());
     }
 
     /** @test */
@@ -103,6 +103,6 @@ class LocaleCollectionTest extends TestCase
         $locale = $this->locales->first();
 
         $this->assertInstanceOf(Locale::class, $locale);
-        $this->assertEquals('aa', $locale->key());
+        $this->assertSame('aa', $locale->key());
     }
 }

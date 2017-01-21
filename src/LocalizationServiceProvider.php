@@ -15,18 +15,11 @@ class LocalizationServiceProvider extends PackageServiceProvider
      | ------------------------------------------------------------------------------------------------
      */
     /**
-     * Vendor name.
-     *
-     * @var string
-     */
-    protected $vendor   = 'arcanedev';
-
-    /**
      * Package name.
      *
      * @var string
      */
-    protected $package  = 'localization';
+    protected $package = 'localization';
 
     /* ------------------------------------------------------------------------------------------------
      |  Getters & Setters
@@ -52,9 +45,10 @@ class LocalizationServiceProvider extends PackageServiceProvider
     public function register()
     {
         $this->registerConfig();
-
-        $this->app->register(Providers\RoutingServiceProvider::class);
-        $this->app->register(Providers\UtilitiesServiceProvider::class);
+        $this->registerProviders([
+            Providers\RoutingServiceProvider::class,
+            Providers\UtilitiesServiceProvider::class,
+        ]);
         $this->registerLocalization();
         $this->registerAliases();
     }
@@ -77,7 +71,10 @@ class LocalizationServiceProvider extends PackageServiceProvider
      */
     public function provides()
     {
-        return ['arcanedev.localization'];
+        return [
+            Contracts\Localization::class,
+            'arcanedev.localization',
+        ];
     }
 
     /* ------------------------------------------------------------------------------------------------
@@ -89,19 +86,18 @@ class LocalizationServiceProvider extends PackageServiceProvider
      */
     private function registerLocalization()
     {
-        $this->singleton('arcanedev.localization', function($app) {
-            /**
-             * @var  Contracts\RouteTranslatorInterface  $routeTranslator
-             * @var  Contracts\LocalesManagerInterface   $localesManager
-             */
-            $routeTranslator = $app['arcanedev.localization.translator'];
-            $localesManager  = $app['arcanedev.localization.locales-manager'];
-
-            return new Localization($app, $routeTranslator, $localesManager);
+        $this->singleton(Contracts\Localization::class, function($app) {
+            return new Localization(
+                $app,
+                $app[Contracts\RouteTranslator::class],
+                $app[Contracts\LocalesManager::class]
+            );
         });
 
+        $this->singleton('arcanedev.localization', Contracts\Localization::class);
+
         $this->alias(
-            $this->app['config']->get('localization.facade', 'Localization'),
+            $this->config()->get('localization.facade', 'Localization'),
             Facades\Localization::class
         );
     }
