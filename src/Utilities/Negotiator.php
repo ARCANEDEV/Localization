@@ -174,6 +174,13 @@ class Negotiator implements NegotiatorContract
         foreach (array_keys($matches) as $locale) {
             if ($this->isSupported($locale))
                 return $locale;
+
+            // Search for acceptable locale by 'regional' => 'fr_FR' match.
+            foreach ($this->supportedLocales as $key => $entity) {
+                /** @var \Arcanedev\Localization\Entities\Locale $entity */
+                if ($entity->regional() == $locale)
+                    return $key;
+            }
         }
 
         return null;

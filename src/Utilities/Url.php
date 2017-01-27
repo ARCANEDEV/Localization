@@ -110,7 +110,7 @@ class Url implements UrlContract
                 continue;
             }
 
-            $match = self::hasAttributesFromUriPath($url, $route->getUri(), $attributes);
+            $match = self::hasAttributesFromUriPath($url, $route->uri(), $attributes);
 
             if ($match)
                 break;

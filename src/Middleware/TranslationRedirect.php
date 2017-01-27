@@ -33,6 +33,10 @@ class TranslationRedirect extends Middleware
      */
     public function handle(Request $request, Closure $next)
     {
+        // If the request URL is ignored from localization.
+        if ($this->shouldIgnore($request))
+            return $next($request);
+
         $translatedUrl = $this->getTranslatedUrl($request);
 
         if ( ! is_null($translatedUrl)) {
