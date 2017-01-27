@@ -241,7 +241,7 @@ class RouteTranslator implements RouteTranslatorContract
             $locale = $this->translator->getLocale();
         }
 
-        $translation = $this->translator->trans($key, [], '', $locale);
+        $translation = $this->translator->trans($key, [], $locale);
 
         // @codeCoverageIgnoreStart
         if ( ! is_string($translation)) {

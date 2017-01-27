@@ -82,7 +82,7 @@ class RoutingServiceProvider extends ServiceProvider
      */
     private function registerMiddleware(Router $router, $name, $class)
     {
-        $router->middleware($name, $class);
+        $router->aliasMiddleware($name, $class);
 
         if ($this->getMiddleware($name)) {
             $this->middleware[] = $name;

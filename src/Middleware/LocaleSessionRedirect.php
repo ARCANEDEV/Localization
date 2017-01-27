@@ -28,6 +28,10 @@ class LocaleSessionRedirect extends Middleware
      */
     public function handle(Request $request, Closure $next)
     {
+        // If the request URL is ignored from localization.
+        if ($this->shouldIgnore($request))
+            return $next($request);
+
         $segment = $request->segment(1, null);
         $locale  = session('locale', null);
 

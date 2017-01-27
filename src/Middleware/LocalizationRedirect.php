@@ -28,6 +28,10 @@ class LocalizationRedirect extends Middleware
      */
     public function handle(Request $request, Closure $next)
     {
+        // If the request URL is ignored from localization.
+        if ($this->shouldIgnore($request))
+            return $next($request);
+
         if ($redirectUrl = $this->getRedirectionUrl($request)) {
             // Save any flashed data for redirect
             session()->reflash();

@@ -91,126 +91,129 @@ class RouteRegistrar
     {
         $this->setRouter($router);
 
-        $this->router->localizedGroup(function () {
-            $this->router->get('/', [
-                'as'    =>  'index',
-                function () {
-                    return app('translator')->get('localization::routes.hello');
-                }
-            ]);
-            $this->setRouteName('index');
+        $this->router->group(['middleware' => 'web'], function () {
+            $this->router->localizedGroup(function () {
+                $this->router->get('/', [
+                    'as'    =>  'index',
+                    function () {
+                        return app('translator')->get('localization::routes.hello');
+                    }
+                ]);
+                $this->setRouteName('index');
 
-            $this->router->get('test', [
-                'as'    => 'test',
-                function () {
-                    return app('translator')->get('localization::routes.test-text');
-                }
-            ]);
-            $this->setRouteName('test');
+                $this->router->get('test', [
+                    'as'    => 'test',
+                    function () {
+                        return app('translator')->get('localization::routes.test-text');
+                    }
+                ]);
+                $this->setRouteName('test');
 
-            $this->router->transGet('localization::routes.about', [
-                'as'    => 'about',
-                function () {
-                    return localization()->getLocalizedURL('es') ?: 'Not url available';
-                }
-            ]);
-            $this->setRouteName('about');
+                $this->router->transGet('localization::routes.about', [
+                    'as'    => 'about',
+                    function () {
+                        return localization()->getLocalizedURL('es') ?: 'Not url available';
+                    }
+                ]);
+                $this->setRouteName('about');
 
-            $this->router->transGet('localization::routes.view', [
-                'as'    => 'view',
-                function () {
-                    return localization()->getLocalizedURL('es') ?: 'Not url available';
-                }
-            ]);
-            $this->setRouteName('view');
+                $this->router->transGet('localization::routes.view', [
+                    'as'    => 'view',
+                    function () {
+                        return localization()->getLocalizedURL('es') ?: 'Not url available';
+                    }
+                ]);
+                $this->setRouteName('view');
 
-            $this->router->transGet('localization::routes.view-project', [
-                'as'    => 'view-project',
-                function () {
-                    return localization()->getLocalizedURL('es') ?: 'Not url available';
-                }
-            ]);
-            $this->setRouteName('view-project');
+                $this->router->transGet('localization::routes.view-project', [
+                    'as'    => 'view-project',
+                    function () {
+                        return localization()->getLocalizedURL('es') ?: 'Not url available';
+                    }
+                ]);
+                $this->setRouteName('view-project');
 
-            /* ------------------------------------------------------------------------------------------------
-             |  Other method
-             | ------------------------------------------------------------------------------------------------
-             */
-            $this->router->transPost('localization::routes.methods.post', [
-                'as'    => 'method.post',
-                function () {
-                    return 'POST method';
-                }
-            ]);
-            $this->setRouteName('method.post');
+                /* ------------------------------------------------------------------------------------------------
+                 |  Other method
+                 | ------------------------------------------------------------------------------------------------
+                 */
+                $this->router->transPost('localization::routes.methods.post', [
+                    'as'    => 'method.post',
+                    function () {
+                        return 'POST method';
+                    }
+                ]);
+                $this->setRouteName('method.post');
 
-            $this->router->transPut('localization::routes.methods.put', [
-                'as'    => 'method.put',
-                function () {
-                    return 'PUT method';
-                }
-            ]);
-            $this->setRouteName('method.put');
+                $this->router->transPut('localization::routes.methods.put', [
+                    'as'    => 'method.put',
+                    function () {
+                        return 'PUT method';
+                    }
+                ]);
+                $this->setRouteName('method.put');
 
-            $this->router->transPatch('localization::routes.methods.patch', [
-                'as'    => 'method.patch',
-                function () {
-                    return 'PATCH method';
-                }
-            ]);
-            $this->setRouteName('method.patch');
+                $this->router->transPatch('localization::routes.methods.patch', [
+                    'as'    => 'method.patch',
+                    function () {
+                        return 'PATCH method';
+                    }
+                ]);
+                $this->setRouteName('method.patch');
 
-            $this->router->transOptions('localization::routes.methods.options', [
-                'as'    => 'method.options',
-                function () {
-                    return 'OPTIONS method';
-                }
-            ]);
-            $this->setRouteName('method.options');
+                $this->router->transOptions('localization::routes.methods.options', [
+                    'as'    => 'method.options',
+                    function () {
+                        return 'OPTIONS method';
+                    }
+                ]);
+                $this->setRouteName('method.options');
 
-            $this->router->transDelete('localization::routes.methods.delete', [
-                'as'    => 'method.delete',
-                function () {
-                    return 'DELETE method';
-                }
-            ]);
-            $this->setRouteName('method.delete');
+                $this->router->transDelete('localization::routes.methods.delete', [
+                    'as'    => 'method.delete',
+                    function () {
+                        return 'DELETE method';
+                    }
+                ]);
+                $this->setRouteName('method.delete');
 
-            $this->router->transAny('localization::routes.methods.any', [
-                'as'    => 'method.any',
-                function () {
-                    return 'Any method';
-                }
-            ]);
-            $this->setRouteName('method.any');
+                $this->router->transAny('localization::routes.methods.any', [
+                    'as'    => 'method.any',
+                    function () {
+                        return 'Any method';
+                    }
+                ]);
+                $this->setRouteName('method.any');
 
-            /* ------------------------------------------------------------------------------------------------
-             |  Resource Controller
-             | ------------------------------------------------------------------------------------------------
-             */
-            $this->router->resource('dummy', Controllers\DummyController::class);
-            $this->setRouteNames([
-                'dummy.index',
-                'dummy.create',
-                'dummy.store',
-                'dummy.show',
-                'dummy.edit',
-                'dummy.update',
-                'dummy.destroy',
-            ]);
+                /* ------------------------------------------------------------------------------------------------
+                 |  Resource Controller
+                 | ------------------------------------------------------------------------------------------------
+                 */
+                $this->router->resource('dummy', Controllers\DummyController::class);
+                $this->setRouteNames([
+                    'dummy.index',
+                    'dummy.create',
+                    'dummy.store',
+                    'dummy.show',
+                    'dummy.edit',
+                    'dummy.update',
+                    'dummy.destroy',
+                ]);
 
-            $this->router->group(['prefix'  => 'foo'], function () {
-                $this->router->resource('bar', Controllers\BarController::class);
+                $this->router->group(['prefix'  => 'foo'], function () {
+                    $this->router->resource('bar', Controllers\BarController::class);
+                });
+
+                $this->setRouteNames([
+                    'bar.index',
+                    'bar.create',
+                    'bar.store',
+                    'bar.show',
+                    'bar.edit',
+                    'bar.update',
+                    'bar.destroy',
+                ]);
             });
-            $this->setRouteNames([
-                'foo.bar.index',
-                'foo.bar.create',
-                'foo.bar.store',
-                'foo.bar.show',
-                'foo.bar.edit',
-                'foo.bar.update',
-                'foo.bar.destroy',
-            ]);
         });
     }
 }

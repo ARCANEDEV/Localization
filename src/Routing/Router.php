@@ -28,22 +28,6 @@ class Router extends IlluminateRouter
     }
 
     /* ------------------------------------------------------------------------------------------------
-     |  Basic Route Functions
-     | ------------------------------------------------------------------------------------------------
-     */
-    /**
-     * Route a resource to a controller.
-     *
-     * @param  string  $name
-     * @param  string  $controller
-     * @param  array   $options
-     */
-    public function resource($name, $controller, array $options = [])
-    {
-        (new ResourceRegistrar($this))->register($name, $controller, $options);
-    }
-
-    /* ------------------------------------------------------------------------------------------------
      |  Route Functions
      | ------------------------------------------------------------------------------------------------
      */
