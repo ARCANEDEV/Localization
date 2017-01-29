@@ -37,7 +37,7 @@ trait LocalizationKernelTrait
      | ------------------------------------------------------------------------------------------------
      */
     /**
-     * Register middleware groups to router (since Laravel 5.2)
+     * Register middleware groups to router (since Laravel 5.2).
      */
     protected function registerMiddlewareGroups()
     {
@@ -49,12 +49,14 @@ trait LocalizationKernelTrait
     }
 
     /**
-     * Register middleware to router
+     * Register middleware to router.
      */
     protected function registerMiddleware()
     {
         foreach ($this->routeMiddleware as $key => $middleware) {
-            $this->router->middleware($key, $middleware);
+            method_exists($this->router, 'aliasMiddleware')
+                ? $this->router->aliasMiddleware($key, $middleware)
+                : $this->router->middleware($key, $middleware);;
         }
     }
 }
