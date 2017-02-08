@@ -1,4 +1,4 @@
-# 6. FAQ
+# 4. FAQ
 
 If you've a question, try to check out [the questions in our repo issues](https://github.com/ARCANEDEV/Localization/issues?q=is%3Aissue+label%3Aquestion), you may found a response there.
 
