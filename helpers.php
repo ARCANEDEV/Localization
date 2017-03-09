@@ -10,4 +10,13 @@ if ( ! function_exists('localization')) {
     {
         return app(Arcanedev\Localization\Contracts\Localization::class);
     }
+
+    /**
+     * Translated route from name helper
+     *
+     */
+    function routeTo($route, $parameters = [])
+    {
+        return localization()->getUrlFromRouteName(localization()->getCurrentLocale(), $route, $parameters);
+    }
 }
