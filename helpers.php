@@ -12,13 +12,17 @@ if ( ! function_exists('localization')) {
     }
 }
 
-if ( ! function_exists('routeTo')) {
+if ( ! function_exists('localized_route')) {
     /**
-     * Translated route from name helper
+     * Get a localized URL with a given trans route name.
      *
+     * @return string
      */
-    function routeTo($route, $parameters = [])
+    function localized_route($route, $parameters = [], $locale = null)
     {
-        return localization()->getUrlFromRouteName(localization()->getCurrentLocale(), $route, $parameters);
+        if (is_null($locale))
+            $locale = localization()->getCurrentLocale();
+
+        return localization()->getUrlFromRouteName($locale, $route, $parameters);
     }
 }
