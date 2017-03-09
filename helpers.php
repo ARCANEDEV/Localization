@@ -10,7 +10,9 @@ if ( ! function_exists('localization')) {
     {
         return app(Arcanedev\Localization\Contracts\Localization::class);
     }
+}
 
+if ( ! function_exists('routeTo')) {
     /**
      * Translated route from name helper
      *
