@@ -505,6 +505,30 @@ class LocalizationTest extends TestCase
     }
 
     /** @test */
+    public function it_can_get_localized_url_with_route_name_from_lang()
+    {
+        $this->assertSame(
+            'http://localhost/en/view/en-view-slug',
+            localized_route('localization::routes.view', ['id' => 'en-view-slug'])
+        );
+
+        $this->assertSame(
+            'http://localhost/en/view/en-view-slug',
+            localized_route('localization::routes.view', ['id' => 'en-view-slug'], 'en')
+        );
+
+        $this->assertSame(
+            'http://localhost/fr/voir/fr-view-slug',
+            localized_route('localization::routes.view', ['id' => 'fr-view-slug'], 'fr')
+        );
+
+        $this->assertSame(
+            'http://localhost/es/ver/es-view-slug',
+            localized_route('localization::routes.view', ['id' => 'es-view-slug'], 'es')
+        );
+    }
+
+    /** @test */
     public function it_can_use_facade()
     {
         $this->assertSame(
