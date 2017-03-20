@@ -170,6 +170,21 @@ It returns a route, localized to the desired locale using the locale passed.
 
 If the translation key does not exist in the locale given, this function will return `false`.
 
+For a quick use, you can use the `localized_route()` helper:
+ 
+```
+/**
+ * Get a localized URL with a given trans route name.
+ *
+ * @param  string       $transRoute
+ * @param  array        $attributes
+ * @param  string|null  $locale
+ *
+ * @return string
+ */
+function localized_route($transRoute, array $attributes = [], $locale = null)
+```
+
 ##### Get Supported Locales Collection
 
 ```php
