@@ -5,7 +5,7 @@ use Arcanedev\Localization\Contracts\Localization as LocalizationContract;
 use Arcanedev\Localization\Contracts\RouteTranslator as RouteTranslatorContract;
 use Arcanedev\Localization\Exceptions\UnsupportedLocaleException;
 use Arcanedev\Localization\Utilities\Url;
-use Illuminate\Foundation\Application;
+use Illuminate\Contracts\Foundation\Application as ApplicationContract;
 use Illuminate\Http\Request;
 
 /**
@@ -30,7 +30,7 @@ class Localization implements LocalizationContract
     /**
      * Laravel application instance.
      *
-     * @var \Illuminate\Foundation\Application
+     * @var \Illuminate\Contracts\Foundation\Application
      */
     private $app;
 
@@ -55,12 +55,12 @@ class Localization implements LocalizationContract
     /**
      * Creates new instance.
      *
-     * @param  \Illuminate\Foundation\Application                          $app
+     * @param  \Illuminate\Contracts\Foundation\Application       $app
      * @param  \Arcanedev\Localization\Contracts\RouteTranslator  $routeTranslator
      * @param  \Arcanedev\Localization\Contracts\LocalesManager   $localesManager
      */
     public function __construct(
-        Application             $app,
+        ApplicationContract     $app,
         RouteTranslatorContract $routeTranslator,
         LocalesManagerContract  $localesManager
     ) {
@@ -69,7 +69,7 @@ class Localization implements LocalizationContract
         $this->localesManager  = $localesManager;
 
         $this->localesManager->setDefaultLocale(
-            $this->app->getLocale()
+            $this->app['config']->get('app.locale')
         );
     }
 
