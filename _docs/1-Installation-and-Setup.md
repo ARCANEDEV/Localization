@@ -56,23 +56,6 @@ Once the package is installed, you can register the service provider in `config/
 
 > No need to register the Localization facade, it's done automagically.
 
-##### Now you need to update your Http Kernel to use the Localization Router.
-
-```php
-// app/Http/Kernel.php
-<?php namespace App\Http;
-
-//...
-
-class Kernel extends HttpKernel
-{
-    // Localization Trait
-    use \Arcanedev\Localization\Traits\LocalizationKernelTrait;
-
-    // Your middleware(s) here
-}
-```
-
 ### Artisan commands
 
 To publish the config &amp; view files, run this command:
