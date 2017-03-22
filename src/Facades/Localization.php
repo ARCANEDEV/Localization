@@ -1,5 +1,6 @@
 <?php namespace Arcanedev\Localization\Facades;
 
+use Arcanedev\Localization\Contracts\Localization as LocalizationContract;
 use Illuminate\Support\Facades\Facade;
 
 /**
@@ -15,8 +16,5 @@ class Localization extends Facade
      *
      * @return string
      */
-    protected static function getFacadeAccessor()
-    {
-        return \Arcanedev\Localization\Contracts\Localization::class;
-    }
+    protected static function getFacadeAccessor() { return LocalizationContract::class; }
 }

@@ -10,9 +10,9 @@ use Illuminate\Http\Request;
  */
 interface Localization
 {
-    /* ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
      |  Getters & Setters
-     | ------------------------------------------------------------------------------------------------
+     | -----------------------------------------------------------------
      */
     /**
      * Returns default locale.
@@ -94,6 +94,13 @@ interface Localization
     public function getCurrentLocaleRegional();
 
     /**
+     * Get all locales.
+     *
+     * @return \Arcanedev\Localization\Entities\LocaleCollection
+     */
+    public function getAllLocales();
+
+    /**
      * Set and return current locale.
      *
      * @param  string  $locale
@@ -116,9 +123,9 @@ interface Localization
      */
     public function setRouteNameFromRequest(Request $request);
 
-    /* ------------------------------------------------------------------------------------------------
-     |  Main Functions
-     | ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
+     |  Main Methods
+     | -----------------------------------------------------------------
      */
     /**
      * Translate routes and save them to the translated routes array (used in the localize route filter).
@@ -168,9 +175,9 @@ interface Localization
      */
     public function createUrlFromUri($uri);
 
-    /* ------------------------------------------------------------------------------------------------
-     |  Translation Functions
-     | ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
+     |  Translation Methods
+     | -----------------------------------------------------------------
      */
     /**
      * Returns an URL adapted to the route name and the locale given.
@@ -183,10 +190,17 @@ interface Localization
      */
     public function getUrlFromRouteName($locale, $transKey, $attributes = []);
 
-    /* ------------------------------------------------------------------------------------------------
-     |  Check Functions
-     | ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
+     |  Check Methods
+     | -----------------------------------------------------------------
      */
+    /**
+     * Hide the default locale in URL ??
+     *
+     * @return bool
+     */
+    public function isDefaultLocaleHiddenInUrl();
+
     /**
      * Check if Locale exists on the supported locales collection.
      *
@@ -195,15 +209,4 @@ interface Localization
      * @return bool
      */
     public function isLocaleSupported($locale);
-
-    /* ------------------------------------------------------------------------------------------------
-     |  Other Functions
-     | ------------------------------------------------------------------------------------------------
-     */
-    /**
-     * Hide the default locale in URL ??
-     *
-     * @return bool
-     */
-    public function isDefaultLocaleHiddenInUrl();
 }

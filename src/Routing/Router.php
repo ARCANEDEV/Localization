@@ -58,7 +58,7 @@ class Router extends IlluminateRouter
     public function transGet($trans, $action)
     {
         return $this->get(
-            localization()->transRoute($trans), $action
+            $this->transRoute($trans), $action
         );
     }
 
@@ -73,7 +73,7 @@ class Router extends IlluminateRouter
     public function transPost($trans, $action)
     {
         return $this->post(
-            localization()->transRoute($trans), $action
+            $this->transRoute($trans), $action
         );
     }
 
@@ -88,7 +88,7 @@ class Router extends IlluminateRouter
     public function transPut($trans, $action)
     {
         return $this->put(
-            localization()->transRoute($trans), $action
+            $this->transRoute($trans), $action
         );
     }
 
@@ -103,7 +103,7 @@ class Router extends IlluminateRouter
     public function transPatch($trans, $action)
     {
         return $this->patch(
-            localization()->transRoute($trans), $action
+            $this->transRoute($trans), $action
         );
     }
 
@@ -118,7 +118,7 @@ class Router extends IlluminateRouter
     public function transDelete($trans, $action)
     {
         return $this->delete(
-            localization()->transRoute($trans), $action
+            $this->transRoute($trans), $action
         );
     }
 
@@ -133,7 +133,7 @@ class Router extends IlluminateRouter
     public function transOptions($trans, $action)
     {
         return $this->options(
-            localization()->transRoute($trans), $action
+            $this->transRoute($trans), $action
         );
     }
 
@@ -148,7 +148,23 @@ class Router extends IlluminateRouter
     public function transAny($trans, $action)
     {
         return $this->any(
-            localization()->transRoute($trans), $action
+            $this->transRoute($trans), $action
         );
+    }
+
+    /* -----------------------------------------------------------------
+     |  Other Methods
+     | -----------------------------------------------------------------
+     */
+    /**
+     * Translate the route.
+     *
+     * @param  string  $key
+     *
+     * @return string
+     */
+    private function transRoute($key)
+    {
+        return localization()->transRoute($key);
     }
 }

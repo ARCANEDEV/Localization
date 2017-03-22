@@ -10,9 +10,9 @@ use Arcanedev\Localization\Entities\LocaleCollection;
  */
 interface RouteTranslator
 {
-    /* ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
      |  Getters & Setters
-     | ------------------------------------------------------------------------------------------------
+     | -----------------------------------------------------------------
      */
     /**
      * Get current route.
@@ -37,9 +37,9 @@ interface RouteTranslator
      */
     public function getTranslatedRoutes();
 
-    /* ------------------------------------------------------------------------------------------------
-     |  Main Functions
-     | ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
+     |  Main Methods
+     | -----------------------------------------------------------------
      */
     /**
      * Translate routes and save them to the translated routes array (used in the localize route filter).
@@ -96,11 +96,13 @@ interface RouteTranslator
      *
      * @return string
      */
-    public function getUrlFromRouteName($locale, $defaultLocale, $transKey, $attributes = [], $defaultHidden = false);
+    public function getUrlFromRouteName(
+        $locale, $defaultLocale, $transKey, $attributes = [], $defaultHidden = false
+    );
 
-    /* ------------------------------------------------------------------------------------------------
-     |  Check Functions
-     | ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
+     |  Check Methods
+     | -----------------------------------------------------------------
      */
     /**
      * Check if has current route.

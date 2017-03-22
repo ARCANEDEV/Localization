@@ -1,6 +1,5 @@
 <?php namespace Arcanedev\Localization\Middleware;
 
-use Arcanedev\Localization\Bases\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Route;
@@ -13,15 +12,15 @@ use Illuminate\Routing\Route;
  */
 class TranslationRedirect extends Middleware
 {
-    /* ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
      |  Constants
-     | ------------------------------------------------------------------------------------------------
+     | -----------------------------------------------------------------
      */
     const EVENT_NAME = 'routes.translation';
 
-    /* ------------------------------------------------------------------------------------------------
-     |  Main Functions
-     | ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
+     |  Main Methods
+     | -----------------------------------------------------------------
      */
     /**
      * Handle an incoming request.
@@ -34,41 +33,33 @@ class TranslationRedirect extends Middleware
     public function handle(Request $request, Closure $next)
     {
         // If the request URL is ignored from localization.
-        if ($this->shouldIgnore($request))
-            return $next($request);
+        if ($this->shouldIgnore($request)) return $next($request);
 
-        $translatedUrl = $this->getTranslatedUrl($request);
-
-        if ( ! is_null($translatedUrl)) {
-            return $this->makeRedirectResponse($translatedUrl);
-        }
-
-        return $next($request);
+        return is_null($translatedUrl = $this->getTranslatedUrl($request))
+            ? $next($request)
+            : $this->makeRedirectResponse($translatedUrl);
     }
 
-    /* ------------------------------------------------------------------------------------------------
-     |  Other Functions
-     | ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
+     |  Other Methods
+     | -----------------------------------------------------------------
      */
     /**
      * Get translated URL.
      *
-     * @param  Request  $request
+     * @param  \Illuminate\Http\Request  $request
      *
-     * @return null|string
+     * @return string|null
      */
     private function getTranslatedUrl(Request $request)
     {
         /** @var Route $route */
         $route = $request->route();
 
-        if ( ! ($route instanceof Route) || is_null($route->getName())) {
+        if ( ! ($route instanceof Route) || is_null($route->getName()))
             return null;
-        }
 
-        return $this->translateRoute(
-            $route->getName(), $route->parameters()
-        );
+        return $this->translateRoute($route->getName(), $route->parameters());
     }
 
     /**
@@ -77,23 +68,16 @@ class TranslationRedirect extends Middleware
      * @param  string  $routeName
      * @param  array   $attributes
      *
-     * @return Route|null
+     * @return string|null
      */
     public function translateRoute($routeName, $attributes = [])
     {
-        if (empty($attributes)) {
-            return null;
-        }
+        if (empty($attributes)) return null;
 
-        $transAttributes = $this->fireEvent(
-            $this->getCurrentLocale(), $routeName, $attributes
-        );
+        $transAttributes = $this->fireEvent($this->getCurrentLocale(), $routeName, $attributes);
 
-        if (
-            ! empty($transAttributes) && $transAttributes !== $attributes
-        ) {
+        if ( ! empty($transAttributes) && $transAttributes !== $attributes)
             return route($routeName, $transAttributes);
-        }
 
         return null;
     }
@@ -109,17 +93,13 @@ class TranslationRedirect extends Middleware
      */
     private function fireEvent($locale, $route, $attributes)
     {
-        $response = event(self::EVENT_NAME, [
-            $locale, $route, $attributes
-        ]);
+        $response = event(self::EVENT_NAME, [$locale, $route, $attributes]);
 
-        if ( ! empty($response)) {
+        if ( ! empty($response))
             $response = array_shift($response);
-        }
 
-        if (is_array($response)) {
+        if (is_array($response))
             $attributes = array_merge($attributes, $response);
-        }
 
         return $attributes;
     }

@@ -14,9 +14,9 @@ use Illuminate\Http\Request;
  */
 class Url implements UrlContract
 {
-    /* ------------------------------------------------------------------------------------------------
-     |  Main Functions
-     | ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
+     |  Main Methods
+     | -----------------------------------------------------------------
      */
     /**
      * Extract attributes for current url.
@@ -27,9 +27,9 @@ class Url implements UrlContract
      */
     public static function extractAttributes($url = false)
     {
-        $parse  = parse_url($url);
-        $path   = isset($parse['path']) ? explode('/', $parse['path']) : [];
-        $url    = [];
+        $parse = parse_url($url);
+        $path  = isset($parse['path']) ? explode('/', $parse['path']) : [];
+        $url   = [];
 
         foreach ($path as $segment) {
             if ( ! empty($segment)) $url[] = $segment;
@@ -52,9 +52,8 @@ class Url implements UrlContract
     public static function substituteAttributes(array $attributes, $uri)
     {
         foreach ($attributes as $key => $value) {
-            if ($value instanceof RouteBindable) {
+            if ($value instanceof RouteBindable)
                 $value = $value->getWildcardValue();
-            }
 
             $uri = str_replace(['{' . $key . '?}', '{' . $key . '}'], $value, $uri);
         }
@@ -83,9 +82,9 @@ class Url implements UrlContract
         return $url;
     }
 
-    /* ------------------------------------------------------------------------------------------------
-     |  Extract Functions
-     | ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
+     |  Extract Methods
+     | -----------------------------------------------------------------
      */
     /**
      * Extract attributes from routes.
@@ -106,9 +105,8 @@ class Url implements UrlContract
              */
             $request = Request::create(implode('/', $url));
 
-            if ( ! $route->matches($request)) {
+            if ( ! $route->matches($request))
                 continue;
-            }
 
             $match = self::hasAttributesFromUriPath($url, $route->uri(), $attributes);
 
@@ -184,9 +182,9 @@ class Url implements UrlContract
         }
     }
 
-    /* ------------------------------------------------------------------------------------------------
-     |  Unparse Functions
-     | ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
+     |  Other Methods
+     | -----------------------------------------------------------------
      */
     /**
      * Check parsed URL.
@@ -195,17 +193,17 @@ class Url implements UrlContract
      */
     private static function checkParsedUrl(array &$parsed)
     {
-        $scheme    =& $parsed['scheme'];
-        $user      =& $parsed['user'];
-        $pass      =& $parsed['pass'];
-        $host      =& $parsed['host'];
-        $port      =& $parsed['port'];
-        $path      =& $parsed['path'];
-        $path      = '/' . ltrim($path, '/'); // If / is missing for path.
-        $query     =& $parsed['query'];
-        $fragment  =& $parsed['fragment'];
+        $scheme   =& $parsed['scheme'];
+        $user     =& $parsed['user'];
+        $pass     =& $parsed['pass'];
+        $host     =& $parsed['host'];
+        $port     =& $parsed['port'];
+        $path     =& $parsed['path'];
+        $path     = '/'.ltrim($path, '/'); // If / is missing for path.
+        $query    =& $parsed['query'];
+        $fragment =& $parsed['fragment'];
 
-        $parsed    = compact(
+        $parsed = compact(
             'scheme', 'user', 'pass', 'host', 'port', 'path', 'query', 'fragment'
         );
     }
@@ -219,13 +217,9 @@ class Url implements UrlContract
      */
     private static function getUrl(array $parsed)
     {
-        $url       = '';
-
-        if (strlen($parsed['scheme'])) {
-            $url = $parsed['scheme'] . ':' . self::getHierPart($parsed);
-        }
-
-        return $url;
+        return strlen($parsed['scheme'])
+            ? $parsed['scheme'].':'.self::getHierPart($parsed)
+            : '';
     }
 
     /**
@@ -237,14 +231,9 @@ class Url implements UrlContract
      */
     private static function getHierPart(array $parsed)
     {
-        $path      = $parsed['path'];
-        $authority = self::getAuthority($parsed);
-
-        if (strlen($authority)) {
-            $path = '//' . $authority . $path;
-        }
-
-        return $path;
+        return strlen($authority = self::getAuthority($parsed))
+            ? '//'.$authority.$parsed['path']
+            : $parsed['path'];
     }
 
     /**
@@ -256,14 +245,11 @@ class Url implements UrlContract
      */
     private static function getAuthority(array $parsed)
     {
-        $userInfo  = self::getUserInfo($parsed);
-        $host      = self::getHost($parsed);
+        $host = self::getHost($parsed);
 
-        if (strlen($userInfo)) {
-            return $userInfo . '@' . $host;
-        }
-
-        return $host;
+        return strlen($userInfo = self::getUserInfo($parsed))
+            ? $userInfo.'@'.$host
+            : $host;
     }
 
     /**
@@ -275,13 +261,9 @@ class Url implements UrlContract
      */
     private static function getUserInfo(array $parsed)
     {
-        $userInfo = '';
-
-        if (strlen($parsed['pass'])) {
-            $userInfo = $parsed['user'] . ':' . $parsed['pass'];
-        }
-
-        return $userInfo;
+        return strlen($parsed['pass'])
+            ? $parsed['user'].':'.$parsed['pass']
+            : '';
     }
 
     /**
@@ -293,13 +275,9 @@ class Url implements UrlContract
      */
     private static function getHost(array $parsed)
     {
-        $host = $parsed['host'];
-
-        if ( ! empty((string) $parsed['port'])) {
-            $host = $host . ':' . $parsed['port'];
-        }
-
-        return $host;
+        return empty((string) $parsed['port'])
+            ? $parsed['host']
+            : $parsed['host'].':'.$parsed['port'];
     }
 
     /**
@@ -311,13 +289,7 @@ class Url implements UrlContract
      */
     private static function getQuery(array $parsed)
     {
-        $query = '';
-
-        if (strlen($parsed['query'])) {
-            $query = '?' . $parsed['query'];
-        }
-
-        return $query;
+        return strlen($parsed['query']) ? '?'.$parsed['query'] : '';
     }
 
     /**
@@ -329,12 +301,8 @@ class Url implements UrlContract
      */
     private static function getFragment(array $parsed)
     {
-        $fragment = '';
-
-        if (strlen($parsed['fragment'])) {
-            $fragment = '#' . $parsed['fragment'];
-        }
-
-        return $fragment;
+        return strlen($parsed['fragment'])
+            ? '#'.$parsed['fragment']
+            : '';
     }
 }

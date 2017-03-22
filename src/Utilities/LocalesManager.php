@@ -5,7 +5,7 @@ use Arcanedev\Localization\Entities\Locale;
 use Arcanedev\Localization\Entities\LocaleCollection;
 use Arcanedev\Localization\Exceptions\UndefinedSupportedLocalesException;
 use Arcanedev\Localization\Exceptions\UnsupportedLocaleException;
-use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\Foundation\Application as ApplicationContract;
 
 /**
  * Class     LocalesManager
@@ -15,9 +15,9 @@ use Illuminate\Contracts\Foundation\Application;
  */
 class LocalesManager implements LocalesManagerContract
 {
-    /* ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
      |  Properties
-     | ------------------------------------------------------------------------------------------------
+     | -----------------------------------------------------------------
      */
     /**
      * Default locale.
@@ -50,16 +50,16 @@ class LocalesManager implements LocalesManagerContract
      */
     private $app;
 
-    /* ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
      |  Constructor
-     | ------------------------------------------------------------------------------------------------
+     | -----------------------------------------------------------------
      */
     /**
-     * Create LocaleManager instance.
+     * LocalesManager constructor.
      *
      * @param  \Illuminate\Contracts\Foundation\Application  $app
      */
-    public function __construct(Application $app)
+    public function __construct(ApplicationContract $app)
     {
         $this->app              = $app;
         $this->locales          = new LocaleCollection;
@@ -78,9 +78,9 @@ class LocalesManager implements LocalesManagerContract
         $this->setDefaultLocale();
     }
 
-    /* ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
      |  Getters & Setters
-     | ------------------------------------------------------------------------------------------------
+     | -----------------------------------------------------------------
      */
     /**
      * Set and return current locale.
@@ -103,7 +103,7 @@ class LocalesManager implements LocalesManagerContract
         else {
             // if the first segment/locale passed is not valid the system would ask which locale have to take
             // it could be taken by the browser depending on your configuration
-            $locale        = null;
+            $locale = null;
 
             $this->getCurrentOrDefaultLocale();
         }
@@ -133,9 +133,8 @@ class LocalesManager implements LocalesManagerContract
      */
     public function setDefaultLocale($defaultLocale = null)
     {
-        if (is_null($defaultLocale)) {
-            $defaultLocale = $this->app->getLocale();
-        }
+        if (is_null($defaultLocale))
+            $defaultLocale = $this->config()->get('app.locale');
 
         $this->isDefaultLocaleSupported($defaultLocale);
         $this->defaultLocale = $defaultLocale;
@@ -151,13 +150,11 @@ class LocalesManager implements LocalesManagerContract
      */
     public function getCurrentLocale()
     {
-        if ( ! is_null($this->currentLocale)) {
+        if ( ! is_null($this->currentLocale))
             return $this->currentLocale;
-        }
 
-        if ($this->useAcceptLanguageHeader()) {
+        if ($this->useAcceptLanguageHeader())
             return $this->negotiateLocale();
-        }
 
         // Get application default language
         return $this->getDefaultLocale();
@@ -214,9 +211,7 @@ class LocalesManager implements LocalesManagerContract
      */
     public function getSupportedLocalesKeys()
     {
-        $supportedLocales = $this->getSupportedLocales();
-
-        return $supportedLocales->keys()->toArray();
+        return $this->getSupportedLocales()->keys()->toArray();
     }
 
     /**
@@ -226,13 +221,12 @@ class LocalesManager implements LocalesManagerContract
      *
      * @return self
      *
-     * @throws UndefinedSupportedLocalesException
+     * @throws \Arcanedev\Localization\Exceptions\UndefinedSupportedLocalesException
      */
     public function setSupportedLocales(array $supportedLocales)
     {
-        if ( ! is_array($supportedLocales) || empty($supportedLocales)) {
+        if ( ! is_array($supportedLocales) || empty($supportedLocales))
             throw new UndefinedSupportedLocalesException;
-        }
 
         $this->supportedLocales = $this->filterLocales($supportedLocales);
 
@@ -242,7 +236,7 @@ class LocalesManager implements LocalesManagerContract
     /**
      * Get config repository.
      *
-     * @return \Illuminate\Contracts\Config\Repository  Config
+     * @return \Illuminate\Contracts\Config\Repository
      */
     private function config()
     {
@@ -279,14 +273,13 @@ class LocalesManager implements LocalesManagerContract
      */
     private function negotiateLocale()
     {
-        $negotiator = new Negotiator($this->getDefaultLocale(), $this->getSupportedLocales());
-
-        return $negotiator->negotiate($this->request());
+        return Negotiator::make($this->getDefaultLocale(), $this->getSupportedLocales())
+            ->negotiate($this->request());
     }
 
-    /* ------------------------------------------------------------------------------------------------
-     |  Check Functions
-     | ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
+     |  Methods Functions
+     | -----------------------------------------------------------------
      */
     /**
      * Check if default is supported.
@@ -297,11 +290,10 @@ class LocalesManager implements LocalesManagerContract
      */
     public function isDefaultLocaleSupported($defaultLocale)
     {
-        if ( ! $this->isSupportedLocale($defaultLocale)) {
+        if ( ! $this->isSupportedLocale($defaultLocale))
             throw new UnsupportedLocaleException(
                 "Laravel default locale [{$defaultLocale}] is not in the `supported-locales` array."
             );
-        }
     }
 
     /**
@@ -345,17 +337,16 @@ class LocalesManager implements LocalesManagerContract
     {
         // If we reached this point and isDefaultLocaleHiddenInUrl is true we have to assume we are routing
         // to a default locale route.
-        if ($this->isDefaultLocaleHiddenInUrl()) {
+        if ($this->isDefaultLocaleHiddenInUrl())
             $this->setCurrentLocale($this->getDefaultLocale());
-        }
 
         // But if isDefaultLocaleHiddenInUrl is false, we have to retrieve it from the browser...
         return $this->getCurrentLocale();
     }
 
-    /* ------------------------------------------------------------------------------------------------
-     |  Other Functions
-     | ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
+     |  Other Methods
+     | -----------------------------------------------------------------
      */
     /**
      * Filter locale collection.

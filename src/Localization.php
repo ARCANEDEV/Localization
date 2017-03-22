@@ -5,7 +5,8 @@ use Arcanedev\Localization\Contracts\Localization as LocalizationContract;
 use Arcanedev\Localization\Contracts\RouteTranslator as RouteTranslatorContract;
 use Arcanedev\Localization\Exceptions\UnsupportedLocaleException;
 use Arcanedev\Localization\Utilities\Url;
-use Illuminate\Foundation\Application;
+use Illuminate\Contracts\Foundation\Application as ApplicationContract;
+use Illuminate\Contracts\View\Factory as ViewFactoryContract;
 use Illuminate\Http\Request;
 
 /**
@@ -16,9 +17,9 @@ use Illuminate\Http\Request;
  */
 class Localization implements LocalizationContract
 {
-    /* ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
      |  Properties
-     | ------------------------------------------------------------------------------------------------
+     | -----------------------------------------------------------------
      */
     /**
      * Base url.
@@ -30,7 +31,7 @@ class Localization implements LocalizationContract
     /**
      * Laravel application instance.
      *
-     * @var \Illuminate\Foundation\Application
+     * @var \Illuminate\Contracts\Foundation\Application
      */
     private $app;
 
@@ -48,19 +49,19 @@ class Localization implements LocalizationContract
      */
     private $localesManager;
 
-    /* ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
      |  Constructor
-     | ------------------------------------------------------------------------------------------------
+     | -----------------------------------------------------------------
      */
     /**
-     * Creates new instance.
+     * Localization constructor.
      *
-     * @param  \Illuminate\Foundation\Application                          $app
+     * @param  \Illuminate\Contracts\Foundation\Application       $app
      * @param  \Arcanedev\Localization\Contracts\RouteTranslator  $routeTranslator
      * @param  \Arcanedev\Localization\Contracts\LocalesManager   $localesManager
      */
     public function __construct(
-        Application             $app,
+        ApplicationContract     $app,
         RouteTranslatorContract $routeTranslator,
         LocalesManagerContract  $localesManager
     ) {
@@ -69,13 +70,13 @@ class Localization implements LocalizationContract
         $this->localesManager  = $localesManager;
 
         $this->localesManager->setDefaultLocale(
-            $this->app->getLocale()
+            $this->app['config']->get('app.locale')
         );
     }
 
-    /* ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
      |  Getters & Setters
-     | ------------------------------------------------------------------------------------------------
+     | -----------------------------------------------------------------
      */
     /**
      * Get Request instance.
@@ -239,9 +240,9 @@ class Localization implements LocalizationContract
         return $this;
     }
 
-    /* ------------------------------------------------------------------------------------------------
-     |  Main Functions
-     | ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
+     |  Main Methods
+     | -----------------------------------------------------------------
      */
     /**
      * Translate routes and save them to the translated routes array (used in the localize route filter).
@@ -293,21 +294,18 @@ class Localization implements LocalizationContract
      */
     public function getLocalizedURL($locale = null, $url = null, $attributes = [])
     {
-        if (is_null($locale)) {
+        if (is_null($locale))
             $locale = $this->getCurrentLocale();
-        }
 
         $this->isLocaleSupportedOrFail($locale);
 
-        if (empty($attributes)) {
+        if (empty($attributes))
             $attributes = Url::extractAttributes($url);
-        }
 
         if (empty($url)) {
             if ($this->routeTranslator->hasCurrentRoute()) {
-                if (empty($attributes)) {
+                if (empty($attributes))
                     $attributes = $this->request()->route()->parameters();
-                }
 
                 return $this->getUrlFromRouteName(
                     $locale,
@@ -333,9 +331,8 @@ class Localization implements LocalizationContract
             $baseUrl, $parsedUrl, $this->getDefaultLocale(), $this->getSupportedLocales()
         );
 
-        if ($translatedRoute !== false) {
+        if ($translatedRoute !== false)
             return $this->getUrlFromRouteName($locale, $translatedRoute, $attributes);
-        }
 
         if (
             ! empty($locale) &&
@@ -349,15 +346,11 @@ class Localization implements LocalizationContract
 
         $url = Url::unparse($parsedUrl);
 
-        if (filter_var($url, FILTER_VALIDATE_URL)) {
-            return $url;
-        }
+        if (filter_var($url, FILTER_VALIDATE_URL)) return $url;
 
-        if (empty($url)) {
-            $url = $parsedUrl['path'];
-        }
-
-        return $this->createUrlFromUri($url);
+        return $this->createUrlFromUri(
+            empty($url) ? $parsedUrl['path'] : $url
+        );
     }
 
     /**
@@ -371,7 +364,7 @@ class Localization implements LocalizationContract
     {
         $uri = ltrim($uri, '/');
 
-        return empty($this->baseUrl) ? app('url')->to($uri) : $this->baseUrl.$uri;
+        return empty($this->baseUrl) ? $this->app['url']->to($uri) : $this->baseUrl.$uri;
     }
 
     /**
@@ -381,14 +374,14 @@ class Localization implements LocalizationContract
      */
     public function localesNavbar()
     {
-        $supportedLocales = $this->getSupportedLocales();
-
-        return view('localization::navbar', compact('supportedLocales'))->render();
+        return $this->app[ViewFactoryContract::class]
+            ->make('localization::navbar', ['supportedLocales' => $this->getSupportedLocales()])
+            ->render();
     }
 
-    /* ------------------------------------------------------------------------------------------------
-     |  Translation Functions
-     | ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
+     |  Translation Methods
+     | -----------------------------------------------------------------
      */
     /**
      * Returns the translated route for an url and the attributes given and a locale
@@ -407,9 +400,8 @@ class Localization implements LocalizationContract
         foreach ($this->routeTranslator->getTranslatedRoutes() as $translatedRoute) {
             $translatedUrl = $this->getUrlFromRouteName($locale, $translatedRoute, $attributes);
 
-            if ($this->getNonLocalizedURL($translatedUrl) === $this->getNonLocalizedURL($url))  {
+            if ($this->getNonLocalizedURL($translatedUrl) === $this->getNonLocalizedURL($url))
                 return $translatedRoute;
-            }
         }
 
         return false;
@@ -456,9 +448,9 @@ class Localization implements LocalizationContract
         $this->routeTranslator->setCurrentRoute($routeName);
     }
 
-    /* ------------------------------------------------------------------------------------------------
-     |  Check Functions
-     | ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
+     |  Check Methods
+     | -----------------------------------------------------------------
      */
     /**
      * Hide the default locale in URL ??
@@ -491,10 +483,9 @@ class Localization implements LocalizationContract
      */
     private function isLocaleSupportedOrFail($locale)
     {
-        if ( ! $this->isLocaleSupported($locale)) {
+        if ( ! $this->isLocaleSupported($locale))
             throw new UnsupportedLocaleException(
-                "Locale '$locale' is not in the list of supported locales."
+                "Locale '{$locale}' is not in the list of supported locales."
             );
-        }
     }
 }
