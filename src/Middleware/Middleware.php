@@ -1,5 +1,6 @@
-<?php namespace Arcanedev\Localization\Bases;
+<?php namespace Arcanedev\Localization\Middleware;
 
+use Arcanedev\Localization\Contracts\Localization;
 use Arcanedev\Localization\Entities\LocaleCollection;
 use Arcanedev\Localization\Exceptions\UndefinedSupportedLocalesException;
 use Arcanedev\Support\Bases\Middleware as BaseMiddleware;
@@ -13,10 +14,17 @@ use Illuminate\Http\RedirectResponse;
  */
 abstract class Middleware extends BaseMiddleware
 {
-    /* ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
      |  Properties
-     | ------------------------------------------------------------------------------------------------
+     | -----------------------------------------------------------------
      */
+    /**
+     * The localization instance.
+     *
+     * @var \Arcanedev\Localization\Contracts\Localization
+     */
+    protected $localization;
+
     /**
      * The URIs that should not be localized.
      *
@@ -24,9 +32,23 @@ abstract class Middleware extends BaseMiddleware
      */
     protected $except = [];
 
-    /* ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
+     |  Constructor
+     | -----------------------------------------------------------------
+     */
+    /**
+     * Middleware constructor.
+     *
+     * @param  \Arcanedev\Localization\Contracts\Localization  $localization
+     */
+    public function __construct(Localization $localization)
+    {
+        $this->localization = $localization;
+    }
+
+    /* -----------------------------------------------------------------
      |  Getters & Setters
-     | ------------------------------------------------------------------------------------------------
+     | -----------------------------------------------------------------
      */
     /**
      * Get the default locale.
@@ -35,7 +57,7 @@ abstract class Middleware extends BaseMiddleware
      */
     public function getDefaultLocale()
     {
-        return localization()->getDefaultLocale();
+        return $this->localization->getDefaultLocale();
     }
 
     /**
@@ -45,7 +67,7 @@ abstract class Middleware extends BaseMiddleware
      */
     public function getCurrentLocale()
     {
-        return localization()->getCurrentLocale();
+        return $this->localization->getCurrentLocale();
     }
 
     /**
@@ -57,7 +79,7 @@ abstract class Middleware extends BaseMiddleware
      */
     public function getSupportedLocales()
     {
-        return localization()->getSupportedLocales();
+        return $this->localization->getSupportedLocales();
     }
 
     /**
@@ -67,12 +89,12 @@ abstract class Middleware extends BaseMiddleware
      */
     protected function hideDefaultLocaleInURL()
     {
-        return localization()->isDefaultLocaleHiddenInUrl();
+        return $this->localization->isDefaultLocaleHiddenInUrl();
     }
 
-    /* ------------------------------------------------------------------------------------------------
-     |  Check Functions
-     | ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
+     |  Check Methods
+     | -----------------------------------------------------------------
      */
     /**
      * Check is default locale hidden.
@@ -106,20 +128,20 @@ abstract class Middleware extends BaseMiddleware
         return false;
     }
 
-    /* ------------------------------------------------------------------------------------------------
-     |  Other Functions
-     | ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
+     |  Other Methods
+     | -----------------------------------------------------------------
      */
     /**
      * Get the redirection response.
      *
      * @param  string  $locale
      *
-     * @return RedirectResponse|null
+     * @return \Illuminate\Http\RedirectResponse|null
      */
     protected function getLocalizedRedirect($locale)
     {
-        $localizedUrl = localization()->getLocalizedURL($locale);
+        $localizedUrl = $this->localization->getLocalizedURL($locale);
 
         if ( ! is_string($localizedUrl)) return null;
 
@@ -132,7 +154,7 @@ abstract class Middleware extends BaseMiddleware
      * @param  string  $url
      * @param  int     $code
      *
-     * @return RedirectResponse
+     * @return \Illuminate\Http\RedirectResponse
      */
     protected function makeRedirectResponse($url, $code = 302)
     {
