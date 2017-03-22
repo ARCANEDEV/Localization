@@ -13,9 +13,9 @@ use Illuminate\Translation\Translator;
  */
 class RouteTranslator implements RouteTranslatorContract
 {
-    /* ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
      |  Properties
-     | ------------------------------------------------------------------------------------------------
+     | -----------------------------------------------------------------
      */
     /**
      * The translator instance.
@@ -38,9 +38,9 @@ class RouteTranslator implements RouteTranslatorContract
      */
     protected $translatedRoutes = [];
 
-    /* ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
      |  Constructor
-     | ------------------------------------------------------------------------------------------------
+     | -----------------------------------------------------------------
      */
     /**
      * Create RouteTranslator instance.
@@ -52,9 +52,9 @@ class RouteTranslator implements RouteTranslatorContract
         $this->translator = $translator;
     }
 
-    /* ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
      |  Getters & Setters
-     | ------------------------------------------------------------------------------------------------
+     | -----------------------------------------------------------------
      */
     /**
      * Get current route.
@@ -75,9 +75,8 @@ class RouteTranslator implements RouteTranslatorContract
      */
     public function setCurrentRoute($currentRoute)
     {
-        if (is_string($currentRoute)) {
+        if (is_string($currentRoute))
             $this->currentRoute = $currentRoute;
-        }
 
         return $this;
     }
@@ -92,9 +91,9 @@ class RouteTranslator implements RouteTranslatorContract
         return $this->translatedRoutes;
     }
 
-    /* ------------------------------------------------------------------------------------------------
-     |  Main Functions
-     | ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
+     |  Main Methods
+     | -----------------------------------------------------------------
      */
     /**
      * Translate routes and save them to the translated routes array (used in the localize route filter).
@@ -106,9 +105,8 @@ class RouteTranslator implements RouteTranslatorContract
      */
     public function trans($route, $locale = null)
     {
-        if ( ! in_array($route, $this->translatedRoutes)) {
+        if ( ! in_array($route, $this->translatedRoutes))
             $this->translatedRoutes[] = $route;
-        }
 
         return $this->translate($route, $locale);
     }
@@ -166,9 +164,7 @@ class RouteTranslator implements RouteTranslatorContract
         foreach ($this->translatedRoutes as $routeName) {
             $url = Url::substituteAttributes($attributes, $this->translate($routeName));
 
-            if ($url === $uri) {
-                return $routeName;
-            }
+            if ($url === $uri) return $routeName;
         }
 
         return false;
@@ -186,9 +182,8 @@ class RouteTranslator implements RouteTranslatorContract
     {
         // check if this url is a translated url
         foreach ($this->translatedRoutes as $route) {
-            if ($this->translate($route, $locale) == rawurldecode($path)) {
+            if ($this->translate($route, $locale) == rawurldecode($path))
                 return $route;
-            }
         }
 
         return false;
@@ -205,24 +200,21 @@ class RouteTranslator implements RouteTranslatorContract
      *
      * @return string
      */
-    public function getUrlFromRouteName($locale, $defaultLocale, $transKey, $attributes = [], $defaultHidden = false)
-    {
-        if ( ! is_string($locale)) {
+    public function getUrlFromRouteName(
+        $locale, $defaultLocale, $transKey, $attributes = [], $defaultHidden = false
+    ) {
+        if ( ! is_string($locale))
             $locale = $defaultLocale;
-        }
 
-        $route = '';
+        $url = '';
 
-        if ( ! ($locale === $defaultLocale && $defaultHidden)) {
-            $route = '/' . $locale;
-        }
+        if ( ! ($locale === $defaultLocale && $defaultHidden))
+            $url = '/'.$locale;
 
-        if ($this->hasTranslation($transKey, $locale)) {
-            $translation = $this->trans($transKey, $locale);
-            $route       = Url::substituteAttributes($attributes, $route . '/' . $translation);
-        }
+        if ($this->hasTranslation($transKey, $locale))
+            $url = Url::substituteAttributes($attributes, $url.'/'.$this->trans($transKey, $locale));
 
-        return $route;
+        return $url;
     }
 
     /**
@@ -237,26 +229,24 @@ class RouteTranslator implements RouteTranslatorContract
      */
     private function translate($key, $locale = null)
     {
-        if (is_null($locale)) {
+        if (is_null($locale))
             $locale = $this->translator->getLocale();
-        }
 
         $translation = $this->translator->trans($key, [], $locale);
 
         // @codeCoverageIgnoreStart
-        if ( ! is_string($translation)) {
+        if ( ! is_string($translation))
             throw new InvalidTranslationException(
-                "The translation key [$key] for locale [$locale] should return a string value."
+                "The translation key [{$key}] for locale [{$locale}] should return a string value."
             );
-        }
         // @codeCoverageIgnoreEnd
 
         return (string) $translation;
     }
 
-    /* ------------------------------------------------------------------------------------------------
-     |  Check Functions
-     | ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
+     |  Check Methods
+     | -----------------------------------------------------------------
      */
     /**
      * Check if has current route.

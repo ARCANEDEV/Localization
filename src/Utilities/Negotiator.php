@@ -24,9 +24,9 @@ use Locale;
  */
 class Negotiator implements NegotiatorContract
 {
-    /* ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
      |  Properties
-     | ------------------------------------------------------------------------------------------------
+     | -----------------------------------------------------------------
      */
     /**
      * Default Locale.
@@ -49,9 +49,9 @@ class Negotiator implements NegotiatorContract
      */
     private $request;
 
-    /* ------------------------------------------------------------------------------------------------
-     |  Main Functions
-     | ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
+     |  Constructor
+     | -----------------------------------------------------------------
      */
     /**
      * Make Negotiator instance.
@@ -65,10 +65,23 @@ class Negotiator implements NegotiatorContract
         $this->supportedLocales = $supportedLanguages;
     }
 
-    /* ------------------------------------------------------------------------------------------------
-     |  Main Functions
-     | ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
+     |  Main Methods
+     | -----------------------------------------------------------------
      */
+    /**
+     * Make Negotiator instance.
+     *
+     * @param  string                                             $defaultLocale
+     * @param  \Arcanedev\Localization\Entities\LocaleCollection  $supportedLanguages
+     *
+     * @return self
+     */
+    public static function make($defaultLocale, LocaleCollection $supportedLanguages)
+    {
+        return new static($defaultLocale, $supportedLanguages);
+    }
+
     /**
      * Negotiate the request.
      *
@@ -80,17 +93,14 @@ class Negotiator implements NegotiatorContract
     {
         $this->request = $request;
 
-        $locale = $this->getFromAcceptedLanguagesHeader();
+        if ( ! is_null($locale = $this->getFromAcceptedLanguagesHeader()))
+            return $locale;
 
-        if ( ! is_null($locale)) return $locale;
+        if ( ! is_null($locale = $this->getFromHttpAcceptedLanguagesServer()))
+            return $locale;
 
-        $locale = $this->getFromHttpAcceptedLanguagesServer();
-
-        if ( ! is_null($locale)) return $locale;
-
-        $locale = $this->getFromRemoteHostServer();
-
-        if ( ! is_null($locale)) return $locale;
+        if ( ! is_null($locale = $this->getFromRemoteHostServer()))
+            return $locale;
 
         // TODO: Adding negotiate form IP Address ??
 
@@ -128,16 +138,13 @@ class Negotiator implements NegotiatorContract
         $httpAcceptLanguage = $this->request->server('HTTP_ACCEPT_LANGUAGE');
 
         // @codeCoverageIgnoreStart
-        if ( ! class_exists('Locale') || empty($httpAcceptLanguage)) {
+        if ( ! class_exists('Locale') || empty($httpAcceptLanguage))
             return null;
-        }
         // @codeCoverageIgnoreEnd
 
         $locale = Locale::acceptFromHttp($httpAcceptLanguage);
 
-        if ($this->isSupported($locale)) {
-            return $locale;
-        }
+        if ($this->isSupported($locale)) return $locale;
 
         return null;
     }
@@ -159,7 +166,7 @@ class Negotiator implements NegotiatorContract
     }
 
     /* ------------------------------------------------------------------------------------------------
-     |  Check Functions
+     |  Check Methods
      | ------------------------------------------------------------------------------------------------
      */
     /**
@@ -172,14 +179,12 @@ class Negotiator implements NegotiatorContract
     private function inSupportedLocales(array $matches)
     {
         foreach (array_keys($matches) as $locale) {
-            if ($this->isSupported($locale))
-                return $locale;
+            if ($this->isSupported($locale)) return $locale;
 
             // Search for acceptable locale by 'regional' => 'fr_FR' match.
             foreach ($this->supportedLocales as $key => $entity) {
                 /** @var \Arcanedev\Localization\Entities\Locale $entity */
-                if ($entity->regional() == $locale)
-                    return $key;
+                if ($entity->regional() == $locale) return $key;
             }
         }
 
@@ -277,18 +282,15 @@ class Negotiator implements NegotiatorContract
      */
     private function getQualityFactor($locale, $option)
     {
-        if (isset($option[1])) {
+        if (isset($option[1]))
             return (float) str_replace('q=', '', $option[1]);
-        }
 
         // Assign default low weight for generic values
-        if ($locale === '*/*') {
+        if ($locale === '*/*')
             return 0.01;
-        }
 
-        if (substr($locale, -1) === '*') {
+        if (substr($locale, -1) === '*')
             return 0.02;
-        }
 
         return null;
     }
