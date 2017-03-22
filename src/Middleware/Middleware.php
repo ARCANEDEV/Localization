@@ -44,6 +44,7 @@ abstract class Middleware extends BaseMiddleware
     public function __construct(Localization $localization)
     {
         $this->localization = $localization;
+        $this->except       = config('localization.ignored-uri', []);
     }
 
     /* -----------------------------------------------------------------

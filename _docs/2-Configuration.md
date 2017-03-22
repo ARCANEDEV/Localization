@@ -63,6 +63,16 @@ return [
 | localized-routes              | Allows to register all translatable routes.                              |
 | translation-redirect          | Allows to translate the route attributes by using the translation event. |
 
+## Ignored URI
+
+```php
+    'ignored-uri' => [
+        //
+    ],
+```
+
+You can set a list of uris to ignore from localization checks.
+
 ## Locales
 
 ```php
