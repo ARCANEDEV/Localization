@@ -22,20 +22,6 @@ class LocalizationServiceProvider extends PackageServiceProvider
     protected $package = 'localization';
 
     /* ------------------------------------------------------------------------------------------------
-     |  Getters & Setters
-     | ------------------------------------------------------------------------------------------------
-     */
-    /**
-     * Get the base path of the package.
-     *
-     * @return string
-     */
-    public function getBasePath()
-    {
-        return dirname(__DIR__);
-    }
-
-    /* ------------------------------------------------------------------------------------------------
      |  Main Functions
      | ------------------------------------------------------------------------------------------------
      */
@@ -44,6 +30,8 @@ class LocalizationServiceProvider extends PackageServiceProvider
      */
     public function register()
     {
+        parent::register();
+
         $this->registerConfig();
         $this->registerProviders([
             Providers\RoutingServiceProvider::class,
@@ -86,14 +74,7 @@ class LocalizationServiceProvider extends PackageServiceProvider
      */
     private function registerLocalization()
     {
-        $this->singleton(Contracts\Localization::class, function($app) {
-            return new Localization(
-                $app,
-                $app[Contracts\RouteTranslator::class],
-                $app[Contracts\LocalesManager::class]
-            );
-        });
-
+        $this->singleton(Contracts\Localization::class, Localization::class);
         $this->singleton('arcanedev.localization', Contracts\Localization::class);
 
         $this->alias(
