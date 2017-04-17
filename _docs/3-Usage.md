@@ -2,15 +2,15 @@
 
 ## Table of contents
 
-  1. [Installation and Setup](1-Installation-and-Setup.md)
-  2. [Configuration](2-Configuration.md)
-  3. [Usage](3-Usage.md)
+ 1. [Installation and Setup](1-Installation-and-Setup.md)
+ 2. [Configuration](2-Configuration.md)
+ 3. [Usage](3-Usage.md)
     * [Middleware](#middleware)
     * [Localization](#localization)
     * [Localization Entities](#localization-entities)
     * [Translated Routes](#translated-routes)
     * [Events](#events)
-  4. [FAQ](4-FAQ.md)
+ 4. [FAQ](4-FAQ.md)
 
 
 Localization uses the URL given for the request. In order to achieve this purpose, a route group should be added into the `routes.php` file. It will filter all pages that must be localized.
