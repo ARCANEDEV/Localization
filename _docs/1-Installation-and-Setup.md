@@ -37,9 +37,11 @@ PHP extensions:
 
 ## Composer
 
-You can install this package via [Composer](http://getcomposer.org/) by running this command: `composer require arcanedev/localization`.
+You can install this package via [Composer](http://getcomposer.org/) by running this command: 
 
-Then install it via `composer install` or `composer update`.
+```bash
+composer require arcanedev/localization
+```
 
 ## Laravel
 
@@ -63,11 +65,12 @@ Once the package is installed, you can register the service provider in `config/
 <?php namespace App\Http;
 
 //...
+use Arcanedev\Localization\Traits\LocalizationKernelTrait;
 
 class Kernel extends HttpKernel
 {
     // Localization Trait
-    use \Arcanedev\Localization\Traits\LocalizationKernelTrait;
+    use LocalizationKernelTrait;
 
     // Your middleware(s) here
 }
