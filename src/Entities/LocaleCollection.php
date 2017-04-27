@@ -14,6 +14,7 @@ class LocaleCollection extends Collection
      |  Properties
      | -----------------------------------------------------------------
      */
+
     /**
      * Supported locales.
      *
@@ -25,6 +26,7 @@ class LocaleCollection extends Collection
      |  Getters & Setters
      | -----------------------------------------------------------------
      */
+
     /**
      * Set supported locales keys.
      *
@@ -43,13 +45,14 @@ class LocaleCollection extends Collection
      |  Main Methods
      | -----------------------------------------------------------------
      */
+
     /**
      * Get the first locale from the collection.
      *
      * @param  callable|null  $callback
      * @param  mixed          $default
      *
-     * @return Locale|mixed
+     * @return \Arcanedev\Localization\Entities\Locale|mixed
      */
     public function first(callable $callback = null, $default = null)
     {

@@ -21,6 +21,7 @@ class Localization implements LocalizationContract
      |  Properties
      | -----------------------------------------------------------------
      */
+
     /**
      * Base url.
      *
@@ -53,6 +54,7 @@ class Localization implements LocalizationContract
      |  Constructor
      | -----------------------------------------------------------------
      */
+
     /**
      * Localization constructor.
      *
@@ -78,6 +80,7 @@ class Localization implements LocalizationContract
      |  Getters & Setters
      | -----------------------------------------------------------------
      */
+
     /**
      * Get Request instance.
      *
@@ -244,6 +247,7 @@ class Localization implements LocalizationContract
      |  Main Methods
      | -----------------------------------------------------------------
      */
+
     /**
      * Translate routes and save them to the translated routes array (used in the localize route filter).
      *
@@ -374,15 +378,18 @@ class Localization implements LocalizationContract
      */
     public function localesNavbar()
     {
-        return $this->app[ViewFactoryContract::class]
-            ->make('localization::navbar', ['supportedLocales' => $this->getSupportedLocales()])
-            ->render();
+        /** @var  \Illuminate\Contracts\View\Factory  $view */
+        $view = $this->app[ViewFactoryContract::class];
+
+        return $view->make('localization::navbar', ['supportedLocales' => $this->getSupportedLocales()])
+                    ->render();
     }
 
     /* -----------------------------------------------------------------
      |  Translation Methods
      | -----------------------------------------------------------------
      */
+
     /**
      * Returns the translated route for an url and the attributes given and a locale
      *
@@ -452,6 +459,7 @@ class Localization implements LocalizationContract
      |  Check Methods
      | -----------------------------------------------------------------
      */
+
     /**
      * Hide the default locale in URL ??
      *

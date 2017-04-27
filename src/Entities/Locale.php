@@ -16,6 +16,7 @@ class Locale implements Arrayable, Jsonable, JsonSerializable
      |  Properties
      | -----------------------------------------------------------------
      */
+
     /**
      * Locale key.
      *
@@ -69,6 +70,7 @@ class Locale implements Arrayable, Jsonable, JsonSerializable
      |  Constructor
      | -----------------------------------------------------------------
      */
+
     /**
      * Create Locale instance.
      *
@@ -89,6 +91,7 @@ class Locale implements Arrayable, Jsonable, JsonSerializable
      |  Getters & Setters
      | -----------------------------------------------------------------
      */
+
     /**
      * Get local key.
      *
@@ -268,6 +271,7 @@ class Locale implements Arrayable, Jsonable, JsonSerializable
      |  Main Methods
      | -----------------------------------------------------------------
      */
+
     /**
      * Create Locale instance.
      *
@@ -285,6 +289,7 @@ class Locale implements Arrayable, Jsonable, JsonSerializable
      |  Other Methods
      | -----------------------------------------------------------------
      */
+
     /**
      * Get the locale entity as an array.
      *

@@ -16,6 +16,7 @@ class RoutingServiceProvider extends ServiceProvider
      |  Properties
      | -----------------------------------------------------------------
      */
+
     /**
      * The application's route middleware.
      *
@@ -31,31 +32,20 @@ class RoutingServiceProvider extends ServiceProvider
         'translation-redirect'          => Middleware\TranslationRedirect::class,
     ];
 
-    /* ------------------------------------------------------------------------------------------------
-     |  Main Functions
-     | ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
+     |  Main Methods
+     | -----------------------------------------------------------------
      */
+
     /**
      * Register the service provider.
      */
     public function register()
     {
-        $this->registerRouter();
-
-        parent::register();
-    }
-
-    /* ------------------------------------------------------------------------------------------------
-     |  Router Functions
-     | ------------------------------------------------------------------------------------------------
-     */
-    /**
-     * Register the router instance.
-     */
-    protected function registerRouter()
-    {
         $this->app->singleton('router', function ($app) {
             return new Router($app['events'], $app);
         });
+
+        parent::register();
     }
 }

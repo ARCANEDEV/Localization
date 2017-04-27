@@ -10,17 +10,19 @@ use Arcanedev\Localization\LocalizationServiceProvider;
  */
 class LocalizationServiceProviderTest extends TestCase
 {
-    /* ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
      |  Properties
-     | ------------------------------------------------------------------------------------------------
+     | -----------------------------------------------------------------
      */
+
     /** @var \Arcanedev\Localization\LocalizationServiceProvider */
     private $provider;
 
-    /* ------------------------------------------------------------------------------------------------
-     |  Main Functions
-     | ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
+     |  Main Methods
+     | -----------------------------------------------------------------
      */
+
     public function setUp()
     {
         parent::setUp();
@@ -35,10 +37,11 @@ class LocalizationServiceProviderTest extends TestCase
         parent::tearDown();
     }
 
-    /* ------------------------------------------------------------------------------------------------
-     |  Test Functions
-     | ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
+     |  Tests
+     | -----------------------------------------------------------------
      */
+
     /** @test */
     public function it_can_be_instantiated()
     {
@@ -59,7 +62,6 @@ class LocalizationServiceProviderTest extends TestCase
     {
         $expected = [
             \Arcanedev\Localization\Contracts\Localization::class,
-            'arcanedev.localization',
         ];
 
         $this->assertSame($expected, $this->provider->provides());

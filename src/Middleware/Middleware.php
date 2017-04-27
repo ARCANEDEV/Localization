@@ -18,6 +18,7 @@ abstract class Middleware extends BaseMiddleware
      |  Properties
      | -----------------------------------------------------------------
      */
+
     /**
      * The localization instance.
      *
@@ -36,6 +37,7 @@ abstract class Middleware extends BaseMiddleware
      |  Constructor
      | -----------------------------------------------------------------
      */
+
     /**
      * Middleware constructor.
      *
@@ -97,6 +99,7 @@ abstract class Middleware extends BaseMiddleware
      |  Check Methods
      | -----------------------------------------------------------------
      */
+
     /**
      * Check is default locale hidden.
      *
@@ -133,6 +136,7 @@ abstract class Middleware extends BaseMiddleware
      |  Other Methods
      | -----------------------------------------------------------------
      */
+
     /**
      * Get the redirection response.
      *

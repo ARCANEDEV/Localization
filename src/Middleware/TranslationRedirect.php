@@ -16,12 +16,14 @@ class TranslationRedirect extends Middleware
      |  Constants
      | -----------------------------------------------------------------
      */
+
     const EVENT_NAME = 'routes.translation';
 
     /* -----------------------------------------------------------------
      |  Main Methods
      | -----------------------------------------------------------------
      */
+
     /**
      * Handle an incoming request.
      *
@@ -44,6 +46,7 @@ class TranslationRedirect extends Middleware
      |  Other Methods
      | -----------------------------------------------------------------
      */
+
     /**
      * Get translated URL.
      *

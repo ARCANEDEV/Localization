@@ -11,10 +11,11 @@ use Arcanedev\Localization\Localization;
  */
 class LocalizationTest extends TestCase
 {
-    /* ------------------------------------------------------------------------------------------------
-     |  Test Functions
-     | ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
+     |  Tests
+     | -----------------------------------------------------------------
      */
+
     /** @test */
     public function it_can_be_instantiated()
     {
@@ -33,8 +34,8 @@ class LocalizationTest extends TestCase
 
         new Localization(
             $this->app,
-            $this->app['arcanedev.localization.translator'],
-            $this->app['arcanedev.localization.locales-manager']
+            $this->app[\Arcanedev\Localization\Contracts\RouteTranslator::class],
+            $this->app[\Arcanedev\Localization\Contracts\LocalesManager::class]
         );
     }
 
@@ -96,7 +97,6 @@ class LocalizationTest extends TestCase
         $this->assertSame(route('about'), 'http://localhost/acerca');
 
         $this->refreshApplication();
-        $this->localization = app('arcanedev.localization');
 
         $this->assertSame('en', localization()->setLocale('en'));
         $this->assertSame(route('about'), 'http://localhost/about');
@@ -537,10 +537,11 @@ class LocalizationTest extends TestCase
         );
     }
 
-    /* ------------------------------------------------------------------------------------------------
-     |  Other Functions
-     | ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
+     |  Other Methods
+     | -----------------------------------------------------------------
      */
+
     /**
      * Make a call.
      *

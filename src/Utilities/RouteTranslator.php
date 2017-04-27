@@ -17,6 +17,7 @@ class RouteTranslator implements RouteTranslatorContract
      |  Properties
      | -----------------------------------------------------------------
      */
+
     /**
      * The translator instance.
      *
@@ -42,6 +43,7 @@ class RouteTranslator implements RouteTranslatorContract
      |  Constructor
      | -----------------------------------------------------------------
      */
+
     /**
      * Create RouteTranslator instance.
      *
@@ -56,6 +58,7 @@ class RouteTranslator implements RouteTranslatorContract
      |  Getters & Setters
      | -----------------------------------------------------------------
      */
+
     /**
      * Get current route.
      *
@@ -95,6 +98,7 @@ class RouteTranslator implements RouteTranslatorContract
      |  Main Methods
      | -----------------------------------------------------------------
      */
+
     /**
      * Translate routes and save them to the translated routes array (used in the localize route filter).
      *
@@ -248,6 +252,7 @@ class RouteTranslator implements RouteTranslatorContract
      |  Check Methods
      | -----------------------------------------------------------------
      */
+
     /**
      * Check if has current route.
      *

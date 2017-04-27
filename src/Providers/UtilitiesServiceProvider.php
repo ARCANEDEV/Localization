@@ -16,15 +16,18 @@ use Arcanedev\Support\ServiceProvider;
  */
 class UtilitiesServiceProvider extends ServiceProvider
 {
-    /* ------------------------------------------------------------------------------------------------
-     |  Main Functions
-     | ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
+     |  Main Methods
+     | -----------------------------------------------------------------
      */
+
     /**
      * Register the service provider.
      */
     public function register()
     {
+        parent::register();
+
         $this->registerRouteTranslator();
         $this->registerLocalesManager();
         $this->registerLocaleNegotiator();
@@ -39,18 +42,16 @@ class UtilitiesServiceProvider extends ServiceProvider
     {
         return [
             RouteTranslatorContract::class,
-            'arcanedev.localization.translator',
             LocalesManagerContract::class,
-            'arcanedev.localization.locales-manager',
             NegotiatorContract::class,
-            'arcanedev.localization.negotiator',
         ];
     }
 
-    /* ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
      |  Utilities
-     | ------------------------------------------------------------------------------------------------
+     | -----------------------------------------------------------------
      */
+
     /**
      * Register RouteTranslator utility.
      */
@@ -59,7 +60,6 @@ class UtilitiesServiceProvider extends ServiceProvider
         $this->singleton(RouteTranslatorContract::class, function ($app) {
             return new RouteTranslator($app['translator']);
         });
-        $this->singleton('arcanedev.localization.translator', RouteTranslatorContract::class);
     }
 
     /**
@@ -68,7 +68,6 @@ class UtilitiesServiceProvider extends ServiceProvider
     private function registerLocalesManager()
     {
         $this->singleton(LocalesManagerContract::class, LocalesManager::class);
-        $this->singleton('arcanedev.localization.locales-manager', LocalesManagerContract::class);
     }
 
     /**
@@ -85,6 +84,5 @@ class UtilitiesServiceProvider extends ServiceProvider
                 $manager->getSupportedLocales()
             );
         });
-        $this->bind('arcanedev.localization.negotiator', NegotiatorContract::class);
     }
 }

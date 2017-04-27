@@ -14,6 +14,7 @@ interface Localization
      |  Getters & Setters
      | -----------------------------------------------------------------
      */
+
     /**
      * Returns default locale.
      *
@@ -127,6 +128,7 @@ interface Localization
      |  Main Methods
      | -----------------------------------------------------------------
      */
+
     /**
      * Translate routes and save them to the translated routes array (used in the localize route filter).
      *
@@ -194,6 +196,7 @@ interface Localization
      |  Check Methods
      | -----------------------------------------------------------------
      */
+
     /**
      * Hide the default locale in URL ??
      *

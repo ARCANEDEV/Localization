@@ -14,6 +14,7 @@ interface RouteTranslator
      |  Getters & Setters
      | -----------------------------------------------------------------
      */
+
     /**
      * Get current route.
      *
@@ -41,6 +42,7 @@ interface RouteTranslator
      |  Main Methods
      | -----------------------------------------------------------------
      */
+
     /**
      * Translate routes and save them to the translated routes array (used in the localize route filter).
      *
@@ -104,6 +106,7 @@ interface RouteTranslator
      |  Check Methods
      | -----------------------------------------------------------------
      */
+
     /**
      * Check if has current route.
      *
