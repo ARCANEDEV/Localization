@@ -33,7 +33,7 @@
         }
     },
     "scripts": {
-        "testbench": "composer require --dev \"orchestra/testbench-browser-kit=~3.4\" \"orchestra/database=~3.4\""
+        "testbench": "composer require --dev \"orchestra/testbench-browser-kit=~3.4\""
     },
     "suggest": {
         "ext-intl": "Use Intl extension for 'Locale' class (an identifier used to get language)."
