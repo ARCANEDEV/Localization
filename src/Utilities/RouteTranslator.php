@@ -201,18 +201,19 @@ class RouteTranslator implements RouteTranslatorContract
      * @param  string      $transKey
      * @param  array       $attributes
      * @param  bool|false  $defaultHidden
+     * @param  bool|false  $showHiddenLocale
      *
      * @return string
      */
     public function getUrlFromRouteName(
-        $locale, $defaultLocale, $transKey, $attributes = [], $defaultHidden = false
+        $locale, $defaultLocale, $transKey, $attributes = [], $defaultHidden = false, $showHiddenLocale = false
     ) {
         if ( ! is_string($locale))
             $locale = $defaultLocale;
 
         $url = '';
 
-        if ( ! ($locale === $defaultLocale && $defaultHidden))
+        if ( ! ($locale === $defaultLocale && $defaultHidden) || $showHiddenLocale)
             $url = '/'.$locale;
 
         if ($this->hasTranslation($transKey, $locale))

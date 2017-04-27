@@ -196,26 +196,6 @@ class LocalizationTest extends TestCase
     public function it_can_get_localized_url()
     {
         $this->assertSame(
-            $this->testUrlOne.'es/acerca',
-            localization()->getLocalizedURL('es', $this->testUrlOne.'en/about')
-        );
-        $this->assertSame(
-            $this->testUrlOne.'es/ver/1',
-            localization()->getLocalizedURL('es', $this->testUrlOne.'view/1')
-        );
-        $this->assertSame(
-            $this->testUrlOne.'es/ver/1/proyecto',
-            localization()->getLocalizedURL('es', $this->testUrlOne.'view/1/project')
-        );
-        $this->assertSame(
-            $this->testUrlOne.'es/ver/1/proyecto/1',
-            localization()->getLocalizedURL('es', $this->testUrlOne.'view/1/project/1')
-        );
-        $this->assertSame(
-            $this->testUrlOne.'en/about',
-            localization()->getLocalizedURL('en', $this->testUrlOne.'about')
-        );
-        $this->assertSame(
             $this->testUrlOne.localization()->getCurrentLocale(),
             localization()->getLocalizedURL()
         );
@@ -223,18 +203,7 @@ class LocalizationTest extends TestCase
         app('config')->set('localization.hide-default-in-url', true);
 
         // testing default language hidden
-        $this->assertSame(
-            $this->testUrlOne.'es/acerca',
-            localization()->getLocalizedURL('es', $this->testUrlOne.'about')
-        );
-        $this->assertSame(
-            $this->testUrlOne.'about',
-            localization()->getLocalizedURL('en', $this->testUrlOne.'about')
-        );
-        $this->assertSame(
-            $this->testUrlOne,
-            localization()->getLocalizedURL()
-        );
+
         $this->assertNotEquals(
             $this->testUrlOne.localization()->getDefaultLocale(),
             localization()->getLocalizedURL()
@@ -289,6 +258,27 @@ class LocalizationTest extends TestCase
         $this->assertSame(
             $this->testUrlOne.'es/test',
             localization()->getLocalizedURL('es', $this->testUrlOne.'test')
+        );
+    }
+
+    /**
+     * @test
+     *
+     * @param  bool    $hideDefault
+     * @param  bool    $forceDefault
+     * @param  string  $locale
+     * @param  string  $url
+     * @param  string  $expected
+     *
+     * @dataProvider getLocalizedURLDataProvider
+     */
+    public function it_can_get_localized_url_with_specific_format($hideDefault, $forceDefault, $locale, $url, $expected)
+    {
+        $this->app['config']->set('localization.hide-default-in-url', $hideDefault);
+
+        $this->assertEquals(
+            $expected,
+            \localization()->getLocalizedURL($locale, $url, [], $forceDefault)
         );
     }
 
@@ -553,5 +543,83 @@ class LocalizationTest extends TestCase
     public function makeCall($uri, array $server = [])
     {
         return $this->call('GET', $uri, [], [], [], $server);
+    }
+
+    /* -----------------------------------------------------------------
+     |  Providers
+     | -----------------------------------------------------------------
+     */
+    /**
+     * Provide data for `it_can_get_localized_url_with_specific_format`.
+     *
+     * @return array
+     */
+    public function getLocalizedURLDataProvider()
+    {
+        $url = 'http://localhost/';
+
+        // [$hideDefault, $forceDefault, $locale, $url, $expected]
+
+        return [
+            // Do not hide default with [es] locale
+            [false, false, 'es', $url,                       $url.'es'],
+            [false, false, 'es', $url.'es',                  $url.'es'],
+            [false, false, 'es', $url.'en/about',            $url.'es/acerca'],
+            [false, false, 'es', $url.'ver/1',               $url.'es/ver/1'],
+            [false, false, 'es', $url.'view/1/project',      $url.'es/ver/1/proyecto'],
+            [false, false, 'es', $url.'view/1/project/1',    $url.'es/ver/1/proyecto/1'],
+
+            // Do not hide default with [en] locale
+            [false, false, 'en', $url.'en',                  $url.'en'],
+            [false, false, 'en', $url.'about',               $url.'en/about'],
+            [false, false, 'en', $url.'ver/1',               $url.'en/ver/1'],
+            [false, false, 'en', $url.'view/1/project',      $url.'en/view/1/project'],
+            [false, false, 'en', $url.'view/1/project/1',    $url.'en/view/1/project/1'],
+
+            // Hide default with [es] locale
+            [true,  false, 'es', $url,                       $url.'es'],
+            [true,  false, 'es', $url.'es',                  $url.'es'],
+            [true,  false, 'es', $url.'en/about',            $url.'es/acerca'],
+            [true,  false, 'es', $url.'ver/1',               $url.'es/ver/1'],
+            [true,  false, 'es', $url.'view/1/project',      $url.'es/ver/1/proyecto'],
+            [true,  false, 'es', $url.'view/1/project/1',    $url.'es/ver/1/proyecto/1'],
+
+            // Hide default with [en] locale
+            [true,  false, 'en', $url.'en',                  $url.''],
+            [true,  false, 'en', $url.'about',               $url.'about'],
+            [true,  false, 'en', $url.'ver/1',               $url.'ver/1'],
+            [true,  false, 'en', $url.'view/1/project',      $url.'view/1/project'],
+            [true,  false, 'en', $url.'view/1/project/1',    $url.'view/1/project/1'],
+
+            // Do not hide default + forcing the show with [es] locale
+            [false, true,  'es', $url,                       $url.'es'],
+            [false, true,  'es', $url.'es',                  $url.'es'],
+            [false, true,  'es', $url.'en/about',            $url.'es/acerca'],
+            [false, true,  'es', $url.'ver/1',               $url.'es/ver/1'],
+            [false, true,  'es', $url.'view/1/project',      $url.'es/ver/1/proyecto'],
+            [false, true,  'es', $url.'view/1/project/1',    $url.'es/ver/1/proyecto/1'],
+
+            // Do not hide default + forcing the show with [en] locale
+            [false, true,  'en', $url.'en',                  $url.'en'],
+            [false, true,  'en', $url.'about',               $url.'en/about'],
+            [false, true,  'en', $url.'ver/1',               $url.'en/ver/1'],
+            [false, true,  'en', $url.'view/1/project',      $url.'en/view/1/project'],
+            [false, true,  'en', $url.'view/1/project/1',    $url.'en/view/1/project/1'],
+
+            // Do not hide default + forcing the show with [es] locale
+            [true,  true,  'es', $url,                       $url.'es'],
+            [true,  true,  'es', $url.'es',                  $url.'es'],
+            [true,  true,  'es', $url.'en/about',            $url.'es/acerca'],
+            [true,  true,  'es', $url.'ver/1',               $url.'es/ver/1'],
+            [true,  true,  'es', $url.'view/1/project',      $url.'es/ver/1/proyecto'],
+            [true,  true,  'es', $url.'view/1/project/1',    $url.'es/ver/1/proyecto/1'],
+
+            // Do not hide default + forcing the show with [en] locale
+            [true,  true,  'en', $url.'en',                  $url.'en'],
+            [true,  true,  'en', $url.'about',               $url.'en/about'],
+            [true,  true,  'en', $url.'ver/1',               $url.'en/ver/1'],
+            [true,  true,  'en', $url.'view/1/project',      $url.'en/view/1/project'],
+            [true,  true,  'en', $url.'view/1/project/1',    $url.'en/view/1/project/1'],
+        ];
     }
 }

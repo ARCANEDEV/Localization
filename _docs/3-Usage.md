@@ -104,17 +104,14 @@ If you want to hide the default locale but always show other locales in the url,
 /**
  * Returns an URL adapted to $locale or current locale.
  *
- *
- * @param  string|bool   $locale
- * @param  string|false  $url
- * @param  array         $attributes
+ * @param  string|null  $locale
+ * @param  string|null  $url
+ * @param  array        $attributes
+ * @param  bool|false   $showHiddenLocale
  *
  * @return string|false
- *
- * @throws UndefinedSupportedLocalesException
- * @throws UnsupportedLocaleException
  */
-public function getLocalizedURL($locale = null, $url = null, $attributes = [])
+public function getLocalizedURL($locale = null, $url = null, array $attributes = [], $showHiddenLocale = false)
 
 // OR
 
@@ -123,8 +120,6 @@ public function getLocalizedURL($locale = null, $url = null, $attributes = [])
  *
  * @param  string       $url
  * @param  string|null  $locale
- *
- * @throws UnsupportedLocaleException
  *
  * @return string
  */
@@ -157,13 +152,11 @@ It returns a clean URL of any localization.
  * @param  string|bool  $locale
  * @param  string       $transKey
  * @param  array        $attributes
+ * @param  bool|false   $showHiddenLocale
  *
  * @return string|false
- *
- * @throws UndefinedSupportedLocalesException
- * @throws UnsupportedLocaleException
  */
-public function getUrlFromRouteName($locale, $transKey, $attributes = [])
+public function getUrlFromRouteName($locale, $transKey, array $attributes = [], $showHiddenLocale = false)
 ```
 
 It returns a route, localized to the desired locale using the locale passed.
@@ -192,8 +185,6 @@ function localized_route($transRoute, array $attributes = [], $locale = null)
  * Return an array of all supported Locales.
  *
  * @return \Arcanedev\Localization\Entities\LocaleCollection
- *
- * @throws UndefinedSupportedLocalesException
  */
 public function getSupportedLocales()
 ```
@@ -207,8 +198,6 @@ It returns all locales as a `Arcanedev\Localization\Entities\LocaleCollection` C
  * Get supported locales keys.
  *
  * @return array
- *
- * @throws UndefinedSupportedLocalesException
  */
 public function getSupportedLocalesKeys()
 ```
@@ -369,8 +358,6 @@ public function setBaseUrl($url)
  * Check if Locale exists on the supported locales collection.
  *
  * @param  string|bool  $locale
- *
- * @throws UndefinedSupportedLocalesException
  *
  * @return bool
  */

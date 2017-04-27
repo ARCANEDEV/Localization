@@ -95,11 +95,12 @@ interface RouteTranslator
      * @param  string      $transKey
      * @param  array       $attributes
      * @param  bool|false  $defaultHidden
+     * @param  bool|false  $showHiddenLocale
      *
      * @return string
      */
     public function getUrlFromRouteName(
-        $locale, $defaultLocale, $transKey, $attributes = [], $defaultHidden = false
+        $locale, $defaultLocale, $transKey, $attributes = [], $defaultHidden = false, $showHiddenLocale = false
     );
 
     /* -----------------------------------------------------------------
