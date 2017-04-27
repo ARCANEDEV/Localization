@@ -10,6 +10,11 @@ use Illuminate\Cookie\Middleware\EncryptCookies as BaseEncrypter;
  */
 class EncryptCookies extends BaseEncrypter
 {
+    /* -----------------------------------------------------------------
+     |  Properties
+     | -----------------------------------------------------------------
+     */
+
     /**
      * The names of the cookies that should not be encrypted.
      *
