@@ -28,6 +28,7 @@ class Negotiator implements NegotiatorContract
      |  Properties
      | -----------------------------------------------------------------
      */
+
     /**
      * Default Locale.
      *
@@ -53,6 +54,7 @@ class Negotiator implements NegotiatorContract
      |  Constructor
      | -----------------------------------------------------------------
      */
+
     /**
      * Make Negotiator instance.
      *
@@ -69,6 +71,7 @@ class Negotiator implements NegotiatorContract
      |  Main Methods
      | -----------------------------------------------------------------
      */
+
     /**
      * Make Negotiator instance.
      *
@@ -165,10 +168,11 @@ class Negotiator implements NegotiatorContract
         return $this->isSupported($locale) ? $locale : null;
     }
 
-    /* ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
      |  Check Methods
-     | ------------------------------------------------------------------------------------------------
+     | -----------------------------------------------------------------
      */
+
     /**
      * Check if matches a supported locale.
      *
@@ -203,10 +207,11 @@ class Negotiator implements NegotiatorContract
         return $this->supportedLocales->has($locale);
     }
 
-    /* ------------------------------------------------------------------------------------------------
-     |  Other Functions
-     | ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
+     |  Other Methods
+     | -----------------------------------------------------------------
      */
+
     /**
      * Return all the accepted languages from the browser
      *

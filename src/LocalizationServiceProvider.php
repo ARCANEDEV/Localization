@@ -10,10 +10,11 @@ use Arcanedev\Support\PackageServiceProvider;
  */
 class LocalizationServiceProvider extends PackageServiceProvider
 {
-    /* ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
      |  Properties
-     | ------------------------------------------------------------------------------------------------
+     | -----------------------------------------------------------------
      */
+
     /**
      * Package name.
      *
@@ -21,10 +22,11 @@ class LocalizationServiceProvider extends PackageServiceProvider
      */
     protected $package = 'localization';
 
-    /* ------------------------------------------------------------------------------------------------
-     |  Main Functions
-     | ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
+     |  Main Methods
+     | -----------------------------------------------------------------
      */
+
     /**
      * Register the service provider.
      */
@@ -61,21 +63,20 @@ class LocalizationServiceProvider extends PackageServiceProvider
     {
         return [
             Contracts\Localization::class,
-            'arcanedev.localization',
         ];
     }
 
-    /* ------------------------------------------------------------------------------------------------
-     |  Services Functions
-     | ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
+     |  Services Methods
+     | -----------------------------------------------------------------
      */
+
     /**
      * Register Localization.
      */
     private function registerLocalization()
     {
         $this->singleton(Contracts\Localization::class, Localization::class);
-        $this->singleton('arcanedev.localization', Contracts\Localization::class);
 
         $this->alias(
             $this->config()->get('localization.facade', 'Localization'),

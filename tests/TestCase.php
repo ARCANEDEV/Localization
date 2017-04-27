@@ -10,10 +10,11 @@ use Orchestra\Testbench\BrowserKit\TestCase as BaseTestCase;
  */
 abstract class TestCase extends BaseTestCase
 {
-    /* ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
      |  Properties
-     | ------------------------------------------------------------------------------------------------
+     | -----------------------------------------------------------------
      */
+
     /** @var string  */
     protected $defaultLocale    = 'en';
 
@@ -29,10 +30,11 @@ abstract class TestCase extends BaseTestCase
     /** @var Stubs\Http\RouteRegistrar */
     protected $routeRegistrar;
 
-    /* ------------------------------------------------------------------------------------------------
-     |  Main Functions
-     | ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
+     |  Main Methods
+     | -----------------------------------------------------------------
      */
+
     /**
      * Get package providers.
      *
@@ -87,7 +89,7 @@ abstract class TestCase extends BaseTestCase
          */
         $config       = $app['config'];
         $translator   = $app['translator'];
-        $localization = $app['arcanedev.localization'];
+        $localization = $app[\Arcanedev\Localization\Contracts\Localization::class];
 
         $config->set('app.url',    $this->testUrlOne);
         $config->set('app.locale', $this->defaultLocale);
@@ -134,6 +136,11 @@ abstract class TestCase extends BaseTestCase
 
         $this->setRoutes($locale);
     }
+
+    /* -----------------------------------------------------------------
+     |  Other Methods
+     | -----------------------------------------------------------------
+     */
 
     /**
      * Set routes for testing

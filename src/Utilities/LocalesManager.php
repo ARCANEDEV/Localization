@@ -19,6 +19,7 @@ class LocalesManager implements LocalesManagerContract
      |  Properties
      | -----------------------------------------------------------------
      */
+
     /**
      * Default locale.
      *
@@ -54,6 +55,7 @@ class LocalesManager implements LocalesManagerContract
      |  Constructor
      | -----------------------------------------------------------------
      */
+
     /**
      * LocalesManager constructor.
      *
@@ -82,6 +84,7 @@ class LocalesManager implements LocalesManagerContract
      |  Getters & Setters
      | -----------------------------------------------------------------
      */
+
     /**
      * Set and return current locale.
      *
@@ -281,6 +284,7 @@ class LocalesManager implements LocalesManagerContract
      |  Methods Functions
      | -----------------------------------------------------------------
      */
+
     /**
      * Check if default is supported.
      *
@@ -348,6 +352,7 @@ class LocalesManager implements LocalesManagerContract
      |  Other Methods
      | -----------------------------------------------------------------
      */
+
     /**
      * Filter locale collection.
      *

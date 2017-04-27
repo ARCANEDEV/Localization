@@ -15,6 +15,7 @@ interface Negotiator
      |  Main Methods
      | -----------------------------------------------------------------
      */
+
     /**
      * Make Negotiator instance.
      *

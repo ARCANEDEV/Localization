@@ -10,6 +10,11 @@ use Arcanedev\Localization\Routing\Router;
  */
 class RouteRegistrar
 {
+    /* -----------------------------------------------------------------
+     |  Properties
+     | -----------------------------------------------------------------
+     */
+
     /**
      * @var Router
      */
@@ -18,10 +23,11 @@ class RouteRegistrar
     /** @var array */
     protected $routeNames = [];
 
-    /* ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
      |  Getters & Setters
-     | ------------------------------------------------------------------------------------------------
+     | -----------------------------------------------------------------
      */
+
     /**
      * Set the router.
      *
@@ -82,6 +88,7 @@ class RouteRegistrar
      |  Main Functions
      | ------------------------------------------------------------------------------------------------
      */
+
     /**
      * Map the routes.
      *
@@ -94,7 +101,7 @@ class RouteRegistrar
         $this->router->group(['middleware' => 'web'], function () {
             $this->router->localizedGroup(function () {
                 $this->router->get('/', [
-                    'as'    =>  'index',
+                    'as' =>  'index',
                     function () {
                         return app('translator')->get('localization::routes.hello');
                     }
@@ -102,7 +109,7 @@ class RouteRegistrar
                 $this->setRouteName('index');
 
                 $this->router->get('test', [
-                    'as'    => 'test',
+                    'as' => 'test',
                     function () {
                         return app('translator')->get('localization::routes.test-text');
                     }
@@ -110,7 +117,7 @@ class RouteRegistrar
                 $this->setRouteName('test');
 
                 $this->router->transGet('localization::routes.about', [
-                    'as'    => 'about',
+                    'as' => 'about',
                     function () {
                         return localization()->getLocalizedURL('es') ?: 'Not url available';
                     }
@@ -118,7 +125,7 @@ class RouteRegistrar
                 $this->setRouteName('about');
 
                 $this->router->transGet('localization::routes.view', [
-                    'as'    => 'view',
+                    'as' => 'view',
                     function () {
                         return localization()->getLocalizedURL('es') ?: 'Not url available';
                     }
@@ -126,19 +133,17 @@ class RouteRegistrar
                 $this->setRouteName('view');
 
                 $this->router->transGet('localization::routes.view-project', [
-                    'as'    => 'view-project',
+                    'as' => 'view-project',
                     function () {
                         return localization()->getLocalizedURL('es') ?: 'Not url available';
                     }
                 ]);
                 $this->setRouteName('view-project');
 
-                /* ------------------------------------------------------------------------------------------------
-                 |  Other method
-                 | ------------------------------------------------------------------------------------------------
-                 */
+                //  Other methods //
+
                 $this->router->transPost('localization::routes.methods.post', [
-                    'as'    => 'method.post',
+                    'as' => 'method.post',
                     function () {
                         return 'POST method';
                     }
@@ -146,7 +151,7 @@ class RouteRegistrar
                 $this->setRouteName('method.post');
 
                 $this->router->transPut('localization::routes.methods.put', [
-                    'as'    => 'method.put',
+                    'as' => 'method.put',
                     function () {
                         return 'PUT method';
                     }
@@ -154,7 +159,7 @@ class RouteRegistrar
                 $this->setRouteName('method.put');
 
                 $this->router->transPatch('localization::routes.methods.patch', [
-                    'as'    => 'method.patch',
+                    'as' => 'method.patch',
                     function () {
                         return 'PATCH method';
                     }
@@ -162,7 +167,7 @@ class RouteRegistrar
                 $this->setRouteName('method.patch');
 
                 $this->router->transOptions('localization::routes.methods.options', [
-                    'as'    => 'method.options',
+                    'as' => 'method.options',
                     function () {
                         return 'OPTIONS method';
                     }
@@ -170,7 +175,7 @@ class RouteRegistrar
                 $this->setRouteName('method.options');
 
                 $this->router->transDelete('localization::routes.methods.delete', [
-                    'as'    => 'method.delete',
+                    'as' => 'method.delete',
                     function () {
                         return 'DELETE method';
                     }
@@ -178,26 +183,19 @@ class RouteRegistrar
                 $this->setRouteName('method.delete');
 
                 $this->router->transAny('localization::routes.methods.any', [
-                    'as'    => 'method.any',
+                    'as' => 'method.any',
                     function () {
                         return 'Any method';
                     }
                 ]);
                 $this->setRouteName('method.any');
 
-                /* ------------------------------------------------------------------------------------------------
-                 |  Resource Controller
-                 | ------------------------------------------------------------------------------------------------
-                 */
+                //  Resource Controllers  //
+
                 $this->router->resource('dummy', Controllers\DummyController::class);
                 $this->setRouteNames([
-                    'dummy.index',
-                    'dummy.create',
-                    'dummy.store',
-                    'dummy.show',
-                    'dummy.edit',
-                    'dummy.update',
-                    'dummy.destroy',
+                    'dummy.index', 'dummy.create', 'dummy.store', 'dummy.show',
+                    'dummy.edit', 'dummy.update', 'dummy.destroy',
                 ]);
 
                 $this->router->group(['prefix'  => 'foo'], function () {
@@ -205,13 +203,8 @@ class RouteRegistrar
                 });
 
                 $this->setRouteNames([
-                    'bar.index',
-                    'bar.create',
-                    'bar.store',
-                    'bar.show',
-                    'bar.edit',
-                    'bar.update',
-                    'bar.destroy',
+                    'bar.index', 'bar.create', 'bar.store', 'bar.show',
+                    'bar.edit', 'bar.update', 'bar.destroy',
                 ]);
             });
         });

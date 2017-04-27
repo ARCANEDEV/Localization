@@ -14,6 +14,7 @@ interface RouteTranslator
      |  Getters & Setters
      | -----------------------------------------------------------------
      */
+
     /**
      * Get current route.
      *
@@ -41,6 +42,7 @@ interface RouteTranslator
      |  Main Methods
      | -----------------------------------------------------------------
      */
+
     /**
      * Translate routes and save them to the translated routes array (used in the localize route filter).
      *
@@ -93,17 +95,19 @@ interface RouteTranslator
      * @param  string      $transKey
      * @param  array       $attributes
      * @param  bool|false  $defaultHidden
+     * @param  bool|false  $showHiddenLocale
      *
      * @return string
      */
     public function getUrlFromRouteName(
-        $locale, $defaultLocale, $transKey, $attributes = [], $defaultHidden = false
+        $locale, $defaultLocale, $transKey, $attributes = [], $defaultHidden = false, $showHiddenLocale = false
     );
 
     /* -----------------------------------------------------------------
      |  Check Methods
      | -----------------------------------------------------------------
      */
+
     /**
      * Check if has current route.
      *

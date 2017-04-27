@@ -15,6 +15,7 @@ class LocalizationRedirect extends Middleware
      |  Main Methods
      | -----------------------------------------------------------------
      */
+
     /**
      * Handle an incoming request.
      *
@@ -42,6 +43,7 @@ class LocalizationRedirect extends Middleware
      |  Other Methods
      | -----------------------------------------------------------------
      */
+
     /**
      * Get redirection.
      *

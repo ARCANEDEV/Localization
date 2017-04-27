@@ -15,6 +15,7 @@ class LocaleCookieRedirect extends Middleware
      |  Main Methods
      | -----------------------------------------------------------------
      */
+
     /**
      * Handle an incoming request.
      *

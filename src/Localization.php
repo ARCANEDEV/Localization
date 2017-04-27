@@ -21,6 +21,7 @@ class Localization implements LocalizationContract
      |  Properties
      | -----------------------------------------------------------------
      */
+
     /**
      * Base url.
      *
@@ -53,6 +54,7 @@ class Localization implements LocalizationContract
      |  Constructor
      | -----------------------------------------------------------------
      */
+
     /**
      * Localization constructor.
      *
@@ -78,6 +80,7 @@ class Localization implements LocalizationContract
      |  Getters & Setters
      | -----------------------------------------------------------------
      */
+
     /**
      * Get Request instance.
      *
@@ -244,6 +247,7 @@ class Localization implements LocalizationContract
      |  Main Methods
      | -----------------------------------------------------------------
      */
+
     /**
      * Translate routes and save them to the translated routes array (used in the localize route filter).
      *
@@ -289,10 +293,11 @@ class Localization implements LocalizationContract
      * @param  string|null  $locale
      * @param  string|null  $url
      * @param  array        $attributes
+     * @param  bool|false   $showHiddenLocale
      *
      * @return string|false
      */
-    public function getLocalizedURL($locale = null, $url = null, $attributes = [])
+    public function getLocalizedURL($locale = null, $url = null, array $attributes = [], $showHiddenLocale = false)
     {
         if (is_null($locale))
             $locale = $this->getCurrentLocale();
@@ -310,7 +315,8 @@ class Localization implements LocalizationContract
                 return $this->getUrlFromRouteName(
                     $locale,
                     $this->routeTranslator->getCurrentRoute(),
-                    $attributes
+                    $attributes,
+                    $showHiddenLocale
                 );
             }
 
@@ -321,7 +327,7 @@ class Localization implements LocalizationContract
             $locale &&
             $translatedRoute = $this->findTranslatedRouteByUrl($url, $attributes, $this->getCurrentLocale())
         ) {
-            return $this->getUrlFromRouteName($locale, $translatedRoute, $attributes);
+            return $this->getUrlFromRouteName($locale, $translatedRoute, $attributes, $showHiddenLocale);
         }
 
         $baseUrl    = $this->request()->getBaseUrl();
@@ -332,13 +338,12 @@ class Localization implements LocalizationContract
         );
 
         if ($translatedRoute !== false)
-            return $this->getUrlFromRouteName($locale, $translatedRoute, $attributes);
+            return $this->getUrlFromRouteName($locale, $translatedRoute, $attributes, $showHiddenLocale);
 
-        if (
-            ! empty($locale) &&
-            ($locale !== $this->getDefaultLocale() || ! $this->isDefaultLocaleHiddenInUrl())
-        ) {
-            $parsedUrl['path'] = $locale . '/' . ltrim($parsedUrl['path'], '/');
+        if ( ! empty($locale)) {
+            if ($locale !== $this->getDefaultLocale() || ! $this->isDefaultLocaleHiddenInUrl() || $showHiddenLocale) {
+                $parsedUrl['path'] = $locale.'/'.ltrim($parsedUrl['path'], '/');
+            }
         }
 
         $parsedUrl['path'] = ltrim(ltrim($baseUrl, '/') . '/' . $parsedUrl['path'], '/');
@@ -364,7 +369,9 @@ class Localization implements LocalizationContract
     {
         $uri = ltrim($uri, '/');
 
-        return empty($this->baseUrl) ? $this->app['url']->to($uri) : $this->baseUrl.$uri;
+        return empty($this->baseUrl)
+            ? $this->app[\Illuminate\Contracts\Routing\UrlGenerator::class]->to($uri)
+            : $this->baseUrl.$uri;
     }
 
     /**
@@ -374,15 +381,18 @@ class Localization implements LocalizationContract
      */
     public function localesNavbar()
     {
-        return $this->app[ViewFactoryContract::class]
-            ->make('localization::navbar', ['supportedLocales' => $this->getSupportedLocales()])
-            ->render();
+        /** @var  \Illuminate\Contracts\View\Factory  $view */
+        $view = $this->app[ViewFactoryContract::class];
+
+        return $view->make('localization::navbar', ['supportedLocales' => $this->getSupportedLocales()])
+                    ->render();
     }
 
     /* -----------------------------------------------------------------
      |  Translation Methods
      | -----------------------------------------------------------------
      */
+
     /**
      * Returns the translated route for an url and the attributes given and a locale
      *
@@ -410,13 +420,14 @@ class Localization implements LocalizationContract
     /**
      * Returns an URL adapted to the route name and the locale given.
      *
-     * @param  string  $locale
-     * @param  string  $transKey
-     * @param  array   $attributes
+     * @param  string|bool  $locale
+     * @param  string       $transKey
+     * @param  array        $attributes
+     * @param  bool|false   $showHiddenLocale
      *
      * @return string|false
      */
-    public function getUrlFromRouteName($locale, $transKey, $attributes = [])
+    public function getUrlFromRouteName($locale, $transKey, array $attributes = [], $showHiddenLocale = false)
     {
         $this->isLocaleSupportedOrFail($locale);
 
@@ -425,7 +436,8 @@ class Localization implements LocalizationContract
             $this->getDefaultLocale(),
             $transKey,
             $attributes,
-            $this->isDefaultLocaleHiddenInUrl()
+            $this->isDefaultLocaleHiddenInUrl(),
+            $showHiddenLocale
         );
 
         // This locale does not have any key for this route name
@@ -452,6 +464,7 @@ class Localization implements LocalizationContract
      |  Check Methods
      | -----------------------------------------------------------------
      */
+
     /**
      * Hide the default locale in URL ??
      *

@@ -17,6 +17,7 @@ class RouteTranslator implements RouteTranslatorContract
      |  Properties
      | -----------------------------------------------------------------
      */
+
     /**
      * The translator instance.
      *
@@ -42,6 +43,7 @@ class RouteTranslator implements RouteTranslatorContract
      |  Constructor
      | -----------------------------------------------------------------
      */
+
     /**
      * Create RouteTranslator instance.
      *
@@ -56,6 +58,7 @@ class RouteTranslator implements RouteTranslatorContract
      |  Getters & Setters
      | -----------------------------------------------------------------
      */
+
     /**
      * Get current route.
      *
@@ -95,6 +98,7 @@ class RouteTranslator implements RouteTranslatorContract
      |  Main Methods
      | -----------------------------------------------------------------
      */
+
     /**
      * Translate routes and save them to the translated routes array (used in the localize route filter).
      *
@@ -197,18 +201,19 @@ class RouteTranslator implements RouteTranslatorContract
      * @param  string      $transKey
      * @param  array       $attributes
      * @param  bool|false  $defaultHidden
+     * @param  bool|false  $showHiddenLocale
      *
      * @return string
      */
     public function getUrlFromRouteName(
-        $locale, $defaultLocale, $transKey, $attributes = [], $defaultHidden = false
+        $locale, $defaultLocale, $transKey, $attributes = [], $defaultHidden = false, $showHiddenLocale = false
     ) {
         if ( ! is_string($locale))
             $locale = $defaultLocale;
 
         $url = '';
 
-        if ( ! ($locale === $defaultLocale && $defaultHidden))
+        if ( ! ($locale === $defaultLocale && $defaultHidden) || $showHiddenLocale)
             $url = '/'.$locale;
 
         if ($this->hasTranslation($transKey, $locale))
@@ -248,6 +253,7 @@ class RouteTranslator implements RouteTranslatorContract
      |  Check Methods
      | -----------------------------------------------------------------
      */
+
     /**
      * Check if has current route.
      *

@@ -15,6 +15,7 @@ class LocalizationRoutes extends Middleware
      |  Main Methods
      | -----------------------------------------------------------------
      */
+
     /**
      * Handle an incoming request.
      *

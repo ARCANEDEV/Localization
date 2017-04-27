@@ -12,22 +12,24 @@ use Arcanedev\Localization\Utilities\LocalesManager;
  */
 class LocalesManagerTest extends TestCase
 {
-    /* ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
      |  Properties
-     | ------------------------------------------------------------------------------------------------
+     | -----------------------------------------------------------------
      */
-    /** @var LocalesManager */
+
+    /** @var \Arcanedev\Localization\Contracts\LocalesManager */
     private $localesManager;
 
-    /* ------------------------------------------------------------------------------------------------
-     |  Main Functions
-     | ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
+     |  Main Methods
+     | -----------------------------------------------------------------
      */
+
     public function setUp()
     {
         parent::setUp();
 
-        $this->localesManager = app('arcanedev.localization.locales-manager');
+        $this->localesManager = app(\Arcanedev\Localization\Contracts\LocalesManager::class);
 
         $this->localesManager->setCurrentLocale('en');
     }
@@ -39,10 +41,11 @@ class LocalesManagerTest extends TestCase
         parent::tearDown();
     }
 
-    /* ------------------------------------------------------------------------------------------------
-     |  Test Functions
-     | ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
+     |  Tests
+     | -----------------------------------------------------------------
      */
+
     /** @test */
     public function it_can_be_instantiated()
     {

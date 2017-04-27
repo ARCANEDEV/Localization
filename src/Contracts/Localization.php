@@ -14,6 +14,7 @@ interface Localization
      |  Getters & Setters
      | -----------------------------------------------------------------
      */
+
     /**
      * Returns default locale.
      *
@@ -127,6 +128,7 @@ interface Localization
      |  Main Methods
      | -----------------------------------------------------------------
      */
+
     /**
      * Translate routes and save them to the translated routes array (used in the localize route filter).
      *
@@ -158,13 +160,14 @@ interface Localization
     /**
      * Returns an URL adapted to $locale.
      *
-     * @param  string|bool   $locale
-     * @param  string|false  $url
-     * @param  array         $attributes
+     * @param  string|null  $locale
+     * @param  string|null  $url
+     * @param  array        $attributes
+     * @param  bool|bool    $showHiddenLocale
      *
      * @return string|false
      */
-    public function getLocalizedURL($locale = null, $url = null, $attributes = []);
+    public function getLocalizedURL($locale = null, $url = null, array $attributes = [], $showHiddenLocale = false);
 
     /**
      * Create an url from the uri.
@@ -185,15 +188,17 @@ interface Localization
      * @param  string|bool  $locale
      * @param  string       $transKey
      * @param  array        $attributes
+     * @param  bool|false   $showHiddenLocale
      *
      * @return string|false
      */
-    public function getUrlFromRouteName($locale, $transKey, $attributes = []);
+    public function getUrlFromRouteName($locale, $transKey, array $attributes = [], $showHiddenLocale = false);
 
     /* -----------------------------------------------------------------
      |  Check Methods
      | -----------------------------------------------------------------
      */
+
     /**
      * Hide the default locale in URL ??
      *

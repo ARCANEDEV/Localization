@@ -12,6 +12,7 @@ interface LocalesManager
      |  Getters & Setters
      | -----------------------------------------------------------------
      */
+
     /**
      * Set and return current locale.
      *
@@ -94,6 +95,7 @@ interface LocalesManager
      |  Check Methods
      | -----------------------------------------------------------------
      */
+
     /**
      * Check if default is supported.
      *

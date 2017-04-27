@@ -12,6 +12,7 @@ interface Url
      |  Main Methods
      | -----------------------------------------------------------------
      */
+
     /**
      * Extract attributes for current url.
      *
