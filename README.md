@@ -24,6 +24,7 @@ Feel free to check out the [releases](https://github.com/ARCANEDEV/Localization/
   * Laravel `5.0 | 5.1 | 5.2 | 5.3 | 5.4` are supported.
   * SEO-Friendly (Search engine optimization).
   * New extended Router to manage your localized routes.
+  * Translated Eloquent Models.
   * Locales selector menu (Publishable & Customizable).
   * Locales manager: List all locales / supported locales, change default locale / supported locales on the fly, and more.
   * Made with :heart: &amp; :coffee:.
@@ -46,6 +47,7 @@ If you discover any security related issues, please email arcanedev.maroc@gmail.
 ## Credits
 
 - The Localization package was inspired from [mcamara/laravel-localization](https://github.com/mcamara/laravel-localization).
+- The Translated Models was inspired from [spatie/laravel-translatable](https://github.com/spatie/laravel-translatable).
 - [ARCANEDEV][link-author]
 - [All Contributors][link-contributors]
 
