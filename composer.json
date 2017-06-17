@@ -19,7 +19,8 @@
     },
     "require-dev": {
         "phpunit/phpcov":  "~3.0",
-        "phpunit/phpunit": "~5.0"
+        "phpunit/phpunit": "~5.0",
+        "mockery/mockery": "^0.9.4"
     },
     "autoload": {
         "psr-4": {
@@ -33,7 +34,7 @@
         }
     },
     "scripts": {
-        "testbench": "composer require --dev \"orchestra/testbench-browser-kit=~3.4\""
+        "testbench": "composer require --dev \"orchestra/testbench-browser-kit=~3.4\" \"orchestra/database=~3.4\""
     },
     "suggest": {
         "ext-intl": "Use Intl extension for 'Locale' class (an identifier used to get language)."

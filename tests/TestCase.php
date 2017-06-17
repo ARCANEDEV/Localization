@@ -45,6 +45,7 @@ abstract class TestCase extends BaseTestCase
     protected function getPackageProviders($app)
     {
         return [
+            \Orchestra\Database\ConsoleServiceProvider::class,
             \Arcanedev\Localization\LocalizationServiceProvider::class,
         ];
     }
@@ -113,6 +114,7 @@ abstract class TestCase extends BaseTestCase
         $localization->setBaseUrl($this->testUrlOne);
 
         $this->setRoutes();
+        $this->setDatabase($config);
     }
 
     /**
@@ -156,5 +158,20 @@ abstract class TestCase extends BaseTestCase
         }
 
         $this->routeRegistrar->map(app('router'));
+    }
+
+    /**
+     * Set the database.
+     *
+     * @param  \Illuminate\Contracts\Config\Repository  $config
+     */
+    protected function setDatabase($config)
+    {
+        $config->set('database.default', 'testbench');
+        $config->set('database.connections.testbench', [
+            'driver'   => 'sqlite',
+            'database' => ':memory:',
+            'prefix'   => '',
+        ]);
     }
 }

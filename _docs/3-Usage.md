@@ -9,6 +9,7 @@
     * [Localization](#localization)
     * [Localization Entities](#localization-entities)
     * [Translated Routes](#translated-routes)
+    * [Translated Models](#translated-models)
     * [Events](#events)
  4. [FAQ](4-FAQ.md)
 
@@ -639,6 +640,249 @@ http://your-project-url/es/ver/5
 http://your-project-url/fr/afficher/5
 ```
 
+## Translated Models
+
+The required steps to make a model translatable are:
+
+  * First you need to add the `Arcanedev\Localization\Traits\HasTranslations`.
+  * Next you should add a public methods `getTranslatableAttributes()` which returns an array with all the names of attributes you wish to make translatable.
+  * Finally you should make sure that all translatable attributes are set to the `text` type in your database. If your database supports `json` columns, use that.
+  
+Here's an example of a prepared model:
+
+```php
+use Arcanedev\Localization\Traits\HasTranslations;
+use Illuminate\Database\Eloquent\Model;
+
+class Tag extends Model
+{
+    use HasTranslations;
+    
+    /**
+     * Get the translatable attributes.
+     *
+     * @return array
+     */
+    public function getTranslatableAttributes()
+    {
+        return ['name'];
+    }
+}
+```
+
+### Available methods
+
+#### Getting a translation
+
+The easiest way to get a translation for the current locale is to just get the property for the translated attribute:
+
+```php
+$tag->name; // Gets the translated name 
+```
+
+You can also use the `getTranslation` method to get the attribute translation:
+
+```php
+/***
+ * Get the translated attribute.
+ *
+ * @param  string  $key
+ * @param  string  $locale
+ * @param  bool    $useFallback
+ *
+ * @return mixed
+ */
+public function getTranslation($key, $locale, $useFallback = true)
+```
+
+You can also an alias the alias:
+ 
+```php
+/**
+ * Get the translated attribute (alias).
+ *
+ * @param  string  $key
+ * @param  string  $locale
+ *
+ * @return mixed
+ */
+public function trans($key, $locale = '')
+```
+
+#### Setting a translation
+
+To set the translation for an attribute, you need to call the `setTranslation` method.
+ 
+```php
+/**
+ * Set a translation.
+ *
+ * @param  string  $key
+ * @param  string  $locale
+ * @param  string  $value
+ *
+ * @return self
+ */
+public function setTranslation($key, $locale, $value)
+```
+
+Don't forget to save your model after you've done the translation.
+
+```php
+$tag->setTranslation('name', 'en', 'Tutorials');
+$tag->save();
+```
+
+You can chain the calls like this:
+
+```php
+$tag->setTranslation('name', 'en', 'Tutorials')->save();
+```
+
+#### Forgetting a translation
+
+You can forget a translation for a specific field:
+
+```php
+/**
+ * Forget a translation.
+ *
+ * @param  string  $key
+ * @param  string  $locale
+ *
+ * @return self
+ */
+public function forgetTranslation($key, $locale)
+```
+
+You can forget all translations for a specific locale:
+
+```php
+/**
+ * Forget all the translations by the given locale.
+ *
+ * @param  string  $locale
+ *
+ * @return self
+ */
+public function flushTranslations($locale)
+```
+
+#### Getting all translations for a specific attribute
+
+```php
+/**
+ * Get the translations for the given key.
+ *
+ * @param  string  $key
+ *
+ * @return array
+ */
+public function getTranslations($key)
+```
+
+#### Setting many translations
+
+```php
+/**
+ * Set the translations.
+ *
+ * @param  string  $key
+ * @param  array   $translations
+ *
+ * @return self
+ */
+public function setTranslations($key, array $translations)
+```
+
+Example:
+
+```php
+$tag->setTranslations('name', [
+    'en' => 'Tutorials',
+    'nl' => 'Tutoriaux',
+]);
+```
+
+### Creating models
+
+You can immediately set translations when creating a model. Here's an example:
+
+```php
+$tag = Tag::create([
+    'name' => [
+        'en' => 'Tutorials',
+        'fr' => 'Tutoriaux',
+    ],
+]);
+```
+
+### Querying translatable attributes
+
+If you're using MySQL `5.7` or above, it's recommended that you use the json data type for housing translations in the db. This will allow you to query these columns like this:
+
+```php
+Tag::whereRaw('name->"$.en" = \'Tutorials\'')->get();
+```
+
+In laravel `>=5.2.23`, you can use the fluent syntax:
+
+```php
+Tag::where('name->en', 'Tutorials')->get();
+```
+
+### Accessors & Mutators
+
+Make sure to return the value of the translated attribute in the accessor & mutator:
+
+This is an example with multiple translated attributes `name` & `slug`:
+
+```php
+use Arcanedev\Localization\Traits\HasTranslations;
+use Illuminate\Database\Eloquent\Model;
+
+class Tag extends Model
+{
+    use HasTranslations;
+    
+    protected $fillable = ['name', 'slug'];
+    
+    /**
+     * Get the translatable attributes.
+     *
+     * @return array
+     */
+    public function getTranslatableAttributes()
+    {
+        return ['name', 'slug'];
+    }
+    
+    /**
+     * Get the name attribute (accessor).
+     *
+     * @param  string  $name
+     *
+     * @return string
+     */
+    public function getNameAttribute($name)
+    {
+        return Str::ucfirst($name);
+    }
+    
+    /**
+     * Set the slug attribute (mutator).
+     *
+     * @param  string  $slug
+     *
+     * @return string
+     */
+    public function setSlugAttribute($slug)
+    {
+        return Str::slug($slug);
+    }
+}
+```
+
 ## Events
 
 You can capture the URL parameters during translation if you wish to translate them too.
@@ -704,3 +948,26 @@ return [
 ```
 
 You may also use [Event Subscribers](http://laravel.com/docs/5.1/events#event-subscribers).
+
+### Model translation's events
+
+Right after calling `setTranslation()` method the `Arcanedev\Localization\Events\TranslationHasBeenSet` event will be fired.
+
+An you can access these properties:
+
+```php
+/** @var \Illuminate\Database\Eloquent\Model */
+public $model;
+
+/** @var string */
+public $attribute;
+
+/** @var string */
+public $locale;
+
+/** @var mixed */
+public $oldValue;
+
+/** @var mixed */
+public $newValue;
+```
