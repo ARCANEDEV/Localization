@@ -253,6 +253,8 @@ class TranslatableModelTest extends TestCase
         $this->expectsEvents([TranslationHasBeenSet::class]);
 
         $this->model->setTranslation('name', 'en', 'Name');
+
+        $this->assertSame(['en' => 'Name'], $this->model->getTranslations('name'));
     }
 
     /* -----------------------------------------------------------------

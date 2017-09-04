@@ -15,7 +15,7 @@ class TranslationHasBeenSet
      | -----------------------------------------------------------------
      */
 
-    /** @var \Illuminate\Database\Eloquent\Model */
+    /** @var mixed */
     public $model;
 
     /** @var string */
@@ -38,13 +38,13 @@ class TranslationHasBeenSet
     /**
      * TranslationHasBeenSet constructor.
      *
-     * @param  \Illuminate\Database\Eloquent\Model  $model
-     * @param  string                               $attribute
-     * @param  string                               $locale
-     * @param  mixed                                $oldValue
-     * @param  mixed                                $newValue
+     * @param  mixed   $model
+     * @param  string  $attribute
+     * @param  string  $locale
+     * @param  mixed   $oldValue
+     * @param  mixed   $newValue
      */
-    public function __construct(Model $model, $attribute, $locale, $oldValue, $newValue)
+    public function __construct($model, $attribute, $locale, $oldValue, $newValue)
     {
         $this->model     = $model;
         $this->attribute = $attribute;

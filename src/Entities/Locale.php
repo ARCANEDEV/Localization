@@ -84,7 +84,7 @@ class Locale implements Arrayable, Jsonable, JsonSerializable
         $this->setScript($data['script']);
         $this->setDirection($data['dir']);
         $this->setNative($data['native']);
-        $this->setRegional(isset($data['regional']) ? $data['regional'] : '');
+        $this->setRegional($data['regional'] ?? '');
     }
 
     /* -----------------------------------------------------------------

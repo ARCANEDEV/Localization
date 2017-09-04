@@ -64,7 +64,7 @@ trait HasTranslations
     {
         $locale       = $this->normalizeLocale($key, $locale, $useFallback);
         $translations = $this->getTranslations($key);
-        $translation  = isset($translations[$locale]) ? $translations[$locale] : '';
+        $translation  = $translations[$locale] ?? '';
 
         return $this->hasGetMutator($key)
             ? $this->mutateAttribute($key, $translation)
@@ -99,7 +99,7 @@ trait HasTranslations
         $this->guardAgainstUntranslatableAttribute($key);
 
         $translations = $this->getTranslations($key);
-        $oldValue     = isset($translations[$locale]) ? $translations[$locale] : '';
+        $oldValue     = $translations[$locale] ?? '';
 
         if ($this->hasSetMutator($key))
             $value = $this->{'set'.Str::studly($key).'Attribute'}($value);
