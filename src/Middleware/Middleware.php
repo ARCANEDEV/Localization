@@ -3,8 +3,8 @@
 use Arcanedev\Localization\Contracts\Localization;
 use Arcanedev\Localization\Entities\LocaleCollection;
 use Arcanedev\Localization\Exceptions\UndefinedSupportedLocalesException;
-use Arcanedev\Support\Bases\Middleware as BaseMiddleware;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 
 /**
  * Class     Middleware
@@ -12,7 +12,7 @@ use Illuminate\Http\RedirectResponse;
  * @package  Arcanedev\Localization\Bases
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
-abstract class Middleware extends BaseMiddleware
+abstract class Middleware
 {
     /* -----------------------------------------------------------------
      |  Properties
@@ -119,7 +119,7 @@ abstract class Middleware extends BaseMiddleware
      *
      * @return bool
      */
-    protected function shouldIgnore($request)
+    protected function shouldIgnore(Request $request)
     {
         foreach ($this->except as $except) {
             if ($except !== '/')
@@ -146,11 +146,9 @@ abstract class Middleware extends BaseMiddleware
      */
     protected function getLocalizedRedirect($locale)
     {
-        $localizedUrl = $this->localization->getLocalizedURL($locale);
-
-        if ( ! is_string($localizedUrl)) return null;
-
-        return $this->makeRedirectResponse($localizedUrl);
+        return is_string($localizedUrl = $this->localization->getLocalizedURL($locale))
+            ? $this->makeRedirectResponse($localizedUrl)
+            : null;
     }
 
     /**
