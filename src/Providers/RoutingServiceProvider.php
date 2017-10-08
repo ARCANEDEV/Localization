@@ -42,9 +42,7 @@ class RoutingServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton('router', function ($app) {
-            return new Router($app['events'], $app);
-        });
+        $this->app['router']->mixin(new Router());
 
         parent::register();
     }
