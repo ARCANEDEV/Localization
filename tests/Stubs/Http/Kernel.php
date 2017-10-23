@@ -12,13 +12,6 @@ use Orchestra\Testbench\Http\Kernel as HttpKernel;
 class Kernel extends HttpKernel
 {
     /* -----------------------------------------------------------------
-     |  Traits
-     | -----------------------------------------------------------------
-     */
-
-    use LocalizationKernelTrait;
-
-    /* -----------------------------------------------------------------
      |  Properties
      | -----------------------------------------------------------------
      */
@@ -30,20 +23,14 @@ class Kernel extends HttpKernel
      */
     protected $middlewareGroups = [
         'web' => [
-            Middleware\EncryptCookies::class,
+            Middleware\EncryptCookies::class, // Custom
+
+            \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
             \Illuminate\Session\Middleware\StartSession::class,
+            // \Illuminate\Session\Middleware\AuthenticateSession::class,
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             \Orchestra\Testbench\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
-    ];
-
-    /**
-     * The application's route middleware.
-     *
-     * @var array
-     */
-    protected $routeMiddleware = [
-        'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
     ];
 }

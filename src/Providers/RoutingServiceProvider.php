@@ -42,7 +42,7 @@ class RoutingServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app['router']->mixin(new Router());
+        $this->app['router']->mixin(new Router);
 
         parent::register();
     }
