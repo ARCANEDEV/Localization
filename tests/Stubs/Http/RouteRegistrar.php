@@ -1,6 +1,6 @@
 <?php namespace Arcanedev\Localization\Tests\Stubs\Http;
 
-use Arcanedev\Localization\Routing\Router;
+use Illuminate\Routing\Router;
 
 /**
  * Class     RouteRegistrar
