@@ -1,6 +1,6 @@
 <?php namespace Arcanedev\Localization\Tests\Stubs\Http;
 
-use Arcanedev\Localization\Routing\Router;
+use Illuminate\Routing\Router;
 
 /**
  * Class     RouteRegistrar
@@ -15,9 +15,7 @@ class RouteRegistrar
      | -----------------------------------------------------------------
      */
 
-    /**
-     * @var Router
-     */
+    /** @var \Illuminate\Routing\Router */
     protected $router;
 
     /** @var array */
@@ -31,7 +29,7 @@ class RouteRegistrar
     /**
      * Set the router.
      *
-     * @param  Router  $router
+     * @param  \Illuminate\Routing\Router  $router
      *
      * @return self
      */
@@ -92,7 +90,7 @@ class RouteRegistrar
     /**
      * Map the routes.
      *
-     * @param  Router  $router
+     * @param  \Illuminate\Routing\Router  $router
      */
     public function map(Router $router)
     {

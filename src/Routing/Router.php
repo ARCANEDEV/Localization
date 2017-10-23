@@ -1,15 +1,16 @@
 <?php namespace Arcanedev\Localization\Routing;
 
 use Closure;
-use Illuminate\Routing\Router as IlluminateRouter;
 
 /**
  * Class     Router
  *
  * @package  Arcanedev\Localization\Routing
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
+ *
+ * @mixin \Illuminate\Routing\Router
  */
-class Router extends IlluminateRouter
+class Router
 {
     /* -----------------------------------------------------------------
      |  Getters & Setters
@@ -19,13 +20,15 @@ class Router extends IlluminateRouter
     /**
      * Get active middlewares.
      *
-     * @return array
+     * @return Closure|array
      */
     protected function getActiveMiddlewares()
     {
-        return array_keys(array_filter(
-            config('localization.route.middleware', [])
-        ));
+        return function() {
+            return array_keys(array_filter(
+                config('localization.route.middleware', [])
+            ));
+        };
     }
 
     /* -----------------------------------------------------------------
@@ -36,138 +39,121 @@ class Router extends IlluminateRouter
     /**
      * Create a route group with shared attributes.
      *
-     * @param  array     $attributes
-     * @param  \Closure  $callback
+     * @return Closure
      */
-    public function localizedGroup(Closure $callback, $attributes = [])
+    public function localizedGroup()
     {
-        $attributes = array_merge($attributes, [
-            'prefix'     => localization()->setLocale(),
-            'middleware' => $this->getActiveMiddlewares(),
-        ]);
+        return function(Closure $callback, array $attributes = []) {
+            $attributes = array_merge($attributes, [
+                'prefix' => localization()->setLocale(),
+                'middleware' => $this->getActiveMiddlewares(),
+            ]);
 
-        $this->group(array_filter($attributes), $callback);
+            $this->group(array_filter($attributes), $callback);
+        };
     }
 
     /**
      * Register a new translated GET route with the router.
      *
-     * @param  string                 $trans
-     * @param  \Closure|array|string  $action
-     *
-     * @return \Illuminate\Routing\Route
+     * @return Closure|\Illuminate\Routing\Route
      */
-    public function transGet($trans, $action)
+    public function transGet()
     {
-        return $this->get(
-            $this->transRoute($trans), $action
-        );
+        return function($trans, $action) {
+            return $this->get(
+                localization()->transRoute($trans), $action
+            );
+        };
     }
 
     /**
      * Register a new translated POST route with the router.
      *
-     * @param  string                 $trans
-     * @param  \Closure|array|string  $action
-     *
-     * @return \Illuminate\Routing\Route
+     * @return Closure|\Illuminate\Routing\Route
      */
-    public function transPost($trans, $action)
+    public function transPost()
     {
-        return $this->post(
-            $this->transRoute($trans), $action
-        );
+        return function($trans, $action) {
+            return $this->post(
+                localization()->transRoute($trans), $action
+            );
+        };
     }
 
     /**
      * Register a new translated PUT route with the router.
      *
-     * @param  string                 $trans
-     * @param  \Closure|array|string  $action
-     *
-     * @return \Illuminate\Routing\Route
+     * @return Closure|\Illuminate\Routing\Route
      */
-    public function transPut($trans, $action)
+    public function transPut()
     {
-        return $this->put(
-            $this->transRoute($trans), $action
-        );
+        return function($trans, $action) {
+            return $this->put(
+                localization()->transRoute($trans), $action
+            );
+        };
     }
 
     /**
      * Register a new translated PATCH route with the router.
      *
-     * @param  string                 $trans
-     * @param  \Closure|array|string  $action
-     *
-     * @return \Illuminate\Routing\Route
+     * @return Closure|\Illuminate\Routing\Route
      */
-    public function transPatch($trans, $action)
+    public function transPatch()
     {
-        return $this->patch(
-            $this->transRoute($trans), $action
-        );
+        return function($trans, $action) {
+            return $this->patch(
+                localization()->transRoute($trans), $action
+            );
+        };
     }
 
     /**
      * Register a new translated DELETE route with the router.
      *
-     * @param  string                 $trans
-     * @param  \Closure|array|string  $action
-     *
-     * @return \Illuminate\Routing\Route
+     * @return Closure|\Illuminate\Routing\Route
      */
-    public function transDelete($trans, $action)
+    public function transDelete()
     {
-        return $this->delete(
-            $this->transRoute($trans), $action
-        );
+        return function($trans, $action) {
+            return $this->delete(
+                localization()->transRoute($trans), $action
+            );
+        };
     }
 
     /**
      * Register a new translated OPTIONS route with the router.
      *
-     * @param  string                 $trans
-     * @param  \Closure|array|string  $action
+     * @return Closure|\Illuminate\Routing\Route
+     * @internal param string $trans
+     * @internal param array|Closure|string $action
      *
-     * @return \Illuminate\Routing\Route
      */
-    public function transOptions($trans, $action)
+    public function transOptions()
     {
-        return $this->options(
-            $this->transRoute($trans), $action
-        );
+        return function($trans, $action) {
+            return $this->options(
+                localization()->transRoute($trans), $action
+            );
+        };
     }
 
     /**
      * Register a new translated any route with the router.
      *
-     * @param  string                 $trans
-     * @param  \Closure|array|string  $action
+     * @return Closure|\Illuminate\Routing\Route
+     * @internal param string $trans
+     * @internal param array|Closure|string $action
      *
-     * @return \Illuminate\Routing\Route
      */
-    public function transAny($trans, $action)
+    public function transAny()
     {
-        return $this->any(
-            $this->transRoute($trans), $action
-        );
-    }
-
-    /* -----------------------------------------------------------------
-     |  Other Methods
-     | -----------------------------------------------------------------
-     */
-
-    /**
-     * Translate the route.
-     *
-     * @param  string  $key
-     *
-     * @return string
-     */
-    private function transRoute($key)
-    {
-        return localization()->transRoute($key);
+        return function($trans, $action) {
+            return $this->any(
+                localization()->transRoute($trans), $action
+            );
+        };
     }
 }

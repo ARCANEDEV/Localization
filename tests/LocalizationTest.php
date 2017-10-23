@@ -234,7 +234,7 @@ class LocalizationTest extends TestCase
             ['HTTP_ACCEPT_LANGUAGE' => 'en,es']
         );
 
-        $this->assertResponseOk();
+        $response->isOk();
         $this->assertSame($this->testUrlOne.'es/acerca', $response->getContent());
 
         $this->refreshApplication();
@@ -250,7 +250,7 @@ class LocalizationTest extends TestCase
             ['HTTP_ACCEPT_LANGUAGE' => 'en,es']
         );
 
-        $this->assertResponseOk();
+        $response->isOk();
         $this->assertSame('Test text', $response->getContent());
 
         $this->refreshApplication('es');

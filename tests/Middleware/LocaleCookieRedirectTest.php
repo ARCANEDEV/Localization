@@ -26,7 +26,7 @@ class LocaleCookieRedirectTest extends TestCase
         $response = $this->call('GET', $this->testUrlOne, [], ['locale' => 'fr']);
 
         $this->assertSame(302, $response->getStatusCode());
-        $this->assertSame($this->testUrlOne . 'fr', $response->getTargetUrl());
+        $this->assertSame($this->testUrlOne.'fr', $response->getTargetUrl());
 
         $response = $this->call('GET', $this->testUrlOne, [], ['locale' => 'es']);
 

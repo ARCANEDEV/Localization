@@ -1,6 +1,6 @@
 <?php namespace Arcanedev\Localization\Tests\Routing;
 
-use Arcanedev\Localization\Routing\Router;
+use Illuminate\Routing\Router;
 use Arcanedev\Localization\Tests\TestCase;
 
 /**
