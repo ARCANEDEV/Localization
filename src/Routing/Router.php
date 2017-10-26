@@ -13,25 +13,6 @@ use Closure;
 class Router
 {
     /* -----------------------------------------------------------------
-     |  Getters & Setters
-     | -----------------------------------------------------------------
-     */
-
-    /**
-     * Get active middlewares.
-     *
-     * @return Closure|array
-     */
-    protected function getActiveMiddlewares()
-    {
-        return function() {
-            return array_keys(array_filter(
-                config('localization.route.middleware', [])
-            ));
-        };
-    }
-
-    /* -----------------------------------------------------------------
      |  Route Methods
      | -----------------------------------------------------------------
      */
@@ -39,14 +20,18 @@ class Router
     /**
      * Create a route group with shared attributes.
      *
-     * @return Closure
+     * @return \Closure
      */
     public function localizedGroup()
     {
         return function(Closure $callback, array $attributes = []) {
+            $activeMiddleware = array_keys(array_filter(
+                config('localization.route.middleware', [])
+            ));
+
             $attributes = array_merge($attributes, [
-                'prefix' => localization()->setLocale(),
-                'middleware' => $this->getActiveMiddlewares(),
+                'prefix'     => localization()->setLocale(),
+                'middleware' => $activeMiddleware,
             ]);
 
             $this->group(array_filter($attributes), $callback);
@@ -56,7 +41,7 @@ class Router
     /**
      * Register a new translated GET route with the router.
      *
-     * @return Closure|\Illuminate\Routing\Route
+     * @return \Closure|\Illuminate\Routing\Route
      */
     public function transGet()
     {
@@ -70,7 +55,7 @@ class Router
     /**
      * Register a new translated POST route with the router.
      *
-     * @return Closure|\Illuminate\Routing\Route
+     * @return \Closure|\Illuminate\Routing\Route
      */
     public function transPost()
     {
@@ -84,7 +69,7 @@ class Router
     /**
      * Register a new translated PUT route with the router.
      *
-     * @return Closure|\Illuminate\Routing\Route
+     * @return \Closure|\Illuminate\Routing\Route
      */
     public function transPut()
     {
@@ -98,7 +83,7 @@ class Router
     /**
      * Register a new translated PATCH route with the router.
      *
-     * @return Closure|\Illuminate\Routing\Route
+     * @return \Closure|\Illuminate\Routing\Route
      */
     public function transPatch()
     {
@@ -112,7 +97,7 @@ class Router
     /**
      * Register a new translated DELETE route with the router.
      *
-     * @return Closure|\Illuminate\Routing\Route
+     * @return \Closure|\Illuminate\Routing\Route
      */
     public function transDelete()
     {
@@ -126,10 +111,7 @@ class Router
     /**
      * Register a new translated OPTIONS route with the router.
      *
-     * @return Closure|\Illuminate\Routing\Route
-     * @internal param string $trans
-     * @internal param array|Closure|string $action
-     *
+     * @return \Closure|\Illuminate\Routing\Route
      */
     public function transOptions()
     {
@@ -143,10 +125,7 @@ class Router
     /**
      * Register a new translated any route with the router.
      *
-     * @return Closure|\Illuminate\Routing\Route
-     * @internal param string $trans
-     * @internal param array|Closure|string $action
-     *
+     * @return \Closure|\Illuminate\Routing\Route
      */
     public function transAny()
     {
