@@ -323,6 +323,8 @@ class Localization implements LocalizationContract
             $url = $this->request()->fullUrl();
         }
 
+        $url = urldecode($url);
+        
         if (
             $locale &&
             $translatedRoute = $this->findTranslatedRouteByUrl($url, $attributes, $this->getCurrentLocale())
