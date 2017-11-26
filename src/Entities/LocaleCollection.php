@@ -1,6 +1,6 @@
 <?php namespace Arcanedev\Localization\Entities;
 
-use Arcanedev\Support\Collection;
+use Illuminate\Support\Collection;
 
 /**
  * Class     LocaleCollection
@@ -62,13 +62,15 @@ class LocaleCollection extends Collection
     /**
      * Get supported locales collection.
      *
-     * @return self
+     * @return \Arcanedev\Localization\Entities\SupportedLocaleCollection
      */
     public function getSupported()
     {
-        return $this->filter(function(Locale $locale) {
-            return in_array($locale->key(), $this->supported);
-        });
+        return new SupportedLocaleCollection(
+            $this->filter(function(Locale $locale) {
+                return in_array($locale->key(), $this->supported);
+            })
+        );
     }
 
     /**
@@ -97,7 +99,7 @@ class LocaleCollection extends Collection
      */
     public function loadFromArray(array $locales)
     {
-        $this->reset();
+        $this->items = [];
 
         foreach ($locales as $key => $locale) {
             $this->put($key, Locale::make($key, $locale));

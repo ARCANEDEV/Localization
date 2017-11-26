@@ -47,7 +47,15 @@ class LocaleCollectionTest extends TestCase
     /** @test */
     public function it_can_be_instantiated()
     {
-        $this->assertInstanceOf(LocaleCollection::class, $this->locales);
+        $expectations = [
+            \Illuminate\Support\Collection::class,
+            \Arcanedev\Localization\Entities\LocaleCollection::class,
+        ];
+
+        foreach ($expectations as $expected) {
+            $this->assertInstanceOf($expected, $this->locales);
+        }
+
         $this->assertTrue($this->locales->isEmpty());
         $this->assertCount(0, $this->locales);
         $this->assertSame(0, $this->locales->count());
@@ -72,6 +80,15 @@ class LocaleCollectionTest extends TestCase
             ->setSupportedKeys(config('localization.supported-locales', []));
 
         $supported = $this->locales->getSupported();
+
+        $expectations = [
+            \Illuminate\Support\Collection::class,
+            \Arcanedev\Localization\Entities\SupportedLocaleCollection::class,
+        ];
+
+        foreach ($expectations as $expected) {
+            $this->assertInstanceOf($expected, $supported);
+        }
 
         $count = count($this->supportedLocales);
         $this->assertFalse($supported->isEmpty());
