@@ -74,6 +74,18 @@ class LocaleCollection extends Collection
     }
 
     /**
+     * Transform the collection with only locale's native name.
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function toNative()
+    {
+        return $this->map(function (Locale $locale) {
+            return $locale->native();
+        })->toBase();
+    }
+
+    /**
      * Load from config.
      *
      * @return self
