@@ -47,7 +47,15 @@ class LocaleCollectionTest extends TestCase
     /** @test */
     public function it_can_be_instantiated()
     {
-        $this->assertInstanceOf(LocaleCollection::class, $this->locales);
+        $expectations = [
+            \Illuminate\Support\Collection::class,
+            \Arcanedev\Localization\Entities\LocaleCollection::class,
+        ];
+
+        foreach ($expectations as $expected) {
+            $this->assertInstanceOf($expected, $this->locales);
+        }
+
         $this->assertTrue($this->locales->isEmpty());
         $this->assertCount(0, $this->locales);
         $this->assertSame(0, $this->locales->count());
@@ -73,10 +81,40 @@ class LocaleCollectionTest extends TestCase
 
         $supported = $this->locales->getSupported();
 
+        $expectations = [
+            \Illuminate\Support\Collection::class,
+            \Arcanedev\Localization\Entities\SupportedLocaleCollection::class,
+        ];
+
+        foreach ($expectations as $expected) {
+            $this->assertInstanceOf($expected, $supported);
+        }
+
         $count = count($this->supportedLocales);
         $this->assertFalse($supported->isEmpty());
         $this->assertCount($count, $supported);
         $this->assertSame($count, $supported->count());
+    }
+
+    /** @test */
+    public function it_can_transform_locales_to_native_names()
+    {
+        $this->locales
+            ->loadFromArray(config('localization.locales', []))
+            ->setSupportedKeys(config('localization.supported-locales', []));
+
+        foreach ($this->locales->toNative() as $key => $native) {
+            $this->assertTrue($this->locales->has($key), "Locale [$key] not found");
+            $this->assertSame($this->locales->get($key)->native(), $native);
+        }
+
+        $expected = [
+            'en' => 'English',
+            'es' => 'Español',
+            'fr' => 'Français',
+        ];
+
+        $this->assertEquals($expected, $this->locales->getSupported()->toNative()->toArray());
     }
 
     /** @test */
