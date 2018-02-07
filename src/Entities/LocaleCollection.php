@@ -92,14 +92,8 @@ class LocaleCollection extends Collection
      */
     public function loadFromConfig()
     {
-        $this->loadFromArray(
-            config('localization.locales', [])
-        );
-        $this->setSupportedKeys(
-            config('localization.supported-locales', [])
-        );
-
-        return $this;
+        return $this->loadFromArray(config('localization.locales', []))
+                    ->setSupportedKeys(config('localization.supported-locales', []));
     }
 
     /**
