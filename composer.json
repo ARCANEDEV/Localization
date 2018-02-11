@@ -15,7 +15,7 @@
     "license": "MIT",
     "require": {
         "php":               ">=7.0",
-        "arcanedev/support": "~4.1"
+        "arcanedev/support": "~4.2.0"
     },
     "require-dev": {
         "phpunit/phpcov":      "~4.0",
