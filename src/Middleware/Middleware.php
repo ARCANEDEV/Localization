@@ -154,13 +154,13 @@ abstract class Middleware
     /**
      * Make a redirect response.
      *
-     * @param  string  $url
-     * @param  int     $code
+     * @param  string    $url
+     * @param  int|null  $code
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    protected function makeRedirectResponse($url, $code = 302)
+    protected function makeRedirectResponse($url, $code = null)
     {
-        return new RedirectResponse($url, $code, ['Vary' => 'Accept-Language']);
+        return new RedirectResponse($url, $code ?? config('localization.redirection-code', 302), ['Vary' => 'Accept-Language']);
     }
 }
