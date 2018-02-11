@@ -39,10 +39,7 @@
         "laravel": {
             "providers": [
                 "Arcanedev\\Localization\\LocalizationServiceProvider"
-            ],
-            "aliases": {
-                "Localization": "Arcanedev\\Localization\\Facades\\Localization"
-            }
+            ]
         }
     },
     "suggest": {
