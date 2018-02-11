@@ -1,6 +1,6 @@
 <?php
 
-use Arcanedev\Support\Bases\Migration;
+use Arcanedev\Support\Database\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
 /**

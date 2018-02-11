@@ -48,7 +48,7 @@ class NegotiatorTest extends TestCase
     /** @test */
     public function it_can_be_instantiated()
     {
-        $this->assertInstanceOf(Negotiator::class, $this->negotiator);
+        static::assertInstanceOf(Negotiator::class, $this->negotiator);
     }
 
     /** @test */
@@ -64,7 +64,7 @@ class NegotiatorTest extends TestCase
             /** @var Request $request */
             $request = $this->mockRequestWithAcceptLanguage($language[1])->reveal();
 
-            $this->assertSame($language[0], $this->negotiator->negotiate($request));
+            static::assertSame($language[0], $this->negotiator->negotiate($request));
         }
     }
 
@@ -74,7 +74,7 @@ class NegotiatorTest extends TestCase
         /** @var Request $request */
         $request = $this->mockRequestWithAcceptLanguage('*')->reveal();
 
-        $this->assertSame('en', $this->negotiator->negotiate($request));
+        static::assertSame('en', $this->negotiator->negotiate($request));
     }
 
     /** @test */
@@ -83,11 +83,11 @@ class NegotiatorTest extends TestCase
         /** @var Request $request */
         $request = $this->mockRequestWithHttpAcceptLanguage('fr;q=0.8,en;q=0.4', 'jp; q=1.0')->reveal();
 
-        $this->assertSame('fr', $this->negotiator->negotiate($request));
+        static::assertSame('fr', $this->negotiator->negotiate($request));
 
         $request = $this->mockRequestWithHttpAcceptLanguage('fr;q=0.8,en;q=0.4', '*/*')->reveal();
 
-        $this->assertSame('fr', $this->negotiator->negotiate($request));
+        static::assertSame('fr', $this->negotiator->negotiate($request));
     }
 
     /** @test */
@@ -100,7 +100,7 @@ class NegotiatorTest extends TestCase
             'jp; q=1.0'
         )->reveal();
 
-        $this->assertSame('fr', $this->negotiator->negotiate($request));
+        static::assertSame('fr', $this->negotiator->negotiate($request));
     }
 
     /** @test */
@@ -113,7 +113,7 @@ class NegotiatorTest extends TestCase
             'jp; q=1.0'
         )->reveal();
 
-        $this->assertSame('en', $this->negotiator->negotiate($request));
+        static::assertSame('en', $this->negotiator->negotiate($request));
     }
 
     /** @test */
@@ -126,7 +126,7 @@ class NegotiatorTest extends TestCase
             'jp; q=1.0'
         )->reveal();
 
-        $this->assertSame('en', $this->negotiator->negotiate($request));
+        static::assertSame('en', $this->negotiator->negotiate($request));
     }
 
     /* -----------------------------------------------------------------

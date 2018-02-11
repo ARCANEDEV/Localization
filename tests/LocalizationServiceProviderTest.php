@@ -53,7 +53,7 @@ class LocalizationServiceProviderTest extends TestCase
         ];
 
         foreach ($expectations as $expected) {
-            $this->assertInstanceOf($expected, $this->provider);
+            static::assertInstanceOf($expected, $this->provider);
         }
     }
 
@@ -64,13 +64,13 @@ class LocalizationServiceProviderTest extends TestCase
             \Arcanedev\Localization\Contracts\Localization::class,
         ];
 
-        $this->assertSame($expected, $this->provider->provides());
+        static::assertSame($expected, $this->provider->provides());
     }
 
     /** @test */
     public function it_can_register_localization_facade()
     {
-        $this->assertEquals(
+        static::assertEquals(
             $this->app->getLocale(),
             \Arcanedev\Localization\Facades\Localization::getDefaultLocale()
         );

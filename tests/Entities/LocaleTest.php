@@ -41,16 +41,16 @@ class LocaleTest extends TestCase
     {
         $this->locale = $this->makeLocale('en');
 
-        $this->assertInstanceOf(Locale::class, $this->locale);
+        static::assertInstanceOf(Locale::class, $this->locale);
 
-        $this->assertSame('en',      $this->locale->key());
-        $this->assertSame('English', $this->locale->name());
-        $this->assertSame('Latin',   $this->locale->script());
-        $this->assertSame('ltr',     $this->locale->direction());
-        $this->assertSame('English', $this->locale->native());
-        $this->assertSame('en_GB',   $this->locale->regional());
+        static::assertSame('en',      $this->locale->key());
+        static::assertSame('English', $this->locale->name());
+        static::assertSame('Latin',   $this->locale->script());
+        static::assertSame('ltr',     $this->locale->direction());
+        static::assertSame('English', $this->locale->native());
+        static::assertSame('en_GB',   $this->locale->regional());
 
-        $this->assertTrue($this->locale->isDefault());
+        static::assertTrue($this->locale->isDefault());
     }
 
     /** @test */
@@ -61,7 +61,7 @@ class LocaleTest extends TestCase
         $data['dir']  = 'LTR';
         $this->locale = new Locale($key, $data);
 
-        $this->assertSame(strtolower($data['dir']), $this->locale->direction());
+        static::assertSame(strtolower($data['dir']), $this->locale->direction());
     }
 
     /** @test */
@@ -72,7 +72,7 @@ class LocaleTest extends TestCase
         $data['dir']  = '';
         $this->locale = new Locale($key, $data);
 
-        $this->assertSame('ltr', $this->locale->direction());
+        static::assertSame('ltr', $this->locale->direction());
     }
 
     /** @test */
@@ -80,7 +80,7 @@ class LocaleTest extends TestCase
     {
         $this->locale = $this->makeLocale('en');
 
-        $this->assertInternalType('array', $this->locale->toArray());
+        static::assertInternalType('array', $this->locale->toArray());
     }
 
     /** @test */
@@ -88,8 +88,8 @@ class LocaleTest extends TestCase
     {
         $this->locale = $this->makeLocale('en');
 
-        $this->assertJson($this->locale->toJson());
-        $this->assertJson(json_encode($this->locale, JSON_PRETTY_PRINT));
+        static::assertJson($this->locale->toJson());
+        static::assertJson(json_encode($this->locale, JSON_PRETTY_PRINT));
     }
 
     /* -----------------------------------------------------------------
