@@ -47,7 +47,7 @@ class TranslatableModelTest extends TestCase
             ],
         ]);
 
-        $this->assertSame('Name', $model->name);
+        static::assertSame('Name', $model->name);
     }
 
     /** @test */
@@ -56,7 +56,7 @@ class TranslatableModelTest extends TestCase
         $this->model->setTranslation('name', 'en', 'Name')
                     ->save();
 
-        $this->assertSame('Name', $this->model->name);
+        static::assertSame('Name', $this->model->name);
     }
 
     /** @test */
@@ -67,8 +67,8 @@ class TranslatableModelTest extends TestCase
 
         $expected = 'Name';
 
-        $this->assertSame($expected, $this->model->getTranslation('name', 'fr'));
-        $this->assertSame($expected, $this->model->trans('name', 'fr'));
+        static::assertSame($expected, $this->model->getTranslation('name', 'fr'));
+        static::assertSame($expected, $this->model->trans('name', 'fr'));
     }
 
     /** @test */
@@ -77,7 +77,7 @@ class TranslatableModelTest extends TestCase
         $this->model->setTranslation('name', 'en', 'Name')
                     ->save();
 
-        $this->assertSame('', $this->model->getTranslation('name', 'fr', false));
+        static::assertSame('', $this->model->getTranslation('name', 'fr', false));
     }
 
     /** @test */
@@ -88,7 +88,7 @@ class TranslatableModelTest extends TestCase
         $this->model->setTranslation('name', 'en', 'Name')
                     ->save();
 
-        $this->assertSame('', $this->model->getTranslation('name', 'fr'));
+        static::assertSame('', $this->model->getTranslation('name', 'fr'));
     }
 
     /** @test */
@@ -99,7 +99,7 @@ class TranslatableModelTest extends TestCase
         $this->model->setTranslation('name', 'en', 'Name')
                     ->save();
 
-        $this->assertSame('', $this->model->getTranslation('name', 'fr', false));
+        static::assertSame('', $this->model->getTranslation('name', 'fr', false));
     }
 
     /** @test */
@@ -109,9 +109,9 @@ class TranslatableModelTest extends TestCase
                     ->setTranslation('name', 'fr', 'Nom')
                     ->save();
 
-        $this->assertSame('Name', $this->model->name);
-        $this->assertSame('Nom',  $this->model->getTranslation('name', 'fr'));
-        $this->assertSame('Nom',  $this->model->trans('name', 'fr'));
+        static::assertSame('Name', $this->model->name);
+        static::assertSame('Nom',  $this->model->getTranslation('name', 'fr'));
+        static::assertSame('Nom',  $this->model->trans('name', 'fr'));
     }
 
     /** @test */
@@ -123,11 +123,11 @@ class TranslatableModelTest extends TestCase
 
         app()->setLocale('fr');
 
-        $this->assertSame('Nom', $this->model->name);
+        static::assertSame('Nom', $this->model->name);
 
         app()->setLocale('en');
 
-        $this->assertSame('Name', $this->model->name);
+        static::assertSame('Name', $this->model->name);
     }
 
     /** @test */
@@ -137,7 +137,7 @@ class TranslatableModelTest extends TestCase
                     ->setTranslation('name', 'fr', 'Nom')
                     ->save();
 
-        $this->assertSame([
+        static::assertSame([
             'en' => 'Name',
             'fr' => 'Nom',
         ], $this->model->getTranslations('name'));
@@ -150,7 +150,7 @@ class TranslatableModelTest extends TestCase
                     ->setTranslation('name', 'fr', 'Nom')
                     ->save();
 
-        $this->assertSame(['en', 'fr'], $this->model->getTranslatedLocales('name'));
+        static::assertSame(['en', 'fr'], $this->model->getTranslatedLocales('name'));
     }
 
     /** @test */
@@ -160,14 +160,14 @@ class TranslatableModelTest extends TestCase
                     ->setTranslation('name', 'fr', 'Nom')
                     ->save();
 
-        $this->assertSame([
+        static::assertSame([
             'en' => 'Name',
             'fr' => 'Nom',
         ], $this->model->getTranslations('name'));
 
         $this->model->forgetTranslation('name', 'en');
 
-        $this->assertSame(['fr' => 'Nom'], $this->model->getTranslations('name'));
+        static::assertSame(['fr' => 'Nom'], $this->model->getTranslations('name'));
     }
 
     /** @test */
@@ -179,25 +179,25 @@ class TranslatableModelTest extends TestCase
                     ->setTranslation('slug', 'fr', 'Slug fr')
                     ->save();
 
-        $this->assertSame([
+        static::assertSame([
             'en' => 'Name',
             'fr' => 'Nom',
         ], $this->model->getTranslations('name'));
 
-        $this->assertSame([
+        static::assertSame([
             'en' => 'slug-en',
             'fr' => 'slug-fr',
         ], $this->model->getTranslations('slug'));
 
         $this->model->flushTranslations('en');
 
-        $this->assertSame(['fr' => 'Nom'], $this->model->getTranslations('name'));
-        $this->assertSame('Nom', $this->model->getTranslation('name', 'fr'));
-        $this->assertSame('', $this->model->getTranslation('name', 'en'));
+        static::assertSame(['fr' => 'Nom'], $this->model->getTranslations('name'));
+        static::assertSame('Nom', $this->model->getTranslation('name', 'fr'));
+        static::assertSame('', $this->model->getTranslation('name', 'en'));
 
-        $this->assertSame(['fr' => 'slug-fr'], $this->model->getTranslations('slug'));
-        $this->assertSame('slug-fr', $this->model->getTranslation('slug', 'fr'));
-        $this->assertSame('', $this->model->getTranslation('slug', 'en'));
+        static::assertSame(['fr' => 'slug-fr'], $this->model->getTranslations('slug'));
+        static::assertSame('slug-fr', $this->model->getTranslation('slug', 'fr'));
+        static::assertSame('', $this->model->getTranslation('slug', 'en'));
     }
 
     /**
@@ -216,7 +216,7 @@ class TranslatableModelTest extends TestCase
     {
         $this->model->setTranslation('name', 'en', 'name');
 
-        $this->assertEquals('Name', $this->model->name);
+        static::assertEquals('Name', $this->model->name);
     }
 
     /** @test */
@@ -224,7 +224,7 @@ class TranslatableModelTest extends TestCase
     {
         $this->model->setTranslation('slug', 'en', 'This is a mutated slug');
 
-        $this->assertEquals('this-is-a-mutated-slug', $this->model->slug);
+        static::assertEquals('this-is-a-mutated-slug', $this->model->slug);
     }
 
     /** @test */
@@ -237,14 +237,14 @@ class TranslatableModelTest extends TestCase
         ]);
         $this->model->save();
 
-        $this->assertEquals($translations, $this->model->getTranslations('name'));
+        static::assertEquals($translations, $this->model->getTranslations('name'));
     }
 
     /** @test */
     public function it_can_check_if_an_attribute_is_translatable()
     {
-        $this->assertTrue($this->model->isTranslatableAttribute('name'));
-        $this->assertFalse($this->model->isTranslatableAttribute('untranslated'));
+        static::assertTrue($this->model->isTranslatableAttribute('name'));
+        static::assertFalse($this->model->isTranslatableAttribute('untranslated'));
     }
 
     /** @test */
@@ -254,7 +254,7 @@ class TranslatableModelTest extends TestCase
 
         $this->model->setTranslation('name', 'en', 'Name');
 
-        $this->assertSame(['en' => 'Name'], $this->model->getTranslations('name'));
+        static::assertSame(['en' => 'Name'], $this->model->getTranslations('name'));
     }
 
     /* -----------------------------------------------------------------

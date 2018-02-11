@@ -25,13 +25,13 @@ class LocaleCookieRedirectTest extends TestCase
         /** @var Response|RedirectResponse $response */
         $response = $this->call('GET', $this->testUrlOne, [], ['locale' => 'fr']);
 
-        $this->assertSame(302, $response->getStatusCode());
-        $this->assertSame($this->testUrlOne.'fr', $response->getTargetUrl());
+        static::assertSame(302, $response->getStatusCode());
+        static::assertSame($this->testUrlOne.'fr', $response->getTargetUrl());
 
         $response = $this->call('GET', $this->testUrlOne, [], ['locale' => 'es']);
 
-        $this->assertSame(302, $response->getStatusCode());
-        $this->assertSame($this->testUrlOne . 'es', $response->getTargetUrl());
+        static::assertSame(302, $response->getStatusCode());
+        static::assertSame($this->testUrlOne . 'es', $response->getTargetUrl());
     }
 
     /** @test */
@@ -43,7 +43,7 @@ class LocaleCookieRedirectTest extends TestCase
         /** @var RedirectResponse $response */
         $response = $this->call('GET', $this->testUrlOne);
 
-        $this->assertSame(302, $response->getStatusCode());
-        $this->assertSame($this->testUrlOne . 'en', $response->getTargetUrl());
+        static::assertSame(302, $response->getStatusCode());
+        static::assertSame($this->testUrlOne . 'en', $response->getTargetUrl());
     }
 }

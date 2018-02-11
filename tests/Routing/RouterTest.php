@@ -46,8 +46,8 @@ class RouterTest extends TestCase
     /** @test */
     public function it_can_be_instantiated()
     {
-        $this->assertInstanceOf(\Illuminate\Routing\Router::class, $this->router);
-        $this->assertInstanceOf(Router::class, $this->router);
+        static::assertInstanceOf(\Illuminate\Routing\Router::class, $this->router);
+        static::assertInstanceOf(Router::class, $this->router);
     }
 
     /** @test */
@@ -56,11 +56,11 @@ class RouterTest extends TestCase
         $routes     = $this->router->getRoutes();
         $routeNames = $this->routeRegistrar->getRouteNames();
 
-        $this->assertInstanceOf(\Illuminate\Routing\RouteCollection::class, $routes);
-        $this->assertNotEmpty($routes->count());
+        static::assertInstanceOf(\Illuminate\Routing\RouteCollection::class, $routes);
+        static::assertNotEmpty($routes->count());
 
         foreach ($routeNames as $name) {
-            $this->assertTrue($this->router->has($name), "The route name [$name] not found.");
+            static::assertTrue($this->router->has($name), "The route name [$name] not found.");
         }
     }
 }
