@@ -40,7 +40,6 @@ class LocalizationServiceProvider extends PackageServiceProvider
             Providers\UtilitiesServiceProvider::class,
         ]);
         $this->registerLocalization();
-        $this->registerAliases();
     }
 
     /**
@@ -78,9 +77,10 @@ class LocalizationServiceProvider extends PackageServiceProvider
     {
         $this->singleton(Contracts\Localization::class, Localization::class);
 
-        $this->alias(
-            $this->config()->get('localization.facade', 'Localization'),
-            Facades\Localization::class
-        );
+        if ($alias = $this->config()->get('localization.facade')) {
+            $this->alias($alias, Facades\Localization::class);
+
+            $this->registerAliases();
+        }
     }
 }

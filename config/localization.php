@@ -13,6 +13,8 @@ return [
 
     'hide-default-in-url'    => false,
 
+    'redirection-code'       => 302,
+
     'facade'                 => 'Localization',
 
     /* -----------------------------------------------------------------
