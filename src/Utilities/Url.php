@@ -100,12 +100,12 @@ class Url implements UrlContract
     {
         $attributes = [];
 
+        $request = Request::create(implode('/', $url));
         foreach ($routes as $route) {
             /**
              * @var  \Illuminate\Routing\Route  $route
              * @var  \Illuminate\Http\Request   $request
              */
-            $request = Request::create(implode('/', $url));
 
             if ( ! $route->matches($request))
                 continue;
