@@ -309,9 +309,6 @@ class Localization implements LocalizationContract
 
         if (empty($url)) {
             if ($this->routeTranslator->hasCurrentRoute()) {
-                if (empty($attributes))
-                    $attributes = $this->request()->route()->parameters();
-
                 return $this->getUrlFromRouteName(
                     $locale,
                     $this->routeTranslator->getCurrentRoute(),
