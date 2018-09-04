@@ -375,8 +375,10 @@ class LocalesManager implements LocalesManagerContract
         $currentLocale = $this->getCurrentLocaleEntity();
 
         if ( ! empty($regional = $currentLocale->regional())) {
-            setlocale(LC_TIME, "$regional.UTF-8");
-            setlocale(LC_MONETARY, "$regional.UTF-8");
+            $suffix = $this->getConfig('utf-8-suffix', '.UTF-8');
+
+            setlocale(LC_TIME, $regional.$suffix);
+            setlocale(LC_MONETARY, $regional.$suffix);
         }
     }
 }
