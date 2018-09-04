@@ -15,6 +15,7 @@
 <?php
 
 return [
+
     'supported-locales'      => ['en', 'es', 'fr'],
 
     'accept-language-header' => true,
@@ -22,6 +23,8 @@ return [
     'hide-default-in-url'    => false,
 
     'facade'                 => 'Localization',
+
+    'utf-8-suffix'           => '.UTF-8',
 
     //...
 ```
@@ -32,7 +35,7 @@ return [
 | accept-language-header | Using the locale negotiator to get locale from `Accept-Language` header.                         |
 | hide-default-in-url    | If `true`, the non localized root is treated as the application's default locale (`app.locale`). |
 | facade                 | The alias name for the facade.                                                                   |
-
+|| Locale suffix for LC_TIME and LC_MONETARY: Defaults to most common ".UTF-8". Set to blank on Windows systems, change to ".utf8" on CentOS and similar. |
 ## Route
 
 ```php
