@@ -41,7 +41,8 @@ class TranslatableModelTest extends TestCase
     /** @test */
     public function it_can_set_translated_values_when_creating_a_model()
     {
-        $model = TranslatableModel::create([
+        /** @var  \Arcanedev\Localization\Tests\Stubs\Models\TranslatableModel  $model */
+        $model = TranslatableModel::query()->create([
             'name' => [
                 'en' => 'Name',
             ],
@@ -141,6 +142,61 @@ class TranslatableModelTest extends TestCase
             'en' => 'Name',
             'fr' => 'Nom',
         ], $this->model->getTranslations('name'));
+    }
+
+    /** @test */
+    public function it_handle_null_value_from_database()
+    {
+        $testModel = (new class() extends TranslatableModel {
+            public function setAttributesExternally(array $attributes)
+            {
+                $this->attributes = $attributes;
+            }
+        });
+
+        $testModel->setAttributesExternally([
+            'name'        => json_encode(null),
+            'other_field' => null,
+        ]);
+
+        $this->assertEquals('', $testModel->name);
+        $this->assertEquals('', $testModel->other_field);
+    }
+
+    /** @test */
+    public function it_can_get_all_translations()
+    {
+        $translations = ['fr' => 'Salut', 'en' => 'Hello'];
+
+        $this->model->setTranslations('name', $translations)
+                    ->setTranslations('slug', $translations)
+                    ->save();
+
+        static::assertEquals([
+            'name' => ['fr' => 'Salut', 'en' => 'Hello'],
+            'slug' => ['fr' => 'salut', 'en' => 'hello'],
+        ], $this->model->translations);
+    }
+
+    /** @test */
+    public function it_can_get_all_translations_for_all_translatable_attributes()
+    {
+        $this->model->setTranslation('name', 'en', 'Name')
+                    ->setTranslation('name', 'fr', 'Nom')
+                    ->setTranslation('slug', 'en', 'Name')
+                    ->setTranslation('slug', 'fr', 'Nom')
+                    ->save();
+
+        static::assertSame([
+            'name' => [
+                'en' => 'Name',
+                'fr' => 'Nom',
+            ],
+            'slug' => [
+                'en' => 'name',
+                'fr' => 'nom',
+            ],
+        ], $this->model->getTranslations());
     }
 
     /** @test */
@@ -248,6 +304,21 @@ class TranslatableModelTest extends TestCase
     }
 
     /** @test */
+    public function it_can_check_if_an_attribute_has_translation()
+    {
+        $this->model->setTranslation('name', 'en', 'Hello')
+                    ->setTranslation('name', 'fr', 'Salut')
+                    ->setTranslation('name', 'nl', null)
+                    ->save();
+
+        static::assertTrue($this->model->hasTranslation('name', 'en'));
+        static::assertTrue($this->model->hasTranslation('name', 'fr'));
+
+        static::assertFalse($this->model->hasTranslation('name', 'nl'));
+        static::assertFalse($this->model->hasTranslation('name', 'ar'));
+    }
+
+    /** @test */
     public function it_will_fire_an_event_when_a_translation_has_been_set()
     {
         $this->expectsEvents([TranslationHasBeenSet::class]);
@@ -255,6 +326,51 @@ class TranslatableModelTest extends TestCase
         $this->model->setTranslation('name', 'en', 'Name');
 
         static::assertSame(['en' => 'Name'], $this->model->getTranslations('name'));
+    }
+
+    /** @test */
+    public function it_will_return_fallback_locale_translation_when_getting_an_empty_translation_from_the_locale()
+    {
+        $this->setFallbackLocale('en');
+
+        $this->model->setTranslation('name', 'en', 'Name')
+                    ->setTranslation('name', 'nl', null)
+                    ->save();
+
+        static::assertSame('Name', $this->model->getTranslation('name', 'nl'));
+    }
+
+    /** @test */
+    public function it_will_return_correct_translation_value_if_value_is_set_to_zero()
+    {
+        $this->model->setTranslation('name', 'en', '0')
+                    ->save();
+
+        static::assertSame('0', $this->model->getTranslation('name', 'en'));
+    }
+
+    /** @test */
+    public function it_will_not_return_fallback_value_if_value_is_set_to_zero()
+    {
+        $this->setFallbackLocale('en');
+
+        $this->model->setTranslation('name', 'en', '1')
+                    ->setTranslation('name', 'fr', '0')
+                    ->save();
+
+        static::assertSame('0', $this->model->getTranslation('name', 'fr'));
+    }
+
+    /** @test */
+    public function it_will_not_remove_zero_value_of_other_locale_in_database()
+    {
+        $this->setFallbackLocale('en');
+
+        $this->model->setTranslation('name', 'en', '0')
+                    ->setTranslation('name', 'fr', '1')
+                    ->save();
+
+        static::assertSame('0', $this->model->getTranslation('name', 'en'));
     }
 
     /* -----------------------------------------------------------------

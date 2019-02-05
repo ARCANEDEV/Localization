@@ -65,11 +65,9 @@ class TranslatableModel extends Model
      * Set the slug attribute (mutator).
      *
      * @param  string  $slug
-     *
-     * @return string
      */
     public function setSlugAttribute($slug)
     {
-        return Str::slug($slug);
+        $this->attributes['slug'] = Str::slug($slug);
     }
 }
