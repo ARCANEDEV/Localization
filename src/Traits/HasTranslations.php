@@ -10,6 +10,7 @@ use Illuminate\Support\Str;
  * @package  Arcanedev\Localization\Traits
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  *
+ * @property       array  attributes
  * @property-read  array  translations
  */
 trait HasTranslations
