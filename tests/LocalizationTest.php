@@ -22,14 +22,12 @@ class LocalizationTest extends TestCase
         static::assertInstanceOf(Localization::class, localization());
     }
 
-    /**
-     * @test
-     *
-     * @expectedException         \Arcanedev\Localization\Exceptions\UnsupportedLocaleException
-     * @expectedExceptionMessage  Laravel default locale [jp] is not in the `supported-locales` array.
-     */
+    /** @test */
     public function it_must_throw_unsupported_locale_exception_on_default_locale()
     {
+        $this->expectException(\Arcanedev\Localization\Exceptions\UnsupportedLocaleException::class);
+        $this->expectExceptionMessage('Laravel default locale [jp] is not in the `supported-locales` array.');
+
         app('config')->set('app.locale', 'jp');
 
         new Localization(
@@ -66,13 +64,11 @@ class LocalizationTest extends TestCase
         }
     }
 
-    /**
-     * @test
-     *
-     * @expectedException  \Arcanedev\Localization\Exceptions\UndefinedSupportedLocalesException
-     */
+    /** @test */
     public function it_must_throw_undefined_supported_locales_exception_on_set_supported_locales_with_empty_array()
     {
+        $this->expectException(\Arcanedev\Localization\Exceptions\UndefinedSupportedLocalesException::class);
+
         localization()->setSupportedLocales([]);
     }
 
@@ -333,14 +329,12 @@ class LocalizationTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     *
-     * @expectedException         \Arcanedev\Localization\Exceptions\UnsupportedLocaleException
-     * @expectedExceptionMessage  Locale 'jp' is not in the list of supported locales.
-     */
+    /** @test */
     public function it_must_throw_an_exception_on_unsupported_locale()
     {
+        $this->expectException(\Arcanedev\Localization\Exceptions\UnsupportedLocaleException::class);
+        $this->expectExceptionMessage("Locale 'jp' is not in the list of supported locales.");
+
         localization()->getUrlFromRouteName('jp', 'localization::routes.about');
     }
 
@@ -456,11 +450,11 @@ class LocalizationTest extends TestCase
     {
         $navbar = localization()->localesNavbar();
 
-        static::assertContains('<ul class="navbar-locales">', $navbar);
-        static::assertContains('<li class="active">', $navbar);
-        static::assertContains(e('English'),  $navbar);
-        static::assertContains(e('Español'),  $navbar);
-        static::assertContains(e('Français'), $navbar);
+        static::assertStringContainsString('<ul class="navbar-locales">', $navbar);
+        static::assertStringContainsString('<li class="active">', $navbar);
+        static::assertStringContainsString(e('English'),  $navbar);
+        static::assertStringContainsString(e('Español'),  $navbar);
+        static::assertStringContainsString(e('Français'), $navbar);
     }
 
     /** @test */

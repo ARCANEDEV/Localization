@@ -26,14 +26,14 @@ class NegotiatorTest extends TestCase
      | -----------------------------------------------------------------
      */
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
         $this->negotiator = app(\Arcanedev\Localization\Contracts\Negotiator::class);
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         unset($this->negotiator);
 

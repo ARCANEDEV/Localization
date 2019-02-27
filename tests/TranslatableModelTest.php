@@ -24,7 +24,7 @@ class TranslatableModelTest extends TestCase
      | -----------------------------------------------------------------
      */
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -256,14 +256,12 @@ class TranslatableModelTest extends TestCase
         static::assertSame('', $this->model->getTranslation('slug', 'en'));
     }
 
-    /**
-     * @test
-     *
-     * @expectedException        \Arcanedev\Localization\Exceptions\UntranslatableAttributeException
-     * @expectedExceptionMessage The attribute `untranslated` is untranslatable because it's not available in the translatable array: `name, slug`
-     */
+    /** @test */
     public function it_will_throw_an_exception_when_trying_to_translate_an_untranslatable_attribute()
     {
+        $this->expectException(\Arcanedev\Localization\Exceptions\UntranslatableAttributeException::class);
+        $this->expectExceptionMessage("The attribute `untranslated` is untranslatable because it's not available in the translatable array: `name, slug`");
+
         $this->model->setTranslation('untranslated', 'en', 'value');
     }
 
