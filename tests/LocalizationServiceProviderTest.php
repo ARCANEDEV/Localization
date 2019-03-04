@@ -23,14 +23,14 @@ class LocalizationServiceProviderTest extends TestCase
      | -----------------------------------------------------------------
      */
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
         $this->provider = $this->app->getProvider(LocalizationServiceProvider::class);
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         unset($this->provider);
 

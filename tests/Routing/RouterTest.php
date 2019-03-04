@@ -24,14 +24,14 @@ class RouterTest extends TestCase
      | -----------------------------------------------------------------
      */
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
         $this->router = app('router');
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         unset($this->router);
 

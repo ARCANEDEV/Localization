@@ -24,7 +24,7 @@ class LocaleTest extends TestCase
      | -----------------------------------------------------------------
      */
 
-    public function tearDown()
+    public function tearDown(): void
     {
         unset($this->locale);
 
@@ -80,7 +80,7 @@ class LocaleTest extends TestCase
     {
         $this->locale = $this->makeLocale('en');
 
-        static::assertInternalType('array', $this->locale->toArray());
+        static::assertIsArray($this->locale->toArray());
     }
 
     /** @test */

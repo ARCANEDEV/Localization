@@ -25,7 +25,7 @@ class LocalesManagerTest extends TestCase
      | -----------------------------------------------------------------
      */
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -34,7 +34,7 @@ class LocalesManagerTest extends TestCase
         $this->localesManager->setCurrentLocale('en');
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         unset($this->localesManager);
 
@@ -174,24 +174,20 @@ class LocalesManagerTest extends TestCase
         }
     }
 
-    /**
-     * @test
-     *
-     * @expectedException        \Arcanedev\Localization\Exceptions\UnsupportedLocaleException
-     * @expectedExceptionMessage Laravel default locale [jp] is not in the `supported-locales` array.
-     */
+    /** @test */
     public function it_must_throw_unsupported_locale_exception_on_set_default_locale()
     {
+        $this->expectException(\Arcanedev\Localization\Exceptions\UnsupportedLocaleException::class);
+        $this->expectExceptionMessage("Laravel default locale [jp] is not in the `supported-locales` array.");
+
         $this->localesManager->setDefaultLocale('jp');
     }
 
-    /**
-     * @test
-     *
-     * @expectedException  \Arcanedev\Localization\Exceptions\UndefinedSupportedLocalesException
-     */
+    /** @test */
     public function it_must_throw_undefined_supported_locales_exception_on_set_with_empty_array()
     {
+        $this->expectException(\Arcanedev\Localization\Exceptions\UndefinedSupportedLocalesException::class);
+
         $this->localesManager->setSupportedLocales([]);
     }
 }
