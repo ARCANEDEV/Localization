@@ -140,7 +140,7 @@ return [
             'script'   => 'Arab',
             'dir'      => 'rtl',
             'native'   => 'العربية',
-            'regional' => 'ar_AE',
+            'regional' => 'ar_AA',
         ],
         'as'          => [
             'name'     => 'Assamese',
