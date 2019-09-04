@@ -2,6 +2,7 @@
 
 use Arcanedev\Localization\Entities\Locale;
 use Arcanedev\Localization\Tests\TestCase;
+use Illuminate\Support\Arr;
 
 /**
  * Class     LocaleTest
@@ -118,7 +119,7 @@ class LocaleTest extends TestCase
      */
     private function getLocale($key)
     {
-        return array_get([
+        return Arr::get([
             'ar' => [
                 'name'     => 'Arabic',
                 'script'   => 'Arab',
