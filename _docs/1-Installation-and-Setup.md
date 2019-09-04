@@ -29,6 +29,7 @@ PHP extensions:
 | ![Localization v3.x][localization_3_x] | ![Laravel v5.6][laravel_5_6]                                                                                        |
 | ![Localization v4.x][localization_4_x] | ![Laravel v5.7][laravel_5_7]                                                                                        |
 | ![Localization v5.x][localization_5_x] | ![Laravel v5.8][laravel_5_8]                                                                                        |
+| ![Localization v6.x][localization_6_x] | ![Laravel v6.0][laravel_6_0]                                                                                        |
 
 [laravel_5_0]:  https://img.shields.io/badge/v5.0-supported-brightgreen.svg?style=flat-square "Laravel v5.0"
 [laravel_5_1]:  https://img.shields.io/badge/v5.1-supported-brightgreen.svg?style=flat-square "Laravel v5.1"
@@ -39,6 +40,7 @@ PHP extensions:
 [laravel_5_6]:  https://img.shields.io/badge/v5.6-supported-brightgreen.svg?style=flat-square "Laravel v5.6"
 [laravel_5_7]:  https://img.shields.io/badge/v5.7-supported-brightgreen.svg?style=flat-square "Laravel v5.7"
 [laravel_5_8]:  https://img.shields.io/badge/v5.8-supported-brightgreen.svg?style=flat-square "Laravel v5.8"
+[laravel_6_0]:  https://img.shields.io/badge/v6.0-supported-brightgreen.svg?style=flat-square "Laravel v6.0"
 
 [localization_0_x]: https://img.shields.io/badge/version-0.*-blue.svg?style=flat-square "Localization v0.*"
 [localization_1_x]: https://img.shields.io/badge/version-1.*-blue.svg?style=flat-square "Localization v1.*"
@@ -46,6 +48,7 @@ PHP extensions:
 [localization_3_x]: https://img.shields.io/badge/version-3.*-blue.svg?style=flat-square "Localization v3.*"
 [localization_4_x]: https://img.shields.io/badge/version-4.*-blue.svg?style=flat-square "Localization v4.*"
 [localization_5_x]: https://img.shields.io/badge/version-5.*-blue.svg?style=flat-square "Localization v5.*"
+[localization_6_x]: https://img.shields.io/badge/version-6.*-blue.svg?style=flat-square "Localization v6.*"
 
 ## Composer
 
