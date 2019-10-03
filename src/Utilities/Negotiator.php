@@ -3,7 +3,6 @@
 use Arcanedev\Localization\Contracts\Negotiator as NegotiatorContract;
 use Arcanedev\Localization\Entities\LocaleCollection;
 use Illuminate\Http\Request;
-use Locale;
 
 /**
  * Class     Negotiator
@@ -105,8 +104,6 @@ class Negotiator implements NegotiatorContract
         if ( ! is_null($locale = $this->getFromRemoteHostServer()))
             return $locale;
 
-        // TODO: Adding negotiate form IP Address ??
-
         return $this->defaultLocale;
     }
 
@@ -140,14 +137,13 @@ class Negotiator implements NegotiatorContract
     {
         $httpAcceptLanguage = $this->request->server('HTTP_ACCEPT_LANGUAGE');
 
-        // @codeCoverageIgnoreStart
-        if ( ! class_exists('Locale') || empty($httpAcceptLanguage))
-            return null;
-        // @codeCoverageIgnoreEnd
+        $locale = null;
 
-        $locale = Locale::acceptFromHttp($httpAcceptLanguage);
+        if (class_exists('Locale') && ! empty($httpAcceptLanguage))
+            $locale = \Locale::acceptFromHttp($httpAcceptLanguage);
 
-        if ($this->isSupported($locale)) return $locale;
+        if ($this->isSupported($locale))
+            return $locale;
 
         return null;
     }

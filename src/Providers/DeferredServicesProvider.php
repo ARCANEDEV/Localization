@@ -1,20 +1,23 @@
 <?php namespace Arcanedev\Localization\Providers;
 
-use Arcanedev\Localization\Contracts\LocalesManager as LocalesManagerContract;
-use Arcanedev\Localization\Contracts\Negotiator as NegotiatorContract;
-use Arcanedev\Localization\Contracts\RouteTranslator as RouteTranslatorContract;
-use Arcanedev\Localization\Utilities\LocalesManager;
-use Arcanedev\Localization\Utilities\Negotiator;
-use Arcanedev\Localization\Utilities\RouteTranslator;
-use Arcanedev\Support\ServiceProvider;
+use Arcanedev\Localization\Contracts\{
+    LocalesManager as LocalesManagerContract,
+    Localization as LocalizationContract,
+    Negotiator as NegotiatorContract,
+    RouteTranslator as RouteTranslatorContract
+};
+use Arcanedev\Localization\Localization;
+use Arcanedev\Localization\Utilities\{LocalesManager, Negotiator, RouteTranslator};
+use Arcanedev\Support\Providers\ServiceProvider;
+use Illuminate\Contracts\Support\DeferrableProvider;
 
 /**
- * Class     UtilitiesServiceProvider
+ * Class     DeferredServicesProvider
  *
  * @package  Arcanedev\Localization\Providers
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
-class UtilitiesServiceProvider extends ServiceProvider
+class DeferredServicesProvider extends ServiceProvider implements DeferrableProvider
 {
     /* -----------------------------------------------------------------
      |  Main Methods
@@ -24,10 +27,9 @@ class UtilitiesServiceProvider extends ServiceProvider
     /**
      * Register the service provider.
      */
-    public function register()
+    public function register(): void
     {
-        parent::register();
-
+        $this->registerLocalization();
         $this->registerRouteTranslator();
         $this->registerLocalesManager();
         $this->registerLocaleNegotiator();
@@ -41,6 +43,7 @@ class UtilitiesServiceProvider extends ServiceProvider
     public function provides()
     {
         return [
+            LocalizationContract::class,
             RouteTranslatorContract::class,
             LocalesManagerContract::class,
             NegotiatorContract::class,
@@ -48,18 +51,24 @@ class UtilitiesServiceProvider extends ServiceProvider
     }
 
     /* -----------------------------------------------------------------
-     |  Utilities
+     |  Services
      | -----------------------------------------------------------------
      */
+
+    /**
+     * Register Localization.
+     */
+    private function registerLocalization()
+    {
+        $this->singleton(LocalizationContract::class, Localization::class);
+    }
 
     /**
      * Register RouteTranslator utility.
      */
     private function registerRouteTranslator()
     {
-        $this->singleton(RouteTranslatorContract::class, function ($app) {
-            return new RouteTranslator($app['translator']);
-        });
+        $this->singleton(RouteTranslatorContract::class, RouteTranslator::class);
     }
 
     /**

@@ -8,8 +8,6 @@ use Illuminate\Http\Request;
  *
  * @package  Arcanedev\Localization\Middleware
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
- *
- * @todo:    Refactoring
  */
 class LocaleSessionRedirect extends Middleware
 {

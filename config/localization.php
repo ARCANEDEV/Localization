@@ -15,8 +15,6 @@ return [
 
     'redirection-code'       => 302,
 
-    'facade'                 => 'Localization',
-
     'utf-8-suffix'           => '.UTF-8',
 
     /* -----------------------------------------------------------------

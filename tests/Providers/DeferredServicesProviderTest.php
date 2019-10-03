@@ -1,21 +1,22 @@
-<?php namespace Arcanedev\Localization\Tests;
+<?php namespace Arcanedev\Localization\Tests\Providers;
 
-use Arcanedev\Localization\LocalizationServiceProvider;
+use Arcanedev\Localization\Providers\DeferredServicesProvider;
+use Arcanedev\Localization\Tests\TestCase;
 
 /**
- * Class     LocalizationServiceProviderTest
+ * Class     DeferredServicesProviderTest
  *
- * @package  Arcanedev\Localization\Tests
+ * @package  Arcanedev\Localization\Tests\Providers
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
-class LocalizationServiceProviderTest extends TestCase
+class DeferredServicesProviderTest extends TestCase
 {
     /* -----------------------------------------------------------------
      |  Properties
      | -----------------------------------------------------------------
      */
 
-    /** @var \Arcanedev\Localization\LocalizationServiceProvider */
+    /** @var \Arcanedev\Localization\Providers\DeferredServicesProvider */
     private $provider;
 
     /* -----------------------------------------------------------------
@@ -27,7 +28,7 @@ class LocalizationServiceProviderTest extends TestCase
     {
         parent::setUp();
 
-        $this->provider = $this->app->getProvider(LocalizationServiceProvider::class);
+        $this->provider = $this->app->getProvider(DeferredServicesProvider::class);
     }
 
     public function tearDown(): void
@@ -47,13 +48,26 @@ class LocalizationServiceProviderTest extends TestCase
     {
         $expectations = [
             \Illuminate\Support\ServiceProvider::class,
+            \Illuminate\Contracts\Support\DeferrableProvider::class,
             \Arcanedev\Support\Providers\ServiceProvider::class,
-            \Arcanedev\Support\Providers\PackageServiceProvider::class,
-            \Arcanedev\Localization\LocalizationServiceProvider::class,
+            \Arcanedev\Localization\Providers\DeferredServicesProvider::class,
         ];
 
         foreach ($expectations as $expected) {
             static::assertInstanceOf($expected, $this->provider);
         }
+    }
+
+    /** @test */
+    public function it_can_provides()
+    {
+        $expected = [
+            \Arcanedev\Localization\Contracts\Localization::class,
+            \Arcanedev\Localization\Contracts\RouteTranslator::class,
+            \Arcanedev\Localization\Contracts\LocalesManager::class,
+            \Arcanedev\Localization\Contracts\Negotiator::class,
+        ];
+
+        static::assertEquals($expected, $this->provider->provides());
     }
 }
