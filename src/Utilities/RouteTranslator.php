@@ -3,7 +3,7 @@
 use Arcanedev\Localization\Contracts\RouteTranslator as RouteTranslatorContract;
 use Arcanedev\Localization\Entities\LocaleCollection;
 use Arcanedev\Localization\Exceptions\InvalidTranslationException;
-use Illuminate\Translation\Translator;
+use Illuminate\Contracts\Translation\Translator;
 
 /**
  * Class     RouteTranslator
@@ -21,7 +21,7 @@ class RouteTranslator implements RouteTranslatorContract
     /**
      * The translator instance.
      *
-     * @var \Illuminate\Translation\Translator
+     * @var \Illuminate\Contracts\Translation\Translator
      */
     private $translator;
 
@@ -47,7 +47,7 @@ class RouteTranslator implements RouteTranslatorContract
     /**
      * Create RouteTranslator instance.
      *
-     * @param  \Illuminate\Translation\Translator  $translator
+     * @param  \Illuminate\Contracts\Translation\Translator  $translator
      */
     public function __construct(Translator $translator)
     {
@@ -196,12 +196,12 @@ class RouteTranslator implements RouteTranslatorContract
     /**
      * Get URL from route name.
      *
-     * @param  string      $locale
-     * @param  string      $defaultLocale
-     * @param  string      $transKey
-     * @param  array       $attributes
-     * @param  bool|false  $defaultHidden
-     * @param  bool|false  $showHiddenLocale
+     * @param  string|bool  $locale
+     * @param  string       $defaultLocale
+     * @param  string       $transKey
+     * @param  array        $attributes
+     * @param  bool|false   $defaultHidden
+     * @param  bool|false   $showHiddenLocale
      *
      * @return string
      */

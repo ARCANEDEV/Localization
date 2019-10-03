@@ -181,12 +181,8 @@ class Locale implements Arrayable, Jsonable, JsonSerializable
     public function direction()
     {
         if (empty($this->direction)) {
-            $rtlScripts = ['Arab', 'Hebr', 'Mong', 'Tfng', 'Thaa'];
-
             $this->setDirection(
-                in_array($this->script, $rtlScripts)
-                    ? self::DIRECTION_RIGHT_TO_LEFT
-                    : self::DIRECTION_LEFT_TO_RIGHT
+                in_array($this->script, ['Arab', 'Hebr', 'Mong', 'Tfng', 'Thaa']) ? self::DIRECTION_RIGHT_TO_LEFT : self::DIRECTION_LEFT_TO_RIGHT
             );
         }
 

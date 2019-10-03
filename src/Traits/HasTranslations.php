@@ -80,12 +80,13 @@ trait HasTranslations
      *
      * @param  string  $key
      * @param  string  $locale
+     * @param  bool    $useFallbackLocale
      *
      * @return mixed
      */
-    public function trans($key, $locale = '')
+    public function trans($key, $locale = '', bool $useFallbackLocale = true)
     {
-        return $this->getTranslation($key, $locale);
+        return $this->getTranslation($key, $locale, $useFallbackLocale);
     }
 
     /***
@@ -121,7 +122,7 @@ trait HasTranslations
             $this->guardAgainstNonTranslatableAttribute($key);
 
             return array_filter(json_decode($this->getAttributeFromArray($key) ?? '' ?: '{}', true) ?: [], function ($value) {
-                return $value !== null && $value !== false && $value !== '';
+                return $value !== null && $value !== '';
             });
         }
 

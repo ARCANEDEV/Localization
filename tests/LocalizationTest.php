@@ -512,15 +512,6 @@ class LocalizationTest extends TestCase
         );
     }
 
-    /** @test */
-    public function it_can_use_facade()
-    {
-        static::assertSame(
-            $this->app->getLocale(),
-            \Arcanedev\Localization\Facades\Localization::getDefaultLocale()
-        );
-    }
-
     /* -----------------------------------------------------------------
      |  Other Methods
      | -----------------------------------------------------------------

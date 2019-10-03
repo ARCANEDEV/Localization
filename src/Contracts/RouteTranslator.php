@@ -90,12 +90,12 @@ interface RouteTranslator
     /**
      * Get URL from route name.
      *
-     * @param  string      $locale
-     * @param  string      $defaultLocale
-     * @param  string      $transKey
-     * @param  array       $attributes
-     * @param  bool|false  $defaultHidden
-     * @param  bool|false  $showHiddenLocale
+     * @param  string|bool  $locale
+     * @param  string       $defaultLocale
+     * @param  string       $transKey
+     * @param  array        $attributes
+     * @param  bool|false   $defaultHidden
+     * @param  bool|false   $showHiddenLocale
      *
      * @return string
      */

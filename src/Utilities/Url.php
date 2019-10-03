@@ -9,8 +9,6 @@ use Illuminate\Http\Request;
  *
  * @package  Arcanedev\Localization\Utilities
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
- *
- * @todo:    Refactoring
  */
 class Url implements UrlContract
 {
@@ -96,7 +94,7 @@ class Url implements UrlContract
      *
      * @return array
      */
-    private static function extractAttributesFromRoutes($url, $routes)
+    private static function extractAttributesFromRoutes(array $url, $routes): array
     {
         $attributes = [];
 
@@ -128,7 +126,7 @@ class Url implements UrlContract
      *
      * @return bool
      */
-    private static function hasAttributesFromUriPath($url, $path, &$attributes)
+    private static function hasAttributesFromUriPath($url, $path, &$attributes): bool
     {
         $i     = 0;
         $match = true;
@@ -166,7 +164,7 @@ class Url implements UrlContract
      * @param  string  $segment
      * @param  array   $attributes
      */
-    private static function extractAttributesFromSegment($url, $path, $i, $j, $segment, &$attributes)
+    private static function extractAttributesFromSegment($url, $path, $i, $j, $segment, &$attributes): void
     {
         // Required parameters
         if (preg_match('/{[\w]+}/', $segment)) {
@@ -196,7 +194,7 @@ class Url implements UrlContract
      *
      * @return array
      */
-    private static function checkParsedUrl(array $parsed)
+    private static function checkParsedUrl(array $parsed): array
     {
         $scheme   =& $parsed['scheme'];
         $user     =& $parsed['user'];
@@ -220,7 +218,7 @@ class Url implements UrlContract
      *
      * @return string
      */
-    private static function getUrl(array $parsed)
+    private static function getUrl(array $parsed): string
     {
         return strlen($parsed['scheme']) ? $parsed['scheme'].':'.self::getHierPart($parsed) : '';
     }
@@ -232,7 +230,7 @@ class Url implements UrlContract
      *
      * @return string
      */
-    private static function getHierPart(array $parsed)
+    private static function getHierPart(array $parsed): string
     {
         return strlen($authority = self::getAuthority($parsed))
             ? '//'.$authority.$parsed['path']
@@ -246,7 +244,7 @@ class Url implements UrlContract
      *
      * @return string
      */
-    private static function getAuthority(array $parsed)
+    private static function getAuthority(array $parsed): string
     {
         $host = self::getHost($parsed);
 
@@ -260,7 +258,7 @@ class Url implements UrlContract
      *
      * @return string
      */
-    private static function getUserInfo(array $parsed)
+    private static function getUserInfo(array $parsed): string
     {
         return strlen($parsed['pass']) ? $parsed['user'].':'.$parsed['pass'] : '';
     }
@@ -272,7 +270,7 @@ class Url implements UrlContract
      *
      * @return string
      */
-    private static function getHost(array $parsed)
+    private static function getHost(array $parsed): string
     {
         return empty((string) $parsed['port'])
             ? $parsed['host']
@@ -286,7 +284,7 @@ class Url implements UrlContract
      *
      * @return string
      */
-    private static function getQuery(array $parsed)
+    private static function getQuery(array $parsed): string
     {
         return strlen($parsed['query']) ? '?'.$parsed['query'] : '';
     }
@@ -298,7 +296,7 @@ class Url implements UrlContract
      *
      * @return string
      */
-    private static function getFragment(array $parsed)
+    private static function getFragment(array $parsed): string
     {
         return strlen($parsed['fragment']) ? '#'.$parsed['fragment'] : '';
     }

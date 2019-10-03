@@ -46,20 +46,7 @@ abstract class TestCase extends BaseTestCase
     {
         return [
             \Arcanedev\Localization\LocalizationServiceProvider::class,
-        ];
-    }
-
-    /**
-     * Get package aliases.
-     *
-     * @param  \Illuminate\Foundation\Application  $app
-     *
-     * @return array
-     */
-    protected function getPackageAliases($app)
-    {
-        return [
-            'Localization' => \Arcanedev\Localization\Facades\Localization::class,
+            \Arcanedev\Localization\Providers\DeferredServicesProvider::class,
         ];
     }
 

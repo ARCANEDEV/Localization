@@ -141,7 +141,6 @@ class LocalesManager implements LocalesManagerContract
 
         $this->isDefaultLocaleSupported($defaultLocale);
         $this->defaultLocale = $defaultLocale;
-        // TODO: Refresh locales & supportedLocales collection [Locale entity => default property]
 
         return $this;
     }

@@ -288,8 +288,6 @@ class Localization implements LocalizationContract
     /**
      * Returns an URL adapted to $locale or current locale.
      *
-     * @todo: Refactor this beast
-     *
      * @param  string|null  $locale
      * @param  string|null  $url
      * @param  array        $attributes
@@ -404,7 +402,8 @@ class Localization implements LocalizationContract
      */
     private function findTranslatedRouteByUrl($url, $attributes, $locale)
     {
-        if (empty($url)) return false;
+        if (empty($url))
+            return false;
 
         // check if this url is a translated url
         foreach ($this->routeTranslator->getTranslatedRoutes() as $translatedRoute) {
@@ -494,7 +493,7 @@ class Localization implements LocalizationContract
      *
      * @throws \Arcanedev\Localization\Exceptions\UnsupportedLocaleException
      */
-    private function isLocaleSupportedOrFail($locale)
+    private function isLocaleSupportedOrFail($locale): void
     {
         if ( ! $this->isLocaleSupported($locale))
             throw new UnsupportedLocaleException(
