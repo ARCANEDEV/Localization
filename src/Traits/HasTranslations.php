@@ -1,4 +1,8 @@
-<?php namespace Arcanedev\Localization\Traits;
+<?php
+
+declare(strict_types=1);
+
+namespace Arcanedev\Localization\Traits;
 
 use Arcanedev\Localization\Events\TranslationHasBeenSet;
 use Arcanedev\Localization\Exceptions\UntranslatableAttributeException;
@@ -269,13 +273,15 @@ trait HasTranslations
      */
     protected function getLocale(): string
     {
-        return config('app.locale');
+        return (string) config('app.locale');
     }
 
     /**
      * Guard against untranslatable attribute.
      *
      * @param  string  $key
+     *
+     * @throws \Arcanedev\Localization\Exceptions\UntranslatableAttributeException
      */
     protected function guardAgainstNonTranslatableAttribute($key)
     {

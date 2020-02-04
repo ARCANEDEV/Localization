@@ -1,4 +1,8 @@
-<?php namespace Arcanedev\Localization\Tests\Middleware;
+<?php
+
+declare(strict_types=1);
+
+namespace Arcanedev\Localization\Tests\Middleware;
 
 use Arcanedev\Localization\Tests\TestCase;
 use Illuminate\Http\RedirectResponse;
@@ -18,7 +22,7 @@ class LocaleCookieRedirectTest extends TestCase
      */
 
     /** @test */
-    public function it_can_redirect_with_locale_cookie()
+    public function it_can_redirect_with_locale_cookie(): void
     {
         $this->refreshApplication(false, false, true);
 
@@ -35,7 +39,7 @@ class LocaleCookieRedirectTest extends TestCase
     }
 
     /** @test */
-    public function it_can_pass_redirect_without_cookie()
+    public function it_can_pass_redirect_without_cookie(): void
     {
         $this->refreshApplication(false, true);
         session()->put('locale', null);

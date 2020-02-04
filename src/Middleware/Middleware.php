@@ -1,8 +1,10 @@
-<?php namespace Arcanedev\Localization\Middleware;
+<?php
+
+declare(strict_types=1);
+
+namespace Arcanedev\Localization\Middleware;
 
 use Arcanedev\Localization\Contracts\Localization;
-use Arcanedev\Localization\Entities\LocaleCollection;
-use Arcanedev\Localization\Exceptions\UndefinedSupportedLocalesException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
@@ -76,9 +78,7 @@ abstract class Middleware
     /**
      * Return an array of all supported Locales.
      *
-     * @throws UndefinedSupportedLocalesException
-     *
-     * @return LocaleCollection
+     * @return \Arcanedev\Localization\Entities\LocaleCollection
      */
     public function getSupportedLocales()
     {

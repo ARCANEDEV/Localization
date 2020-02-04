@@ -1,4 +1,8 @@
-<?php namespace Arcanedev\Localization\Exceptions;
+<?php
+
+declare(strict_types=1);
+
+namespace Arcanedev\Localization\Exceptions;
 
 /**
  * Class     UndefinedSupportedLocalesException
@@ -8,9 +12,13 @@
  */
 class UndefinedSupportedLocalesException extends LocalizationException
 {
-    /* ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
      |  Constructor
-     | ------------------------------------------------------------------------------------------------
+     | -----------------------------------------------------------------
+     */
+
+    /**
+     * UndefinedSupportedLocalesException constructor.
      */
     public function __construct()
     {

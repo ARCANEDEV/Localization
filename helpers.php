@@ -1,14 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
+use Arcanedev\Localization\Contracts\Localization;
+
 if ( ! function_exists('localization')) {
     /**
      * Get the Localization instance.
      *
      * @return Arcanedev\Localization\Contracts\Localization
      */
-    function localization()
+    function localization(): Localization
     {
-        return app(Arcanedev\Localization\Contracts\Localization::class);
+        return app(Localization::class);
     }
 }
 

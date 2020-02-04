@@ -1,4 +1,8 @@
-<?php namespace Arcanedev\Localization\Tests\Middleware;
+<?php
+
+declare(strict_types=1);
+
+namespace Arcanedev\Localization\Tests\Middleware;
 
 use Arcanedev\Localization\Tests\TestCase;
 use Illuminate\Http\RedirectResponse;
@@ -18,7 +22,7 @@ class LocaleSessionRedirectTest extends TestCase
      */
 
     /** @test */
-    public function it_can_redirect_with_locale_session()
+    public function it_can_redirect_with_locale_session(): void
     {
         $this->refreshApplication(false, true);
         session()->put('locale', 'fr');
@@ -38,7 +42,7 @@ class LocaleSessionRedirectTest extends TestCase
     }
 
     /** @test */
-    public function it_can_pass_redirect_without_session()
+    public function it_can_pass_redirect_without_session(): void
     {
         $this->refreshApplication(false, true);
         session()->put('locale', null);

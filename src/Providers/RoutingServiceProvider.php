@@ -1,4 +1,8 @@
-<?php namespace Arcanedev\Localization\Providers;
+<?php
+
+declare(strict_types=1);
+
+namespace Arcanedev\Localization\Providers;
 
 use Arcanedev\Localization\Middleware;
 use Arcanedev\Support\Providers\RouteServiceProvider as ServiceProvider;
@@ -40,7 +44,7 @@ class RoutingServiceProvider extends ServiceProvider
     /**
      * Register the service provider.
      */
-    public function register()
+    public function register(): void
     {
         $this->app['router']->mixin(new Router);
 

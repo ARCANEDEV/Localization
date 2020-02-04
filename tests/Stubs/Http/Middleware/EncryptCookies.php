@@ -1,4 +1,8 @@
-<?php namespace Arcanedev\Localization\Tests\Stubs\Http\Middleware;
+<?php
+
+declare(strict_types=1);
+
+namespace Arcanedev\Localization\Tests\Stubs\Http\Middleware;
 
 use Illuminate\Cookie\Middleware\EncryptCookies as BaseEncrypter;
 

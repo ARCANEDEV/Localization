@@ -1,4 +1,8 @@
-<?php namespace Arcanedev\Localization\Utilities;
+<?php
+
+declare(strict_types=1);
+
+namespace Arcanedev\Localization\Utilities;
 
 use Arcanedev\Localization\Contracts\LocalesManager as LocalesManagerContract;
 use Arcanedev\Localization\Entities\Locale;
@@ -73,7 +77,7 @@ class LocalesManager implements LocalesManagerContract
     /**
      * Load all locales data.
      */
-    private function load()
+    private function load(): void
     {
         $this->locales->loadFromArray($this->getConfig('locales'));
         $this->setSupportedLocales($this->getConfig('supported-locales'));
@@ -132,7 +136,7 @@ class LocalesManager implements LocalesManagerContract
      *
      * @param  string  $defaultLocale
      *
-     * @return self
+     * @return $this
      */
     public function setDefaultLocale($defaultLocale = null)
     {
@@ -167,7 +171,7 @@ class LocalesManager implements LocalesManagerContract
      *
      * @param  string  $currentLocale
      *
-     * @return self
+     * @return $this
      */
     public function setCurrentLocale($currentLocale)
     {
@@ -221,7 +225,7 @@ class LocalesManager implements LocalesManagerContract
      *
      * @param  array  $supportedLocales
      *
-     * @return self
+     * @return $this
      *
      * @throws \Arcanedev\Localization\Exceptions\UndefinedSupportedLocalesException
      */
@@ -359,7 +363,7 @@ class LocalesManager implements LocalesManagerContract
      *
      * @return \Arcanedev\Localization\Entities\LocaleCollection
      */
-    private function filterLocales(array $supportedLocales)
+    private function filterLocales(array $supportedLocales): LocaleCollection
     {
         return $this->locales->filter(function(Locale $locale) use ($supportedLocales) {
             return in_array($locale->key(), $supportedLocales);
@@ -369,7 +373,7 @@ class LocalesManager implements LocalesManagerContract
     /**
      * Update locale regional.
      */
-    private function updateRegional()
+    private function updateRegional(): void
     {
         $currentLocale = $this->getCurrentLocaleEntity();
 

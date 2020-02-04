@@ -1,4 +1,8 @@
-<?php namespace Arcanedev\Localization\Utilities;
+<?php
+
+declare(strict_types=1);
+
+namespace Arcanedev\Localization\Utilities;
 
 use Arcanedev\Localization\Contracts\Negotiator as NegotiatorContract;
 use Arcanedev\Localization\Entities\LocaleCollection;
@@ -110,9 +114,9 @@ class Negotiator implements NegotiatorContract
     /**
      * Get locale from accepted languages header.
      *
-     * @return null|string
+     * @return string|null
      */
-    private function getFromAcceptedLanguagesHeader()
+    private function getFromAcceptedLanguagesHeader(): ?string
     {
         $matches = $this->getMatchesFromAcceptedLanguages();
 
@@ -131,9 +135,9 @@ class Negotiator implements NegotiatorContract
     /**
      * Get locale from http accepted languages server.
      *
-     * @return null|string
+     * @return string|null
      */
-    private function getFromHttpAcceptedLanguagesServer()
+    private function getFromHttpAcceptedLanguagesServer(): ?string
     {
         $httpAcceptLanguage = $this->request->server('HTTP_ACCEPT_LANGUAGE');
 
@@ -151,9 +155,9 @@ class Negotiator implements NegotiatorContract
     /**
      * Get locale from remote host server.
      *
-     * @return null|string
+     * @return string|null
      */
-    private function getFromRemoteHostServer()
+    private function getFromRemoteHostServer(): ?string
     {
         if (empty($remoteHost = $this->request->server('REMOTE_HOST')))
             return null;
@@ -174,9 +178,9 @@ class Negotiator implements NegotiatorContract
      *
      * @param  array  $matches
      *
-     * @return null|string
+     * @return string|null
      */
-    private function inSupportedLocales(array $matches)
+    private function inSupportedLocales(array $matches): ?string
     {
         foreach (array_keys($matches) as $locale) {
             if ($this->isSupported($locale)) return $locale;
@@ -198,7 +202,7 @@ class Negotiator implements NegotiatorContract
      *
      * @return bool
      */
-    private function isSupported($locale)
+    private function isSupported($locale): bool
     {
         return $this->supportedLocales->has($locale);
     }
@@ -213,7 +217,7 @@ class Negotiator implements NegotiatorContract
      *
      * @return array  -  Matches from the header field Accept-Languages
      */
-    private function getMatchesFromAcceptedLanguages()
+    private function getMatchesFromAcceptedLanguages(): array
     {
         $matches = [];
 
@@ -239,7 +243,7 @@ class Negotiator implements NegotiatorContract
      *
      * @return array
      */
-    private function retrieveGenericMatches($acceptLanguages, &$matches)
+    private function retrieveGenericMatches($acceptLanguages, &$matches): array
     {
         $genericMatches = [];
 
@@ -281,7 +285,7 @@ class Negotiator implements NegotiatorContract
      *
      * @return float|null
      */
-    private function getQualityFactor($locale, $option)
+    private function getQualityFactor($locale, $option): ?float
     {
         if (isset($option[1]))
             return (float) str_replace('q=', '', $option[1]);

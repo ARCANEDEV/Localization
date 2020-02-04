@@ -1,4 +1,8 @@
-<?php namespace Arcanedev\Localization;
+<?php
+
+declare(strict_types=1);
+
+namespace Arcanedev\Localization;
 
 use Arcanedev\Support\Providers\PackageServiceProvider;
 

@@ -1,4 +1,8 @@
-<?php namespace Arcanedev\Localization\Tests\Stubs\Http;
+<?php
+
+declare(strict_types=1);
+
+namespace Arcanedev\Localization\Tests\Stubs\Http;
 
 use Illuminate\Routing\Router;
 
@@ -31,7 +35,7 @@ class RouteRegistrar
      *
      * @param  \Illuminate\Routing\Router  $router
      *
-     * @return self
+     * @return $this
      */
     private function setRouter(Router $router)
     {
@@ -55,7 +59,7 @@ class RouteRegistrar
      *
      * @param  array  $names
      *
-     * @return self
+     * @return $this
      */
     private function setRouteNames(array $names)
     {
@@ -71,7 +75,7 @@ class RouteRegistrar
      *
      * @param  string  $name
      *
-     * @return self
+     * @return $this
      */
     private function setRouteName($name)
     {

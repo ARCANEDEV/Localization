@@ -1,4 +1,8 @@
-<?php namespace Arcanedev\Localization\Exceptions;
+<?php
+
+declare(strict_types=1);
+
+namespace Arcanedev\Localization\Exceptions;
 
 /**
  * Class     UntranslatableAttributeException
@@ -6,8 +10,19 @@
  * @package  Arcanedev\Localization\Exceptions
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
-class UntranslatableAttributeException extends LocalizationException 
+class UntranslatableAttributeException extends LocalizationException
 {
+    /* -----------------------------------------------------------------
+     |  Main Methods
+     | -----------------------------------------------------------------
+     */
+
+    /**
+     * @param  string  $key
+     * @param  array   $translatableAttributes
+     *
+     * @return static
+     */
     public static function make(string $key, array $translatableAttributes)
     {
         $translatableAttributes = implode(', ', $translatableAttributes);

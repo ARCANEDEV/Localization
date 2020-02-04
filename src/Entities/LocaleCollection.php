@@ -1,4 +1,8 @@
-<?php namespace Arcanedev\Localization\Entities;
+<?php
+
+declare(strict_types=1);
+
+namespace Arcanedev\Localization\Entities;
 
 use Illuminate\Support\Collection;
 
@@ -32,7 +36,7 @@ class LocaleCollection extends Collection
      *
      * @param  array  $supported
      *
-     * @return self
+     * @return $this
      */
     public function setSupportedKeys(array $supported)
     {
@@ -88,7 +92,7 @@ class LocaleCollection extends Collection
     /**
      * Load from config.
      *
-     * @return self
+     * @return $this
      */
     public function loadFromConfig()
     {
@@ -101,7 +105,7 @@ class LocaleCollection extends Collection
      *
      * @param  array  $locales
      *
-     * @return self
+     * @return $this
      */
     public function loadFromArray(array $locales)
     {

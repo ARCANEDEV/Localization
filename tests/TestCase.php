@@ -1,4 +1,8 @@
-<?php namespace Arcanedev\Localization\Tests;
+<?php
+
+declare(strict_types=1);
+
+namespace Arcanedev\Localization\Tests;
 
 use Orchestra\Testbench\TestCase as BaseTestCase;
 
@@ -42,7 +46,7 @@ abstract class TestCase extends BaseTestCase
      *
      * @return array
      */
-    protected function getPackageProviders($app)
+    protected function getPackageProviders($app): array
     {
         return [
             \Arcanedev\Localization\LocalizationServiceProvider::class,
@@ -55,7 +59,7 @@ abstract class TestCase extends BaseTestCase
      *
      * @param  \Illuminate\Foundation\Application  $app
      */
-    protected function resolveApplicationHttpKernel($app)
+    protected function resolveApplicationHttpKernel($app): void
     {
         $app->singleton(\Illuminate\Contracts\Http\Kernel::class, Stubs\Http\Kernel::class);
     }
@@ -63,11 +67,9 @@ abstract class TestCase extends BaseTestCase
     /**
      * Define environment setup.
      *
-     * @param  \Illuminate\Foundation\Application   $app
-     *
-     * @return void
+     * @param  \Illuminate\Foundation\Application  $app
      */
-    protected function getEnvironmentSetUp($app)
+    protected function getEnvironmentSetUp($app): void
     {
         /**
          * @var  \Illuminate\Contracts\Config\Repository         $config
@@ -109,7 +111,7 @@ abstract class TestCase extends BaseTestCase
      * @param  bool         $session
      * @param  bool         $cookie
      */
-    protected function refreshApplication($locale = false, $session = false, $cookie = false)
+    protected function refreshApplication($locale = false, $session = false, $cookie = false): void
     {
         parent::refreshApplication();
 
@@ -134,7 +136,7 @@ abstract class TestCase extends BaseTestCase
      *
      * @param  string|bool  $locale
      */
-    protected function setRoutes($locale = false)
+    protected function setRoutes($locale = false): void
     {
         $this->routeRegistrar = new Stubs\Http\RouteRegistrar;
 

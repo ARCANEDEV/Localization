@@ -1,4 +1,8 @@
-<?php namespace Arcanedev\Localization\Routing;
+<?php
+
+declare(strict_types=1);
+
+namespace Arcanedev\Localization\Routing;
 
 use Closure;
 
@@ -22,7 +26,7 @@ class Router
      *
      * @return \Closure
      */
-    public function localizedGroup()
+    public function localizedGroup(): Closure
     {
         return function(Closure $callback, array $attributes = []) {
             $activeMiddleware = array_keys(array_filter(
@@ -43,7 +47,7 @@ class Router
      *
      * @return \Closure|\Illuminate\Routing\Route
      */
-    public function transGet()
+    public function transGet(): Closure
     {
         return function($trans, $action) {
             return $this->get(
@@ -57,7 +61,7 @@ class Router
      *
      * @return \Closure|\Illuminate\Routing\Route
      */
-    public function transPost()
+    public function transPost(): Closure
     {
         return function($trans, $action) {
             return $this->post(
@@ -71,7 +75,7 @@ class Router
      *
      * @return \Closure|\Illuminate\Routing\Route
      */
-    public function transPut()
+    public function transPut(): Closure
     {
         return function($trans, $action) {
             return $this->put(
@@ -85,7 +89,7 @@ class Router
      *
      * @return \Closure|\Illuminate\Routing\Route
      */
-    public function transPatch()
+    public function transPatch(): Closure
     {
         return function($trans, $action) {
             return $this->patch(
@@ -99,7 +103,7 @@ class Router
      *
      * @return \Closure|\Illuminate\Routing\Route
      */
-    public function transDelete()
+    public function transDelete(): Closure
     {
         return function($trans, $action) {
             return $this->delete(
@@ -113,7 +117,7 @@ class Router
      *
      * @return \Closure|\Illuminate\Routing\Route
      */
-    public function transOptions()
+    public function transOptions(): Closure
     {
         return function($trans, $action) {
             return $this->options(
@@ -127,7 +131,7 @@ class Router
      *
      * @return \Closure|\Illuminate\Routing\Route
      */
-    public function transAny()
+    public function transAny(): Closure
     {
         return function($trans, $action) {
             return $this->any(

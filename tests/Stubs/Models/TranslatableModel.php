@@ -1,4 +1,8 @@
-<?php namespace Arcanedev\Localization\Tests\Stubs\Models;
+<?php
+
+declare(strict_types=1);
+
+namespace Arcanedev\Localization\Tests\Stubs\Models;
 
 use Arcanedev\Localization\Traits\HasTranslations;
 use Illuminate\Database\Eloquent\Model;

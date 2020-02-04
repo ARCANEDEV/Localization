@@ -1,4 +1,8 @@
-<?php namespace Arcanedev\Localization\Tests\Routing;
+<?php
+
+declare(strict_types=1);
+
+namespace Arcanedev\Localization\Tests\Routing;
 
 use Illuminate\Routing\Router;
 use Arcanedev\Localization\Tests\TestCase;
@@ -44,14 +48,14 @@ class RouterTest extends TestCase
      */
 
     /** @test */
-    public function it_can_be_instantiated()
+    public function it_can_be_instantiated(): void
     {
         static::assertInstanceOf(\Illuminate\Routing\Router::class, $this->router);
         static::assertInstanceOf(Router::class, $this->router);
     }
 
     /** @test */
-    public function it_can_get_and_check_all_routes()
+    public function it_can_get_and_check_all_routes(): void
     {
         $routes     = $this->router->getRoutes();
         $routeNames = $this->routeRegistrar->getRouteNames();

@@ -1,4 +1,8 @@
-<?php namespace Arcanedev\Localization\Providers;
+<?php
+
+declare(strict_types=1);
+
+namespace Arcanedev\Localization\Providers;
 
 use Arcanedev\Localization\Contracts\{
     LocalesManager as LocalesManagerContract,
@@ -40,7 +44,7 @@ class DeferredServicesProvider extends ServiceProvider implements DeferrableProv
      *
      * @return array
      */
-    public function provides()
+    public function provides(): array
     {
         return [
             LocalizationContract::class,
@@ -58,7 +62,7 @@ class DeferredServicesProvider extends ServiceProvider implements DeferrableProv
     /**
      * Register Localization.
      */
-    private function registerLocalization()
+    private function registerLocalization(): void
     {
         $this->singleton(LocalizationContract::class, Localization::class);
     }
@@ -66,7 +70,7 @@ class DeferredServicesProvider extends ServiceProvider implements DeferrableProv
     /**
      * Register RouteTranslator utility.
      */
-    private function registerRouteTranslator()
+    private function registerRouteTranslator(): void
     {
         $this->singleton(RouteTranslatorContract::class, RouteTranslator::class);
     }
@@ -74,7 +78,7 @@ class DeferredServicesProvider extends ServiceProvider implements DeferrableProv
     /**
      * Register LocalesManager utility.
      */
-    private function registerLocalesManager()
+    private function registerLocalesManager(): void
     {
         $this->singleton(LocalesManagerContract::class, LocalesManager::class);
     }
@@ -82,7 +86,7 @@ class DeferredServicesProvider extends ServiceProvider implements DeferrableProv
     /**
      * Register LocaleNegotiator utility.
      */
-    private function registerLocaleNegotiator()
+    private function registerLocaleNegotiator(): void
     {
         $this->bind(NegotiatorContract::class, function ($app) {
             /** @var  \Arcanedev\Localization\Contracts\LocalesManager  $manager */

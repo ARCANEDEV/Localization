@@ -1,6 +1,8 @@
-<?php namespace Arcanedev\Localization\Events;
+<?php
 
-use Illuminate\Database\Eloquent\Model;
+declare(strict_types=1);
+
+namespace Arcanedev\Localization\Events;
 
 /**
  * Class     TranslationHasBeenSet

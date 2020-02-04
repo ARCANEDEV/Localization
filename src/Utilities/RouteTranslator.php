@@ -1,4 +1,8 @@
-<?php namespace Arcanedev\Localization\Utilities;
+<?php
+
+declare(strict_types=1);
+
+namespace Arcanedev\Localization\Utilities;
 
 use Arcanedev\Localization\Contracts\RouteTranslator as RouteTranslatorContract;
 use Arcanedev\Localization\Entities\LocaleCollection;
@@ -232,7 +236,7 @@ class RouteTranslator implements RouteTranslatorContract
      *
      * @throws \Arcanedev\Localization\Exceptions\InvalidTranslationException
      */
-    private function translate($key, $locale = null)
+    private function translate($key, $locale = null): string
     {
         if (is_null($locale))
             $locale = $this->translator->getLocale();

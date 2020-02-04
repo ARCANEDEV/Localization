@@ -1,4 +1,8 @@
-<?php namespace Arcanedev\Localization\Contracts;
+<?php
+
+declare(strict_types=1);
+
+namespace Arcanedev\Localization\Contracts;
 
 /**
  * Interface  LocalesManager
@@ -34,7 +38,7 @@ interface LocalesManager
      *
      * @param  string  $defaultLocale
      *
-     * @return self
+     * @return $this
      */
     public function setDefaultLocale($defaultLocale = null);
 
@@ -50,7 +54,7 @@ interface LocalesManager
      *
      * @param  string  $currentLocale
      *
-     * @return self
+     * @return $this
      */
     public function setCurrentLocale($currentLocale);
 
@@ -87,7 +91,7 @@ interface LocalesManager
      *
      * @param  array  $supportedLocales
      *
-     * @return self
+     * @return $this
      */
     public function setSupportedLocales(array $supportedLocales);
 
