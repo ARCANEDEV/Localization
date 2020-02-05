@@ -1,6 +1,6 @@
 # Localization [![Packagist License][badge_license]](LICENSE.md) [![For Laravel][badge_laravel]][link-github-repo]
 
-[![Travis Status][badge_build]][link-travis]
+[![Github Workflow Status][badge_build]][link-github-status]
 [![Coverage Status][badge_coverage]][link-scrutinizer]
 [![Scrutinizer Code Quality][badge_quality]][link-scrutinizer]
 [![SensioLabs Insight][badge_insight]][link-insight]
@@ -53,7 +53,7 @@ If you discover any security related issues, please email arcanedev.maroc@gmail.
 
 [badge_license]:   http://img.shields.io/packagist/l/arcanedev/localization.svg?style=flat-square
 [badge_laravel]:   https://img.shields.io/badge/Laravel-5.x%20|%206.x-orange.svg?style=flat-square
-[badge_build]:     http://img.shields.io/travis/ARCANEDEV/Localization.svg?style=flat-square
+[badge_build]:     https://img.shields.io/github/workflow/status/ARCANEDEV/Localization/run-tests?style=flat-square
 [badge_coverage]:  https://img.shields.io/scrutinizer/coverage/g/ARCANEDEV/Localization.svg?style=flat-square
 [badge_quality]:   https://img.shields.io/scrutinizer/g/ARCANEDEV/Localization.svg?style=flat-square
 [badge_insight]:   https://img.shields.io/sensiolabs/i/30a231b2-295e-466a-8733-fe95cf2bc48d.svg?style=flat-square
@@ -64,9 +64,9 @@ If you discover any security related issues, please email arcanedev.maroc@gmail.
 
 [link-author]:        https://github.com/arcanedev-maroc
 [link-github-repo]:   https://github.com/ARCANEDEV/Localization
+[link-github-status]: https://github.com/ARCANEDEV/localization/actions
 [link-github-issues]: https://github.com/ARCANEDEV/Localization/issues
 [link-contributors]:  https://github.com/ARCANEDEV/Localization/graphs/contributors
 [link-packagist]:     https://packagist.org/packages/arcanedev/localization
-[link-travis]:        https://travis-ci.org/ARCANEDEV/Localization
 [link-scrutinizer]:   https://scrutinizer-ci.com/g/ARCANEDEV/Localization/?branch=master
 [link-insight]:       https://insight.sensiolabs.com/projects/30a231b2-295e-466a-8733-fe95cf2bc48d

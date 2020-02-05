@@ -1,4 +1,8 @@
-<?php namespace Arcanedev\Localization\Contracts;
+<?php
+
+declare(strict_types=1);
+
+namespace Arcanedev\Localization\Contracts;
 
 /**
  * Interface  RouteBindable

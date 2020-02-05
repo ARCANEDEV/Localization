@@ -1,4 +1,8 @@
-<?php namespace Arcanedev\Localization\Tests;
+<?php
+
+declare(strict_types=1);
+
+namespace Arcanedev\Localization\Tests;
 
 use Arcanedev\Localization\Entities\LocaleCollection;
 use Arcanedev\Localization\Localization;
@@ -17,13 +21,13 @@ class LocalizationTest extends TestCase
      */
 
     /** @test */
-    public function it_can_be_instantiated()
+    public function it_can_be_instantiated(): void
     {
         static::assertInstanceOf(Localization::class, localization());
     }
 
     /** @test */
-    public function it_must_throw_unsupported_locale_exception_on_default_locale()
+    public function it_must_throw_unsupported_locale_exception_on_default_locale(): void
     {
         $this->expectException(\Arcanedev\Localization\Exceptions\UnsupportedLocaleException::class);
         $this->expectExceptionMessage('Laravel default locale [jp] is not in the `supported-locales` array.');
@@ -38,7 +42,7 @@ class LocalizationTest extends TestCase
     }
 
     /** @test */
-    public function it_can_set_and_get_supported_locales()
+    public function it_can_set_and_get_supported_locales(): void
     {
         $supportedLocales = localization()->getSupportedLocales();
 
@@ -65,7 +69,7 @@ class LocalizationTest extends TestCase
     }
 
     /** @test */
-    public function it_must_throw_undefined_supported_locales_exception_on_set_supported_locales_with_empty_array()
+    public function it_must_throw_undefined_supported_locales_exception_on_set_supported_locales_with_empty_array(): void
     {
         $this->expectException(\Arcanedev\Localization\Exceptions\UndefinedSupportedLocalesException::class);
 
@@ -73,7 +77,7 @@ class LocalizationTest extends TestCase
     }
 
     /** @test */
-    public function it_can_get_supported_locales_keys()
+    public function it_can_get_supported_locales_keys(): void
     {
         static::assertSame(
             $this->supportedLocales,
@@ -82,7 +86,7 @@ class LocalizationTest extends TestCase
     }
 
     /** @test */
-    public function it_can_set_locale()
+    public function it_can_set_locale(): void
     {
         static::assertSame(route('about'), 'http://localhost/about');
 
@@ -102,7 +106,7 @@ class LocalizationTest extends TestCase
     }
 
     /** @test */
-    public function it_can_get_default_locale()
+    public function it_can_get_default_locale(): void
     {
         static::assertSame('en', localization()->getDefaultLocale());
 
@@ -113,7 +117,7 @@ class LocalizationTest extends TestCase
     }
 
     /** @test */
-    public function it_can_get_current_locale()
+    public function it_can_get_current_locale(): void
     {
         static::assertSame('en', localization()->getCurrentLocale());
         static::assertNotEquals('es', localization()->getCurrentLocale());
@@ -135,7 +139,7 @@ class LocalizationTest extends TestCase
     }
 
     /** @test */
-    public function it_can_localize_url()
+    public function it_can_localize_url(): void
     {
         static::assertSame(
             $this->testUrlOne.localization()->getCurrentLocale(),
@@ -189,7 +193,7 @@ class LocalizationTest extends TestCase
     }
 
     /** @test */
-    public function it_can_get_localized_url()
+    public function it_can_get_localized_url(): void
     {
         static::assertSame(
             $this->testUrlOne.localization()->getCurrentLocale(),
@@ -268,7 +272,7 @@ class LocalizationTest extends TestCase
      *
      * @dataProvider getLocalizedURLDataProvider
      */
-    public function it_can_get_localized_url_with_specific_format($hideDefault, $forceDefault, $locale, $url, $expected)
+    public function it_can_get_localized_url_with_specific_format($hideDefault, $forceDefault, $locale, $url, $expected): void
     {
         $this->app['config']->set('localization.hide-default-in-url', $hideDefault);
 
@@ -279,7 +283,7 @@ class LocalizationTest extends TestCase
     }
 
     /** @test */
-    public function it_can_get_url_from_route_name_translated()
+    public function it_can_get_url_from_route_name_translated(): void
     {
         static::assertSame(
             $this->testUrlOne.'es/acerca',
@@ -330,7 +334,7 @@ class LocalizationTest extends TestCase
     }
 
     /** @test */
-    public function it_must_throw_an_exception_on_unsupported_locale()
+    public function it_must_throw_an_exception_on_unsupported_locale(): void
     {
         $this->expectException(\Arcanedev\Localization\Exceptions\UnsupportedLocaleException::class);
         $this->expectExceptionMessage("Locale 'jp' is not in the list of supported locales.");
@@ -339,7 +343,7 @@ class LocalizationTest extends TestCase
     }
 
     /** @test */
-    public function it_can_get_non_localized_url()
+    public function it_can_get_non_localized_url(): void
     {
         static::assertSame(
             $this->testUrlOne,
@@ -360,7 +364,7 @@ class LocalizationTest extends TestCase
     }
 
     /** @test */
-    public function it_can_get_current_locale_name()
+    public function it_can_get_current_locale_name(): void
     {
         $locales = [
             'en' => 'English',
@@ -376,7 +380,7 @@ class LocalizationTest extends TestCase
     }
 
     /** @test */
-    public function it_can_get_current_locale_script()
+    public function it_can_get_current_locale_script(): void
     {
         foreach ($this->supportedLocales as $locale) {
             localization()->setLocale($locale);
@@ -387,7 +391,7 @@ class LocalizationTest extends TestCase
     }
 
     /** @test */
-    public function it_can_get_current_locale_direction()
+    public function it_can_get_current_locale_direction(): void
     {
         foreach ($this->supportedLocales as $locale) {
             $this->refreshApplication($locale);
@@ -397,7 +401,7 @@ class LocalizationTest extends TestCase
     }
 
     /** @test */
-    public function it_can_get_current_locale_native()
+    public function it_can_get_current_locale_native(): void
     {
         $locales = [
             'en' => 'English',
@@ -413,7 +417,7 @@ class LocalizationTest extends TestCase
     }
 
     /** @test */
-    public function testGetCurrentLocaleRegional()
+    public function testGetCurrentLocaleRegional(): void
     {
         $locales = [
             'en' => 'en_GB',
@@ -429,7 +433,7 @@ class LocalizationTest extends TestCase
     }
 
     /** @test */
-    public function it_can_create_url_from_uri()
+    public function it_can_create_url_from_uri(): void
     {
         static::assertSame(
             'http://localhost/view/1',
@@ -446,7 +450,7 @@ class LocalizationTest extends TestCase
     }
 
     /** @test */
-    public function it_can_render_locales_navigation_bar()
+    public function it_can_render_locales_navigation_bar(): void
     {
         $navbar = localization()->localesNavbar();
 
@@ -458,7 +462,7 @@ class LocalizationTest extends TestCase
     }
 
     /** @test */
-    public function it_can_get_all_locales()
+    public function it_can_get_all_locales(): void
     {
         $locales = localization()->getAllLocales();
 
@@ -469,7 +473,7 @@ class LocalizationTest extends TestCase
     }
 
     /** @test */
-    public function it_can_get_localized_url_with_relative_urls()
+    public function it_can_get_localized_url_with_relative_urls(): void
     {
         static::assertSame($this->testUrlOne.'en', localization()->LocalizeURL('/'));
 
@@ -489,7 +493,7 @@ class LocalizationTest extends TestCase
     }
 
     /** @test */
-    public function it_can_get_localized_url_with_route_name_from_lang()
+    public function it_can_get_localized_url_with_route_name_from_lang(): void
     {
         static::assertSame(
             'http://localhost/en/view/en-view-slug',
@@ -523,7 +527,7 @@ class LocalizationTest extends TestCase
      * @param  string  $uri
      * @param  array   $server
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Foundation\Testing\TestResponse
      */
     public function makeCall($uri, array $server = [])
     {
@@ -539,7 +543,7 @@ class LocalizationTest extends TestCase
      *
      * @return array
      */
-    public function getLocalizedURLDataProvider()
+    public function getLocalizedURLDataProvider(): array
     {
         $url = 'http://localhost/';
 

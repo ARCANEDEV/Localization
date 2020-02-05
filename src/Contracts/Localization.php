@@ -1,4 +1,8 @@
-<?php namespace Arcanedev\Localization\Contracts;
+<?php
+
+declare(strict_types=1);
+
+namespace Arcanedev\Localization\Contracts;
 
 use Illuminate\Http\Request;
 
@@ -114,6 +118,8 @@ interface Localization
      * Sets the base url for the site.
      *
      * @param  string  $url
+     *
+     * @return $this
      */
     public function setBaseUrl($url);
 

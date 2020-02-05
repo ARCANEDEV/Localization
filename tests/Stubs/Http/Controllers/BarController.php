@@ -1,4 +1,8 @@
-<?php namespace Arcanedev\Localization\Tests\Stubs\Http\Controllers;
+<?php
+
+declare(strict_types=1);
+
+namespace Arcanedev\Localization\Tests\Stubs\Http\Controllers;
 
 use Illuminate\Routing\Controller;
 

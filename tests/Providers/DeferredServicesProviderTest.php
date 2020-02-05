@@ -1,4 +1,8 @@
-<?php namespace Arcanedev\Localization\Tests\Providers;
+<?php
+
+declare(strict_types=1);
+
+namespace Arcanedev\Localization\Tests\Providers;
 
 use Arcanedev\Localization\Providers\DeferredServicesProvider;
 use Arcanedev\Localization\Tests\TestCase;
@@ -44,7 +48,7 @@ class DeferredServicesProviderTest extends TestCase
      */
 
     /** @test */
-    public function it_can_be_instantiated()
+    public function it_can_be_instantiated(): void
     {
         $expectations = [
             \Illuminate\Support\ServiceProvider::class,
@@ -59,7 +63,7 @@ class DeferredServicesProviderTest extends TestCase
     }
 
     /** @test */
-    public function it_can_provides()
+    public function it_can_provides(): void
     {
         $expected = [
             \Arcanedev\Localization\Contracts\Localization::class,

@@ -1,4 +1,8 @@
-<?php namespace Arcanedev\Localization\Tests;
+<?php
+
+declare(strict_types=1);
+
+namespace Arcanedev\Localization\Tests;
 
 use Arcanedev\Localization\Events\TranslationHasBeenSet;
 use Arcanedev\Localization\Tests\Stubs\Models\TranslatableModel;
@@ -39,7 +43,7 @@ class TranslatableModelTest extends TestCase
      */
 
     /** @test */
-    public function it_can_set_translated_values_when_creating_a_model()
+    public function it_can_set_translated_values_when_creating_a_model(): void
     {
         /** @var  \Arcanedev\Localization\Tests\Stubs\Models\TranslatableModel  $model */
         $model = TranslatableModel::query()->create([
@@ -52,7 +56,7 @@ class TranslatableModelTest extends TestCase
     }
 
     /** @test */
-    public function it_can_save_a_translated_attribute()
+    public function it_can_save_a_translated_attribute(): void
     {
         $this->model->setTranslation('name', 'en', 'Name')
                     ->save();
@@ -61,7 +65,7 @@ class TranslatableModelTest extends TestCase
     }
 
     /** @test */
-    public function it_can_translate_attribute_with_a_fallback_locale()
+    public function it_can_translate_attribute_with_a_fallback_locale(): void
     {
         $this->model->setTranslation('name', 'en', 'Name')
                     ->save();
@@ -73,7 +77,7 @@ class TranslatableModelTest extends TestCase
     }
 
     /** @test */
-    public function it_must_return_empty_string_when_attribute_does_not_have_translation_and_fallback_locale_is_disabled()
+    public function it_must_return_empty_string_when_attribute_does_not_have_translation_and_fallback_locale_is_disabled(): void
     {
         $this->model->setTranslation('name', 'en', 'Name')
                     ->save();
@@ -82,7 +86,7 @@ class TranslatableModelTest extends TestCase
     }
 
     /** @test */
-    public function it_must_return_empty_string_when_attribute_does_not_have_translation_and_fallback_locale_is_not_translatable_and_available()
+    public function it_must_return_empty_string_when_attribute_does_not_have_translation_and_fallback_locale_is_not_translatable_and_available(): void
     {
         $this->setFallbackLocale('ar');
 
@@ -93,7 +97,7 @@ class TranslatableModelTest extends TestCase
     }
 
     /** @test */
-    public function it_must_return_empty_string_when_attribute_does_not_have_translation_and_fallback_locale_is_not_translatable_and_disabled()
+    public function it_must_return_empty_string_when_attribute_does_not_have_translation_and_fallback_locale_is_not_translatable_and_disabled(): void
     {
         $this->setFallbackLocale('ar');
 
@@ -104,7 +108,7 @@ class TranslatableModelTest extends TestCase
     }
 
     /** @test */
-    public function it_can_save_multiple_translations()
+    public function it_can_save_multiple_translations(): void
     {
         $this->model->setTranslation('name', 'en', 'Name')
                     ->setTranslation('name', 'fr', 'Nom')
@@ -116,7 +120,7 @@ class TranslatableModelTest extends TestCase
     }
 
     /** @test */
-    public function it_can_translate_the_attribute_with_the_current_app_locale()
+    public function it_can_translate_the_attribute_with_the_current_app_locale(): void
     {
         $this->model->setTranslation('name', 'en', 'Name')
                     ->setTranslation('name', 'fr', 'Nom')
@@ -132,7 +136,7 @@ class TranslatableModelTest extends TestCase
     }
 
     /** @test */
-    public function it_can_get_all_translations_for_a_specific_attribute()
+    public function it_can_get_all_translations_for_a_specific_attribute(): void
     {
         $this->model->setTranslation('name', 'en', 'Name')
                     ->setTranslation('name', 'fr', 'Nom')
@@ -145,7 +149,7 @@ class TranslatableModelTest extends TestCase
     }
 
     /** @test */
-    public function it_handle_null_value_from_database()
+    public function it_handle_null_value_from_database(): void
     {
         $testModel = (new class() extends TranslatableModel {
             public function setAttributesExternally(array $attributes)
@@ -164,7 +168,7 @@ class TranslatableModelTest extends TestCase
     }
 
     /** @test */
-    public function it_can_get_all_translations()
+    public function it_can_get_all_translations(): void
     {
         $translations = ['fr' => 'Salut', 'en' => 'Hello'];
 
@@ -179,7 +183,7 @@ class TranslatableModelTest extends TestCase
     }
 
     /** @test */
-    public function it_can_get_all_translations_for_all_translatable_attributes()
+    public function it_can_get_all_translations_for_all_translatable_attributes(): void
     {
         $this->model->setTranslation('name', 'en', 'Name')
                     ->setTranslation('name', 'fr', 'Nom')
@@ -200,7 +204,7 @@ class TranslatableModelTest extends TestCase
     }
 
     /** @test */
-    public function it_can_get_all_locales_available_in_the_translated_attribute()
+    public function it_can_get_all_locales_available_in_the_translated_attribute(): void
     {
         $this->model->setTranslation('name', 'en', 'Name')
                     ->setTranslation('name', 'fr', 'Nom')
@@ -210,7 +214,7 @@ class TranslatableModelTest extends TestCase
     }
 
     /** @test */
-    public function it_can_forget_a_translation()
+    public function it_can_forget_a_translation(): void
     {
         $this->model->setTranslation('name', 'en', 'Name')
                     ->setTranslation('name', 'fr', 'Nom')
@@ -227,7 +231,7 @@ class TranslatableModelTest extends TestCase
     }
 
     /** @test */
-    public function it_can_forget_all_translations()
+    public function it_can_forget_all_translations(): void
     {
         $this->model->setTranslation('name', 'en', 'Name')
                     ->setTranslation('name', 'fr', 'Nom')
@@ -257,7 +261,7 @@ class TranslatableModelTest extends TestCase
     }
 
     /** @test */
-    public function it_will_throw_an_exception_when_trying_to_translate_an_untranslatable_attribute()
+    public function it_will_throw_an_exception_when_trying_to_translate_an_untranslatable_attribute(): void
     {
         $this->expectException(\Arcanedev\Localization\Exceptions\UntranslatableAttributeException::class);
         $this->expectExceptionMessage("The attribute `untranslated` is untranslatable because it's not available in the translatable array: `name, slug`");
@@ -266,7 +270,7 @@ class TranslatableModelTest extends TestCase
     }
 
     /** @test */
-    public function it_can_use_accessors_on_translated_attributes()
+    public function it_can_use_accessors_on_translated_attributes(): void
     {
         $this->model->setTranslation('name', 'en', 'name');
 
@@ -274,7 +278,7 @@ class TranslatableModelTest extends TestCase
     }
 
     /** @test */
-    public function it_can_use_mutators_on_translated_attributes()
+    public function it_can_use_mutators_on_translated_attributes(): void
     {
         $this->model->setTranslation('slug', 'en', 'This is a mutated slug');
 
@@ -282,7 +286,7 @@ class TranslatableModelTest extends TestCase
     }
 
     /** @test */
-    public function it_can_set_multiple_translations_at_once()
+    public function it_can_set_multiple_translations_at_once(): void
     {
         $this->model->setTranslations('name', $translations = [
             'nl' => 'hallo',
@@ -295,14 +299,14 @@ class TranslatableModelTest extends TestCase
     }
 
     /** @test */
-    public function it_can_check_if_an_attribute_is_translatable()
+    public function it_can_check_if_an_attribute_is_translatable(): void
     {
         static::assertTrue($this->model->isTranslatableAttribute('name'));
         static::assertFalse($this->model->isTranslatableAttribute('untranslated'));
     }
 
     /** @test */
-    public function it_can_check_if_an_attribute_has_translation()
+    public function it_can_check_if_an_attribute_has_translation(): void
     {
         $this->model->setTranslation('name', 'en', 'Hello')
                     ->setTranslation('name', 'fr', 'Salut')
@@ -317,7 +321,7 @@ class TranslatableModelTest extends TestCase
     }
 
     /** @test */
-    public function it_will_fire_an_event_when_a_translation_has_been_set()
+    public function it_will_fire_an_event_when_a_translation_has_been_set(): void
     {
         $this->expectsEvents([TranslationHasBeenSet::class]);
 
@@ -327,7 +331,7 @@ class TranslatableModelTest extends TestCase
     }
 
     /** @test */
-    public function it_will_return_fallback_locale_translation_when_getting_an_empty_translation_from_the_locale()
+    public function it_will_return_fallback_locale_translation_when_getting_an_empty_translation_from_the_locale(): void
     {
         $this->setFallbackLocale('en');
 
@@ -339,7 +343,7 @@ class TranslatableModelTest extends TestCase
     }
 
     /** @test */
-    public function it_will_return_correct_translation_value_if_value_is_set_to_zero()
+    public function it_will_return_correct_translation_value_if_value_is_set_to_zero(): void
     {
         $this->model->setTranslation('name', 'en', '0')
                     ->save();
@@ -348,7 +352,7 @@ class TranslatableModelTest extends TestCase
     }
 
     /** @test */
-    public function it_will_not_return_fallback_value_if_value_is_set_to_zero()
+    public function it_will_not_return_fallback_value_if_value_is_set_to_zero(): void
     {
         $this->setFallbackLocale('en');
 
@@ -360,7 +364,7 @@ class TranslatableModelTest extends TestCase
     }
 
     /** @test */
-    public function it_will_not_remove_zero_value_of_other_locale_in_database()
+    public function it_will_not_remove_zero_value_of_other_locale_in_database(): void
     {
         $this->setFallbackLocale('en');
 
@@ -381,7 +385,7 @@ class TranslatableModelTest extends TestCase
      *
      * @param  string  $locale
      */
-    private function setFallbackLocale($locale)
+    private function setFallbackLocale($locale): void
     {
         $this->app['config']->set('app.fallback_locale', $locale);
     }

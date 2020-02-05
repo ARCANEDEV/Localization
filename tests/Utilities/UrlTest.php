@@ -1,4 +1,8 @@
-<?php namespace Arcanedev\Localization\Tests\Utilities;
+<?php
+
+declare(strict_types=1);
+
+namespace Arcanedev\Localization\Tests\Utilities;
 
 use Arcanedev\Localization\Tests\TestCase;
 use Arcanedev\Localization\Utilities\Url;
@@ -17,7 +21,7 @@ class UrlTest extends TestCase
      */
 
     /** @test */
-    public function it_can_unparse_url()
+    public function it_can_unparse_url(): void
     {
         $urls = [
             '',
@@ -43,7 +47,7 @@ class UrlTest extends TestCase
     }
 
     /** @test */
-    public function it_can_substitute_route_bindings()
+    public function it_can_substitute_route_bindings(): void
     {
         $attributes = [
             'user' => new \Arcanedev\Localization\Tests\Stubs\User('admin'),

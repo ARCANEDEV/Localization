@@ -1,4 +1,8 @@
-<?php namespace Arcanedev\Localization\Tests\Entities;
+<?php
+
+declare(strict_types=1);
+
+namespace Arcanedev\Localization\Tests\Entities;
 
 use Arcanedev\Localization\Entities\Locale;
 use Arcanedev\Localization\Tests\TestCase;
@@ -38,7 +42,7 @@ class LocaleTest extends TestCase
      */
 
     /** @test */
-    public function it_can_be_instantiated()
+    public function it_can_be_instantiated(): void
     {
         $this->locale = $this->makeLocale('en');
 
@@ -55,7 +59,7 @@ class LocaleTest extends TestCase
     }
 
     /** @test */
-    public function it_must_lower_direction_case()
+    public function it_must_lower_direction_case(): void
     {
         $key          = 'en';
         $data         = $this->getLocale($key);
@@ -66,7 +70,7 @@ class LocaleTest extends TestCase
     }
 
     /** @test */
-    public function it_can_get_direction_if_empty()
+    public function it_can_get_direction_if_empty(): void
     {
         $key          = 'en';
         $data         = $this->getLocale($key);
@@ -77,7 +81,7 @@ class LocaleTest extends TestCase
     }
 
     /** @test */
-    public function it_can_convert_entity_to_array()
+    public function it_can_convert_entity_to_array(): void
     {
         $this->locale = $this->makeLocale('en');
 
@@ -85,7 +89,7 @@ class LocaleTest extends TestCase
     }
 
     /** @test */
-    public function it_can_convert_entity_to_json()
+    public function it_can_convert_entity_to_json(): void
     {
         $this->locale = $this->makeLocale('en');
 
@@ -105,7 +109,7 @@ class LocaleTest extends TestCase
      *
      * @return \Arcanedev\Localization\Entities\Locale
      */
-    private function makeLocale($key)
+    private function makeLocale($key): Locale
     {
         return Locale::make($key, $this->getLocale($key));
     }
@@ -117,7 +121,7 @@ class LocaleTest extends TestCase
      *
      * @return array
      */
-    private function getLocale($key)
+    private function getLocale($key): array
     {
         return Arr::get([
             'ar' => [

@@ -1,6 +1,9 @@
-<?php namespace Arcanedev\Localization\Tests\Stubs\Http;
+<?php
 
-use Arcanedev\Localization\Traits\LocalizationKernelTrait;
+declare(strict_types=1);
+
+namespace Arcanedev\Localization\Tests\Stubs\Http;
+
 use Orchestra\Testbench\Http\Kernel as HttpKernel;
 
 /**

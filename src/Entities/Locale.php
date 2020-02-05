@@ -1,4 +1,8 @@
-<?php namespace Arcanedev\Localization\Entities;
+<?php
+
+declare(strict_types=1);
+
+namespace Arcanedev\Localization\Entities;
 
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Jsonable;
@@ -115,7 +119,7 @@ class Locale implements Arrayable, Jsonable, JsonSerializable
      *
      * @param  string  $key
      *
-     * @return self
+     * @return $this
      */
     private function setKey($key)
     {
@@ -140,7 +144,7 @@ class Locale implements Arrayable, Jsonable, JsonSerializable
      *
      * @param  string  $name
      *
-     * @return self
+     * @return $this
      */
     private function setName($name)
     {
@@ -164,7 +168,7 @@ class Locale implements Arrayable, Jsonable, JsonSerializable
      *
      * @param  string  $script
      *
-     * @return self
+     * @return $this
      */
     private function setScript($script)
     {
@@ -194,7 +198,7 @@ class Locale implements Arrayable, Jsonable, JsonSerializable
      *
      * @param  string  $direction
      *
-     * @return self
+     * @return $this
      */
     private function setDirection($direction)
     {
@@ -219,7 +223,7 @@ class Locale implements Arrayable, Jsonable, JsonSerializable
      *
      * @param  string  $native
      *
-     * @return self
+     * @return $this
      */
     private function setNative($native)
     {
@@ -243,7 +247,7 @@ class Locale implements Arrayable, Jsonable, JsonSerializable
      *
      * @param  string  $regional
      *
-     * @return self
+     * @return $this
      */
     private function setRegional($regional)
     {
@@ -265,7 +269,7 @@ class Locale implements Arrayable, Jsonable, JsonSerializable
     /**
      * Set locale default.
      *
-     * @return self
+     * @return $this
      */
     private function setDefault()
     {
@@ -285,7 +289,7 @@ class Locale implements Arrayable, Jsonable, JsonSerializable
      * @param  string  $key
      * @param  array   $data
      *
-     * @return self
+     * @return $this
      */
     public static function make($key, array $data)
     {

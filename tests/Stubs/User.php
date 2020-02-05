@@ -1,4 +1,8 @@
-<?php namespace Arcanedev\Localization\Tests\Stubs;
+<?php
+
+declare(strict_types=1);
+
+namespace Arcanedev\Localization\Tests\Stubs;
 
 use Arcanedev\Localization\Contracts\RouteBindable;
 

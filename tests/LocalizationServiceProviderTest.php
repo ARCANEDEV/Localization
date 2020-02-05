@@ -1,4 +1,8 @@
-<?php namespace Arcanedev\Localization\Tests;
+<?php
+
+declare(strict_types=1);
+
+namespace Arcanedev\Localization\Tests;
 
 use Arcanedev\Localization\LocalizationServiceProvider;
 
@@ -43,7 +47,7 @@ class LocalizationServiceProviderTest extends TestCase
      */
 
     /** @test */
-    public function it_can_be_instantiated()
+    public function it_can_be_instantiated(): void
     {
         $expectations = [
             \Illuminate\Support\ServiceProvider::class,

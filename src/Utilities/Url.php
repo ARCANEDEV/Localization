@@ -1,4 +1,8 @@
-<?php namespace Arcanedev\Localization\Utilities;
+<?php
+
+declare(strict_types=1);
+
+namespace Arcanedev\Localization\Utilities;
 
 use Arcanedev\Localization\Contracts\RouteBindable;
 use Arcanedev\Localization\Contracts\Url as UrlContract;
@@ -26,18 +30,16 @@ class Url implements UrlContract
      */
     public static function extractAttributes($url = false)
     {
-        $parse = parse_url($url);
+        $parse = parse_url((string) $url);
         $path  = isset($parse['path']) ? explode('/', $parse['path']) : [];
         $url   = [];
 
         foreach ($path as $segment) {
-            if ( ! empty($segment)) $url[] = $segment;
+            if ( ! empty($segment))
+                $url[] = $segment;
         }
 
-        /** @var \Illuminate\Routing\Router $router */
-        $router = app('router');
-
-        return self::extractAttributesFromRoutes($url, $router->getRoutes());
+        return self::extractAttributesFromRoutes($url, app('router')->getRoutes());
     }
 
     /**
@@ -220,7 +222,9 @@ class Url implements UrlContract
      */
     private static function getUrl(array $parsed): string
     {
-        return strlen($parsed['scheme']) ? $parsed['scheme'].':'.self::getHierPart($parsed) : '';
+        return strlen((string) $parsed['scheme'])
+            ? $parsed['scheme'].':'.self::getHierPart($parsed)
+            : '';
     }
 
     /**
@@ -260,7 +264,9 @@ class Url implements UrlContract
      */
     private static function getUserInfo(array $parsed): string
     {
-        return strlen($parsed['pass']) ? $parsed['user'].':'.$parsed['pass'] : '';
+        return strlen((string) $parsed['pass'])
+            ? $parsed['user'].':'.$parsed['pass']
+            : '';
     }
 
     /**
@@ -286,7 +292,9 @@ class Url implements UrlContract
      */
     private static function getQuery(array $parsed): string
     {
-        return strlen($parsed['query']) ? '?'.$parsed['query'] : '';
+        return strlen((string) $parsed['query'])
+            ? '?'.$parsed['query']
+            : '';
     }
 
     /**
@@ -298,6 +306,8 @@ class Url implements UrlContract
      */
     private static function getFragment(array $parsed): string
     {
-        return strlen($parsed['fragment']) ? '#'.$parsed['fragment'] : '';
+        return strlen((string) $parsed['fragment'])
+            ? '#'.$parsed['fragment']
+            : '';
     }
 }

@@ -1,7 +1,10 @@
-<?php namespace Arcanedev\Localization\Tests\Entities;
+<?php
 
-use Arcanedev\Localization\Entities\Locale;
-use Arcanedev\Localization\Entities\LocaleCollection;
+declare(strict_types=1);
+
+namespace Arcanedev\Localization\Tests\Entities;
+
+use Arcanedev\Localization\Entities\{Locale, LocaleCollection};
 use Arcanedev\Localization\Tests\TestCase;
 
 /**
@@ -45,7 +48,7 @@ class LocaleCollectionTest extends TestCase
      */
 
     /** @test */
-    public function it_can_be_instantiated()
+    public function it_can_be_instantiated(): void
     {
         $expectations = [
             \Illuminate\Support\Collection::class,
@@ -62,7 +65,7 @@ class LocaleCollectionTest extends TestCase
     }
 
     /** @test */
-    public function it_can_get_all_locales()
+    public function it_can_get_all_locales(): void
     {
         $data = config('localization.locales', []);
         $this->locales->loadFromArray($data);
@@ -73,7 +76,7 @@ class LocaleCollectionTest extends TestCase
     }
 
     /** @test */
-    public function it_can_get_supported_locales()
+    public function it_can_get_supported_locales(): void
     {
         $this->locales
             ->loadFromArray(config('localization.locales', []))
@@ -97,7 +100,7 @@ class LocaleCollectionTest extends TestCase
     }
 
     /** @test */
-    public function it_can_transform_locales_to_native_names()
+    public function it_can_transform_locales_to_native_names(): void
     {
         $this->locales
             ->loadFromArray(config('localization.locales', []))
@@ -118,7 +121,7 @@ class LocaleCollectionTest extends TestCase
     }
 
     /** @test */
-    public function it_can_load_locales_from_config()
+    public function it_can_load_locales_from_config(): void
     {
         $this->locales->loadFromConfig();
 
@@ -137,7 +140,7 @@ class LocaleCollectionTest extends TestCase
     }
 
     /** @test */
-    public function it_can_get_first_locale()
+    public function it_can_get_first_locale(): void
     {
         $this->locales->loadFromConfig();
 

@@ -1,4 +1,8 @@
-<?php namespace Arcanedev\Localization\Tests\Utilities;
+<?php
+
+declare(strict_types=1);
+
+namespace Arcanedev\Localization\Tests\Utilities;
 
 use Arcanedev\Localization\Entities\Locale;
 use Arcanedev\Localization\Tests\TestCase;
@@ -47,13 +51,13 @@ class LocalesManagerTest extends TestCase
      */
 
     /** @test */
-    public function it_can_be_instantiated()
+    public function it_can_be_instantiated(): void
     {
         static::assertInstanceOf(LocalesManager::class, $this->localesManager);
     }
 
     /** @test */
-    public function it_can_set_and_get_current_locale()
+    public function it_can_set_and_get_current_locale(): void
     {
         foreach ($this->supportedLocales as $locale) {
             $this->localesManager->setCurrentLocale($locale);
@@ -63,7 +67,7 @@ class LocalesManagerTest extends TestCase
     }
 
     /** @test */
-    public function it_can_get_current_locale_entity()
+    public function it_can_get_current_locale_entity(): void
     {
         foreach ($this->supportedLocales as $locale) {
             $this->localesManager->setCurrentLocale($locale);
@@ -76,7 +80,7 @@ class LocalesManagerTest extends TestCase
     }
 
     /** @test */
-    public function it_can_get_all_locales()
+    public function it_can_get_all_locales(): void
     {
         $locales = $this->localesManager->getAllLocales();
 
@@ -89,7 +93,7 @@ class LocalesManagerTest extends TestCase
     }
 
     /** @test */
-    public function it_can_get_supported_locales()
+    public function it_can_get_supported_locales(): void
     {
         $supportedLocales = $this->localesManager->getSupportedLocales();
 
@@ -102,7 +106,7 @@ class LocalesManagerTest extends TestCase
     }
 
     /** @test */
-    public function it_can_set_and_get_supported_locales()
+    public function it_can_set_and_get_supported_locales(): void
     {
         $supported = ['en', 'fr'];
 
@@ -120,7 +124,7 @@ class LocalesManagerTest extends TestCase
     }
 
     /** @test */
-    public function it_can_get_supported_locales_keys()
+    public function it_can_get_supported_locales_keys(): void
     {
         $supportedKeys = $this->localesManager->getSupportedLocalesKeys();
 
@@ -129,7 +133,7 @@ class LocalesManagerTest extends TestCase
     }
 
     /** @test */
-    public function it_can_get_current_locale_without_negotiator()
+    public function it_can_get_current_locale_without_negotiator(): void
     {
         $this->app['config']->set('localization.accept-language-header', false);
 
@@ -143,7 +147,7 @@ class LocalesManagerTest extends TestCase
     }
 
     /** @test */
-    public function it_can_get_default_or_current_locale()
+    public function it_can_get_default_or_current_locale(): void
     {
         $this->app['config']->set('localization.hide-default-in-url', false);
 
@@ -165,7 +169,7 @@ class LocalesManagerTest extends TestCase
     }
 
     /** @test */
-    public function it_can_set_and_get_default_locale()
+    public function it_can_set_and_get_default_locale(): void
     {
         foreach ($this->supportedLocales as $locale) {
             $this->localesManager->setDefaultLocale($locale);
@@ -175,7 +179,7 @@ class LocalesManagerTest extends TestCase
     }
 
     /** @test */
-    public function it_must_throw_unsupported_locale_exception_on_set_default_locale()
+    public function it_must_throw_unsupported_locale_exception_on_set_default_locale(): void
     {
         $this->expectException(\Arcanedev\Localization\Exceptions\UnsupportedLocaleException::class);
         $this->expectExceptionMessage("Laravel default locale [jp] is not in the `supported-locales` array.");
@@ -184,7 +188,7 @@ class LocalesManagerTest extends TestCase
     }
 
     /** @test */
-    public function it_must_throw_undefined_supported_locales_exception_on_set_with_empty_array()
+    public function it_must_throw_undefined_supported_locales_exception_on_set_with_empty_array(): void
     {
         $this->expectException(\Arcanedev\Localization\Exceptions\UndefinedSupportedLocalesException::class);
 

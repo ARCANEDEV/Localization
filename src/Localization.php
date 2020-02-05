@@ -1,4 +1,8 @@
-<?php namespace Arcanedev\Localization;
+<?php
+
+declare(strict_types=1);
+
+namespace Arcanedev\Localization;
 
 use Arcanedev\Localization\Contracts\LocalesManager as LocalesManagerContract;
 use Arcanedev\Localization\Contracts\Localization as LocalizationContract;
@@ -232,7 +236,7 @@ class Localization implements LocalizationContract
      *
      * @param  string  $url
      *
-     * @return self
+     * @return $this
      */
     public function setBaseUrl($url)
     {
