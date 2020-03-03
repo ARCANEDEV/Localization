@@ -35,6 +35,13 @@ abstract class Middleware
      */
     protected $except = [];
 
+    /**
+     * The routes that should not be localized.
+     *
+     * @var array
+     */
+    protected $except_routes = [];
+
     /* -----------------------------------------------------------------
      |  Constructor
      | -----------------------------------------------------------------
@@ -47,8 +54,9 @@ abstract class Middleware
      */
     public function __construct(Localization $localization)
     {
-        $this->localization = $localization;
-        $this->except       = config('localization.ignored-uri', []);
+        $this->localization  = $localization;
+        $this->except        = config('localization.ignored-uri', []);
+        $this->except_routes = config('localization.ignored-routes', []);
     }
 
     /* -----------------------------------------------------------------
@@ -126,6 +134,11 @@ abstract class Middleware
                 $except = trim($except, '/');
 
             if ($request->is($except))
+                return true;
+        }
+
+        foreach ($this->except_routes as $except) {
+            if ($request->routeIs($except))
                 return true;
         }
 
