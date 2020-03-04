@@ -14,6 +14,7 @@ class CreateTranslatableTable extends Migration
      |  Properties
      | -----------------------------------------------------------------
      */
+
     /**
      * The table name.
      *
@@ -31,7 +32,7 @@ class CreateTranslatableTable extends Migration
      */
     public function up(): void
     {
-        $this->createSchema(function (Blueprint $table) {
+        $this->createSchema(function (Blueprint $table): void {
             $table->increments('id');
             $table->string('name');
             $table->string('slug')->nullable();

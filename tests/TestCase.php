@@ -92,7 +92,7 @@ abstract class TestCase extends BaseTestCase
 
         $translator->getLoader()->addNamespace(
             'localization',
-            realpath(__DIR__).DS.'fixtures'.DS.'lang'
+            realpath(__DIR__).DIRECTORY_SEPARATOR.'fixtures'.DIRECTORY_SEPARATOR.'lang'
         );
 
         $translator->load('localization', 'routes', 'en');

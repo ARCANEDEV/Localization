@@ -48,6 +48,8 @@ class RoutingServiceProvider extends ServiceProvider
     {
         $this->app['router']->mixin(new Router);
 
-        parent::register();
+        foreach ($this->routeMiddleware as $name => $class) {
+            $this->aliasMiddleware($name, $class);
+        }
     }
 }
