@@ -48,7 +48,11 @@ class LocalizationServiceProvider extends PackageServiceProvider
      */
     public function boot(): void
     {
-        $this->publishConfig();
-        $this->publishViews();
+        $this->loadViews();
+
+        if ($this->app->runningInConsole()) {
+            $this->publishConfig();
+            $this->publishViews();
+        }
     }
 }

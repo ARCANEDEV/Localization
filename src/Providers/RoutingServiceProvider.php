@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Arcanedev\Localization\Providers;
 
-use Arcanedev\Localization\Middleware;
-use Arcanedev\Support\Providers\RouteServiceProvider as ServiceProvider;
+use Arcanedev\Localization\Middleware\{
+    LocaleCookieRedirect, LocaleSessionRedirect, LocalizationRedirect, LocalizationRoutes, TranslationRedirect
+};
 use Arcanedev\Localization\Routing\Router;
+use Arcanedev\Support\Providers\RouteServiceProvider as ServiceProvider;
 
 /**
  * Class     RoutingServiceProvider
@@ -29,11 +31,11 @@ class RoutingServiceProvider extends ServiceProvider
      * @var array
      */
     protected $routeMiddleware = [
-        'localization-session-redirect' => Middleware\LocaleSessionRedirect::class,
-        'localization-cookie-redirect'  => Middleware\LocaleCookieRedirect::class,
-        'localization-redirect'         => Middleware\LocalizationRedirect::class,
-        'localized-routes'              => Middleware\LocalizationRoutes::class,
-        'translation-redirect'          => Middleware\TranslationRedirect::class,
+        'localization-session-redirect' => LocaleSessionRedirect::class,
+        'localization-cookie-redirect'  => LocaleCookieRedirect::class,
+        'localization-redirect'         => LocalizationRedirect::class,
+        'localized-routes'              => LocalizationRoutes::class,
+        'translation-redirect'          => TranslationRedirect::class,
     ];
 
     /* -----------------------------------------------------------------
@@ -46,8 +48,13 @@ class RoutingServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app['router']->mixin(new Router);
+        /** @var  \Illuminate\Routing\Router  $router */
+        $router = $this->app['router'];
 
-        parent::register();
+        $router->mixin(new Router);
+
+        foreach ($this->routeMiddleware as $name => $class) {
+            $router->aliasMiddleware($name, $class);
+        }
     }
 }

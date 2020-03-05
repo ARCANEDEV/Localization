@@ -95,6 +95,16 @@ abstract class Middleware
         return $this->localization->isDefaultLocaleHiddenInUrl();
     }
 
+    /**
+     * Get the ignored URI/Route.
+     *
+     * @return array
+     */
+    protected function getIgnoredRedirection(): array
+    {
+        return config('localization.ignored-redirection', []);
+    }
+
     /* -----------------------------------------------------------------
      |  Check Methods
      | -----------------------------------------------------------------
@@ -122,14 +132,17 @@ abstract class Middleware
     protected function shouldIgnore(Request $request): bool
     {
         foreach ($this->except as $except) {
-            if ($except !== '/')
+            if ($except !== '/') {
                 $except = trim($except, '/');
+            }
 
-            if ($request->is($except))
+            if ($request->is($except)) {
                 return true;
+            }
 
-            if ($request->routeIs($except))
+            if ($request->routeIs($except)) {
                 return true;
+            }
         }
 
         return false;
@@ -165,18 +178,5 @@ abstract class Middleware
     protected function makeRedirectResponse($url, $code = null)
     {
         return new RedirectResponse($url, $code ?? config('localization.redirection-code', 302), ['Vary' => 'Accept-Language']);
-    }
-
-    /**
-     * The URIs or route names that should not be redirected.
-     *
-     * @return array
-     */
-    protected function getIgnoredRedirection(): array
-    {
-        return array_merge(
-            config('localization.ignored-uri', []),
-            config('localization.ignored-routes', [])
-        );
     }
 }
