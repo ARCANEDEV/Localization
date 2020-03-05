@@ -29,18 +29,11 @@ abstract class Middleware
     protected $localization;
 
     /**
-     * The URIs that should not be localized.
+     * The URIs or route names that should not be localized.
      *
      * @var array
      */
     protected $except = [];
-
-    /**
-     * The routes that should not be localized.
-     *
-     * @var array
-     */
-    protected $except_routes = [];
 
     /* -----------------------------------------------------------------
      |  Constructor
@@ -54,9 +47,8 @@ abstract class Middleware
      */
     public function __construct(Localization $localization)
     {
-        $this->localization  = $localization;
-        $this->except        = config('localization.ignored-uri', []);
-        $this->except_routes = config('localization.ignored-routes', []);
+        $this->localization = $localization;
+        $this->except       = $this->getIgnoredRedirection();
     }
 
     /* -----------------------------------------------------------------
@@ -127,7 +119,7 @@ abstract class Middleware
      *
      * @return bool
      */
-    protected function shouldIgnore(Request $request)
+    protected function shouldIgnore(Request $request): bool
     {
         foreach ($this->except as $except) {
             if ($except !== '/')
@@ -135,9 +127,7 @@ abstract class Middleware
 
             if ($request->is($except))
                 return true;
-        }
 
-        foreach ($this->except_routes as $except) {
             if ($request->routeIs($except))
                 return true;
         }
@@ -175,5 +165,18 @@ abstract class Middleware
     protected function makeRedirectResponse($url, $code = null)
     {
         return new RedirectResponse($url, $code ?? config('localization.redirection-code', 302), ['Vary' => 'Accept-Language']);
+    }
+
+    /**
+     * The URIs or route names that should not be redirected.
+     *
+     * @return array
+     */
+    protected function getIgnoredRedirection(): array
+    {
+        return array_merge(
+            config('localization.ignored-uri', []),
+            config('localization.ignored-routes', [])
+        );
     }
 }
