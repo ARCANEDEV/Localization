@@ -33,15 +33,11 @@ return [
     ],
 
     /* -----------------------------------------------------------------
-     |  Ignored URI/Routes from localization
+     |  Ignored URI/Route from localization
      | -----------------------------------------------------------------
      */
 
-    'ignored-uri' => [
-        //
-    ],
-
-    'ignored-routes' => [
+    'ignored-redirection' => [
         //
     ],
 

@@ -66,14 +66,10 @@ return [
 | localized-routes              | Allows to register all translatable routes.                              |
 | translation-redirect          | Allows to translate the route attributes by using the translation event. |
 
-## Ignored URI / Route
+## Ignored URI/Route from localization
 
 ```php
-    'ignored-uri' => [
-        //
-    ],
-
-    'ignored-routes' => [
+    'ignored-redirection' => [
         //
     ],
 ```
