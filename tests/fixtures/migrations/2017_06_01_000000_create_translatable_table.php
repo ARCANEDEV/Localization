@@ -29,7 +29,7 @@ class CreateTranslatableTable extends Migration
     /**
      * Migrate to database.
      */
-    public function up()
+    public function up(): void
     {
         $this->createSchema(function (Blueprint $table) {
             $table->increments('id');

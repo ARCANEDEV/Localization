@@ -6,7 +6,7 @@
   2. [Configuration](2-Configuration.md)
   3. [Usage](3-Usage.md)
   4. [FAQ](4-FAQ.md)
-  
+
 ## Settings
 
 ```php
@@ -66,15 +66,19 @@ return [
 | localized-routes              | Allows to register all translatable routes.                              |
 | translation-redirect          | Allows to translate the route attributes by using the translation event. |
 
-## Ignored URI
+## Ignored URI / Route
 
 ```php
     'ignored-uri' => [
         //
     ],
+
+    'ignored-routes' => [
+        //
+    ],
 ```
 
-You can set a list of uris to ignore from localization checks.
+You can set a list of uris or route names to ignore from localization checks / redirection.
 
 ## Locales
 
