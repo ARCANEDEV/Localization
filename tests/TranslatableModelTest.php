@@ -10,7 +10,6 @@ use Arcanedev\Localization\Tests\Stubs\Models\TranslatableModel;
 /**
  * Class     TranslatableModelTest
  *
- * @package  Arcanedev\Localization\Tests
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class TranslatableModelTest extends TestCase

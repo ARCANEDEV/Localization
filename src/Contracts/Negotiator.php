@@ -10,7 +10,6 @@ use Illuminate\Http\Request;
 /**
  * Interface  Negotiator
  *
- * @package   Arcanedev\Localization\Contracts
  * @author    ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 interface Negotiator

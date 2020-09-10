@@ -11,7 +11,6 @@ use Illuminate\Http\Request;
 /**
  * Class     Negotiator
  *
- * @package  Arcanedev\Localization\Utilities
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  *
  * Negotiates language with the user's browser through the Accept-Language HTTP header or the user's host address.

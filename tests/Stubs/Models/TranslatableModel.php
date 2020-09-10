@@ -11,7 +11,6 @@ use Illuminate\Support\Str;
 /**
  * Class     TranslatableModel
  *
- * @package  Arcanedev\Localization\Tests\Stubs\Models
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  *
  * @property  int     id

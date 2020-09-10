@@ -9,7 +9,6 @@ use Arcanedev\Support\Providers\PackageServiceProvider;
 /**
  * Class     LocalizationServiceProvider
  *
- * @package  Arcanedev\Localization
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class LocalizationServiceProvider extends PackageServiceProvider

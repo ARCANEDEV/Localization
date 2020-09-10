@@ -9,7 +9,6 @@ use Arcanedev\Localization\Contracts\RouteBindable;
 /**
  * Class     User
  *
- * @package  Arcanedev\Localization\Tests\Stubs
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class User implements RouteBindable

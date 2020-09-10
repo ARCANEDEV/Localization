@@ -5,8 +5,7 @@ declare(strict_types=1);
 namespace Arcanedev\Localization\Utilities;
 
 use Arcanedev\Localization\Contracts\LocalesManager as LocalesManagerContract;
-use Arcanedev\Localization\Entities\Locale;
-use Arcanedev\Localization\Entities\LocaleCollection;
+use Arcanedev\Localization\Entities\{Locale, LocaleCollection};
 use Arcanedev\Localization\Exceptions\UndefinedSupportedLocalesException;
 use Arcanedev\Localization\Exceptions\UnsupportedLocaleException;
 use Illuminate\Contracts\Foundation\Application as ApplicationContract;
@@ -14,7 +13,6 @@ use Illuminate\Contracts\Foundation\Application as ApplicationContract;
 /**
  * Class     LocalesManager
  *
- * @package  Arcanedev\Localization
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class LocalesManager implements LocalesManagerContract

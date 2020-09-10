@@ -11,7 +11,6 @@ use Illuminate\Http\Request;
 /**
  * Class     NegotiatorTest
  *
- * @package  Arcanedev\Localization\Tests\Utilities
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class NegotiatorTest extends TestCase

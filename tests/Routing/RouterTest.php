@@ -10,7 +10,6 @@ use Arcanedev\Localization\Tests\TestCase;
 /**
  * Class     RouterTest
  *
- * @package  Arcanedev\Localization\Tests\Routing
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class RouterTest extends TestCase

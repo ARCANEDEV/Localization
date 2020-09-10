@@ -9,7 +9,6 @@ use Closure;
 /**
  * Class     Router
  *
- * @package  Arcanedev\Localization\Routing
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  *
  * @mixin \Illuminate\Routing\Router

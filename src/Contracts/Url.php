@@ -7,7 +7,6 @@ namespace Arcanedev\Localization\Contracts;
 /**
  * Interface  Url
  *
- * @package   Arcanedev\Localization\Contracts
  * @author    ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 interface Url

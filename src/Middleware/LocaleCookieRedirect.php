@@ -10,7 +10,6 @@ use Illuminate\Http\Request;
 /**
  * Class     LocaleCookieRedirect
  *
- * @package  Arcanedev\Localization\Middleware
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class LocaleCookieRedirect extends Middleware

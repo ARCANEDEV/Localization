@@ -9,7 +9,6 @@ use Arcanedev\Localization\Entities\LocaleCollection;
 /**
  * Interface  RouteTranslator
  *
- * @package   Arcanedev\Localization\Contracts
  * @author    ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 interface RouteTranslator

@@ -13,7 +13,6 @@ use Arcanedev\Support\Providers\RouteServiceProvider as ServiceProvider;
 /**
  * Class     RoutingServiceProvider
  *
- * @package  Arcanedev\Localization\Providers
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class RoutingServiceProvider extends ServiceProvider

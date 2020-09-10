@@ -16,7 +16,6 @@ use Illuminate\Http\Request;
 /**
  * Class     Localization
  *
- * @package  Arcanedev\Localization
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class Localization implements LocalizationContract

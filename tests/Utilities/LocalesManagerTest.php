@@ -11,7 +11,6 @@ use Arcanedev\Localization\Utilities\LocalesManager;
 /**
  * Class     LocalesManagerTest
  *
- * @package  Arcanedev\Localization\Tests\Utilities
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class LocalesManagerTest extends TestCase

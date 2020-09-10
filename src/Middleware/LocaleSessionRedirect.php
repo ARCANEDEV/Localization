@@ -10,7 +10,6 @@ use Illuminate\Http\Request;
 /**
  * Class     LocaleSessionRedirect
  *
- * @package  Arcanedev\Localization\Middleware
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class LocaleSessionRedirect extends Middleware

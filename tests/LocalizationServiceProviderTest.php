@@ -9,7 +9,6 @@ use Arcanedev\Localization\LocalizationServiceProvider;
 /**
  * Class     LocalizationServiceProviderTest
  *
- * @package  Arcanedev\Localization\Tests
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class LocalizationServiceProviderTest extends TestCase

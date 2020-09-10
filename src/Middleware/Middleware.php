@@ -11,7 +11,6 @@ use Illuminate\Http\Request;
 /**
  * Class     Middleware
  *
- * @package  Arcanedev\Localization\Bases
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 abstract class Middleware

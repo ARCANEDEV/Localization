@@ -11,7 +11,6 @@ use Illuminate\Support\Str;
 /**
  * Trait     HasTranslations
  *
- * @package  Arcanedev\Localization\Traits
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  *
  * @property       array  attributes

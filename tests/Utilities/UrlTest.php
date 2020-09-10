@@ -10,7 +10,6 @@ use Arcanedev\Localization\Utilities\Url;
 /**
  * Class     UrlTest
  *
- * @package  Arcanedev\Localization\Tests\Utilities
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class UrlTest extends TestCase

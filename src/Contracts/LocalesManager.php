@@ -7,7 +7,6 @@ namespace Arcanedev\Localization\Contracts;
 /**
  * Interface  LocalesManager
  *
- * @package   Arcanedev\Localization\Contracts
  * @author    ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 interface LocalesManager

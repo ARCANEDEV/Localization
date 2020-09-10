@@ -12,7 +12,6 @@ use Illuminate\Contracts\Translation\Translator;
 /**
  * Class     RouteTranslator
  *
- * @package  Arcanedev\Localization\Utilities
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class RouteTranslator implements RouteTranslatorContract

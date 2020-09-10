@@ -10,7 +10,6 @@ use Arcanedev\Localization\Tests\TestCase;
 /**
  * Class     DeferredServicesProviderTest
  *
- * @package  Arcanedev\Localization\Tests\Providers
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class DeferredServicesProviderTest extends TestCase

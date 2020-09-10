@@ -4,12 +4,10 @@ declare(strict_types=1);
 
 namespace Arcanedev\Localization\Providers;
 
-use Arcanedev\Localization\Contracts\{
-    LocalesManager as LocalesManagerContract,
-    Localization as LocalizationContract,
-    Negotiator as NegotiatorContract,
-    RouteTranslator as RouteTranslatorContract
-};
+use Arcanedev\Localization\Contracts\LocalesManager as LocalesManagerContract;
+use Arcanedev\Localization\Contracts\Localization as LocalizationContract;
+use Arcanedev\Localization\Contracts\Negotiator as NegotiatorContract;
+use Arcanedev\Localization\Contracts\RouteTranslator as RouteTranslatorContract;
 use Arcanedev\Localization\Localization;
 use Arcanedev\Localization\Utilities\{LocalesManager, Negotiator, RouteTranslator};
 use Arcanedev\Support\Providers\ServiceProvider;
@@ -18,7 +16,6 @@ use Illuminate\Contracts\Support\DeferrableProvider;
 /**
  * Class     DeferredServicesProvider
  *
- * @package  Arcanedev\Localization\Providers
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class DeferredServicesProvider extends ServiceProvider implements DeferrableProvider

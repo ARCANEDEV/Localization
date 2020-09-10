@@ -7,7 +7,6 @@ namespace Arcanedev\Localization\Events;
 /**
  * Class     TranslationHasBeenSet
  *
- * @package  Arcanedev\Localization\Events
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class TranslationHasBeenSet

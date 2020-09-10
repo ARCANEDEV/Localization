@@ -10,7 +10,6 @@ use Arcanedev\Localization\Tests\TestCase;
 /**
  * Class     LocaleCollectionTest
  *
- * @package  Arcanedev\Localization\Tests\Entities
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class LocaleCollectionTest extends TestCase

@@ -11,7 +11,6 @@ use Illuminate\Http\Response;
 /**
  * Class     LocaleSessionRedirectTest
  *
- * @package  Arcanedev\Localization\Tests\Middleware
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class LocaleSessionRedirectTest extends TestCase

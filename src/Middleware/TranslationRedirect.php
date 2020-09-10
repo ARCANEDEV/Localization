@@ -11,7 +11,6 @@ use Illuminate\Routing\Route;
 /**
  * Class     TranslationRedirect
  *
- * @package  Arcanedev\Localization\Middleware
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class TranslationRedirect extends Middleware

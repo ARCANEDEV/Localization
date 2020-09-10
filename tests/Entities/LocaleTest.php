@@ -11,7 +11,6 @@ use Illuminate\Support\Arr;
 /**
  * Class     LocaleTest
  *
- * @package  Arcanedev\Localization\Tests\Entities
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class LocaleTest extends TestCase

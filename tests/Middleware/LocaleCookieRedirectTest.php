@@ -9,9 +9,8 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
 
 /**
- * Class     LocaleSessionRedirectTest
+ * Class     LocaleCookieRedirectTest
  *
- * @package  Arcanedev\Localization\Tests\Middleware
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class LocaleCookieRedirectTest extends TestCase

@@ -11,7 +11,6 @@ use Illuminate\Http\Request;
 /**
  * Class     Url
  *
- * @package  Arcanedev\Localization\Utilities
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class Url implements UrlContract

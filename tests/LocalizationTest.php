@@ -10,7 +10,6 @@ use Arcanedev\Localization\Localization;
 /**
  * Class     LocalizationTest
  *
- * @package  Arcanedev\Localization\Tests
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class LocalizationTest extends TestCase

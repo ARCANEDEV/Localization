@@ -10,7 +10,6 @@ use Illuminate\Http\Request;
 /**
  * Class     LocalizationRoutes
  *
- * @package  Arcanedev\Localization\Middleware
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class LocalizationRoutes extends Middleware

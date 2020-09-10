@@ -11,7 +11,6 @@ use JsonSerializable;
 /**
  * Class     Locale
  *
- * @package  Arcanedev\Localization\Entities
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class Locale implements Arrayable, Jsonable, JsonSerializable

@@ -21,7 +21,7 @@ Feel free to check out the [releases](https://github.com/ARCANEDEV/Localization/
 ### Features
 
   * Easy setup & configuration.
-  * Laravel `5.x | 6.x | 7.x` are supported.
+  * Laravel `5.x` to `7.x` are supported.
   * SEO-Friendly (Search engine optimization).
   * New extended Router to manage your localized routes.
   * Translated Eloquent Models.
@@ -52,7 +52,7 @@ If you discover any security related issues, please email arcanedev.maroc@gmail.
 - [All Contributors][link-contributors]
 
 [badge_license]:   http://img.shields.io/packagist/l/arcanedev/localization.svg?style=flat-square
-[badge_laravel]:   https://img.shields.io/badge/Laravel-5.x|6.x|7.x-orange.svg?style=flat-square
+[badge_laravel]:   https://img.shields.io/badge/Laravel-5.x%20to%207.x-orange.svg?style=flat-square
 [badge_build]:     https://img.shields.io/github/workflow/status/ARCANEDEV/Localization/run-tests?style=flat-square
 [badge_coverage]:  https://img.shields.io/scrutinizer/coverage/g/ARCANEDEV/Localization.svg?style=flat-square
 [badge_quality]:   https://img.shields.io/scrutinizer/g/ARCANEDEV/Localization.svg?style=flat-square

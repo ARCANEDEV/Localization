@@ -9,7 +9,6 @@ use Illuminate\Http\Request;
 /**
  * Interface  Localization
  *
- * @package   Arcanedev\Localization\Contracts
  * @author    ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 interface Localization

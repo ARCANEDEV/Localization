@@ -9,7 +9,6 @@ use Illuminate\Routing\Router;
 /**
  * Class     RouteRegistrar
  *
- * @package  Arcanedev\Localization\Tests\Stubs\Http
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class RouteRegistrar

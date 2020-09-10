@@ -9,7 +9,6 @@ use Illuminate\Support\Collection;
 /**
  * Class     LocaleCollection
  *
- * @package  Arcanedev\Localization\Entities
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class LocaleCollection extends Collection
