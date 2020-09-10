@@ -11,6 +11,7 @@
 
 | Laravel                      | Localization                           |
 |:-----------------------------|:---------------------------------------|
+| ![Laravel v8.*][laravel_8_x] | ![Localization v8.x][localization_8_x] |
 | ![Laravel v7.*][laravel_7_x] | ![Localization v7.x][localization_7_x] |
 | ![Laravel v6.*][laravel_6_x] | ![Localization v6.x][localization_6_x] |
 | ![Laravel v5.8][laravel_5_8] | ![Localization v5.x][localization_5_x] |
@@ -23,6 +24,7 @@
 | ![Laravel v5.1][laravel_5_1] | ![Localization v0.x][localization_0_x] |
 | ![Laravel v5.0][laravel_5_0] | ![Localization v0.x][localization_0_x] |
 
+[laravel_8_x]:  https://img.shields.io/badge/version-8.x-blue.svg?style=flat-square "Laravel v8.*"
 [laravel_7_x]:  https://img.shields.io/badge/version-7.x-blue.svg?style=flat-square "Laravel v7.*"
 [laravel_6_x]:  https://img.shields.io/badge/version-6.x-blue.svg?style=flat-square "Laravel v6.*"
 [laravel_5_8]:  https://img.shields.io/badge/version-5.8-blue.svg?style=flat-square "Laravel v5.8"
@@ -35,6 +37,7 @@
 [laravel_5_1]:  https://img.shields.io/badge/version-5.1-blue.svg?style=flat-square "Laravel v5.1"
 [laravel_5_0]:  https://img.shields.io/badge/version-5.0-blue.svg?style=flat-square "Laravel v5.0"
 
+[localization_8_x]: https://img.shields.io/badge/version-8.*-blue.svg?style=flat-square "Localization v8.*"
 [localization_7_x]: https://img.shields.io/badge/version-7.*-blue.svg?style=flat-square "Localization v7.*"
 [localization_6_x]: https://img.shields.io/badge/version-6.*-blue.svg?style=flat-square "Localization v6.*"
 [localization_5_x]: https://img.shields.io/badge/version-5.*-blue.svg?style=flat-square "Localization v5.*"
