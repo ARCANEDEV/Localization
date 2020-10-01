@@ -49,17 +49,4 @@ class LocaleCookieRedirectTest extends TestCase
         static::assertSame(302, $response->getStatusCode());
         static::assertSame($this->testUrlOne . 'en', $response->getTargetUrl());
     }
-
-    /** @test */
-    public function it_can_pass_redirect_with_unsupported_locale_in_cookie(): void
-    {
-        $this->refreshApplication(false, true, true);
-
-        $supported = ['en', 'es'];
-        localization()->setSupportedLocales($supported);
-        static::assertSame($supported, localization()->getSupportedLocalesKeys());
-
-        $response = $this->call('GET', $this->testUrlOne, [], ['locale' => 'fr']);
-        static::assertSame(302, $response->getStatusCode());
-    }
 }
