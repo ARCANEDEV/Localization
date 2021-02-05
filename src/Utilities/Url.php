@@ -55,7 +55,7 @@ class Url implements UrlContract
             if ($value instanceof RouteBindable)
                 $value = $value->getWildcardValue();
 
-            $uri = str_replace(['{'.$key.'?}', '{'.$key.'}'], $value, $uri);
+            $uri = str_replace(['{'.$key.'?}', '{'.$key.'}'], (string) $value, $uri);
         }
 
         // delete empty optional arguments that are not in the $attributes array
