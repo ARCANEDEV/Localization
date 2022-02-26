@@ -6,6 +6,7 @@ namespace Arcanedev\Localization\Tests;
 
 use Arcanedev\Localization\Events\TranslationHasBeenSet;
 use Arcanedev\Localization\Tests\Stubs\Models\TranslatableModel;
+use Illuminate\Support\Facades\Event;
 
 /**
  * Class     TranslatableModelTest
@@ -322,11 +323,13 @@ class TranslatableModelTest extends TestCase
     /** @test */
     public function it_will_fire_an_event_when_a_translation_has_been_set(): void
     {
-        $this->expectsEvents([TranslationHasBeenSet::class]);
+        Event::fake();
 
         $this->model->setTranslation('name', 'en', 'Name');
 
         static::assertSame(['en' => 'Name'], $this->model->getTranslations('name'));
+
+        Event::assertDispatched(TranslationHasBeenSet::class);
     }
 
     /** @test */
