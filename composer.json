@@ -16,7 +16,7 @@
     "require": {
         "php": "^8.0",
         "ext-json": "*",
-        "arcanedev/support": "^9.0"
+        "arcanedev/support": "^9.0|^10.0"
     },
     "require-dev": {
         "ext-intl": "*",
