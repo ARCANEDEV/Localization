@@ -20,9 +20,9 @@
     },
     "require-dev": {
         "ext-intl": "*",
-        "laravel/framework": "^9.0",
+        "laravel/framework": "^9.0|^10.0",
         "mockery/mockery": "^1.4.4",
-        "orchestra/testbench-core": "^7.0",
+        "orchestra/testbench-core": "^7.0|^8.0",
         "phpunit/phpunit": "^9.5.10"
     },
     "autoload": {
